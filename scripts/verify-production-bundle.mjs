@@ -13,7 +13,7 @@ const SHA256 = /^[a-f0-9]{64}$/;
 const bundlePath = process.argv[2] ?? "artifacts/blackproof-production-bundle.zip";
 
 function readBoundedArchive(path) {
-  const descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+  const descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
     const before = fstatSync(descriptor, { bigint: true });
     if (!before.isFile()) throw new Error("Production bundle must be a regular non-symlink file.");

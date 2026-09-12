@@ -409,7 +409,7 @@ export async function loadDeliveryFile(path) {
 async function readBoundedRegularFile(path, maximumBytes, oversizedCode) {
   let handle;
   try {
-    handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+    handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   } catch {
     throw new Error("DELIVERY_INPUT_NOT_REGULAR_FILE");
   }

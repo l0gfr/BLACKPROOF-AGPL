@@ -72,7 +72,7 @@ function assertOwnedParentDirectories(relativePath) {
 function readOwnedCandidate(relativePath, maximumBytes) {
   assertOwnedParentDirectories(relativePath);
   const path = candidatePath(relativePath);
-  const descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+  const descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
     const before = fstatSync(descriptor, { bigint: true });
     if (!before.isFile() || before.uid !== BigInt(candidateRootStat.uid) || (before.mode & 0o22n) !== 0n

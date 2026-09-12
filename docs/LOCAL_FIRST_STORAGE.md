@@ -204,7 +204,7 @@ that clears cases, Delivery snapshots and locally persisted product/legacy
 account credentials. It then clears the separate local knowledge vault. Every
 already-loaded case writer keeps the epoch it opened with and must match the
 current epoch in its write transaction. `BroadcastChannel` notifications tell
-open creation, import, verification, editor and knowledge views to clear
+open creation, import, diagnostic, verification, editor and knowledge views to clear
 sensitive in-memory state and lock immediately. Consequently, a view opened
 before the wipe cannot recreate deleted local storage; it must be reloaded first.
 

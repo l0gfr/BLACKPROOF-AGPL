@@ -401,21 +401,43 @@ async function analyzeAndOpenEditor(page: Page, passphrase = DEFAULT_CASE_PASSPH
   await expect(page.getByRole("heading", { name: "Compléter et préparer le dossier." })).toBeVisible();
 }
 
-async function delayCryptoOperationPastIdle(page: Page, method: "decrypt" | "encrypt") {
+async function delayCryptoOperationPastIdle(page: Page, method: "decrypt" | "encrypt" | "generateKey") {
+  await page.clock.install();
   await page.addInitScript(({ delayedMethod }) => {
-    const nativeSetTimeout = window.setTimeout.bind(window);
-    window.setTimeout = ((handler: TimerHandler, timeout?: number, ...args: unknown[]) =>
-      nativeSetTimeout(handler, timeout === 15 * 60_000 ? 2_500 : timeout, ...args)) as typeof window.setTimeout;
     const subtle = crypto.subtle as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>;
     const nativeOperation = subtle[delayedMethod].bind(crypto.subtle);
+    let release = () => {};
+    const pending = new Promise<void>((resolve) => { release = resolve; });
+    const state = { started: false, finished: false, release };
+    (window as typeof window & { __idleCryptoGate?: typeof state }).__idleCryptoGate = state;
     Object.defineProperty(crypto.subtle, delayedMethod, {
       configurable: true,
       value: async (...args: unknown[]) => {
-        await new Promise<void>((resolve) => nativeSetTimeout(resolve, 5_000));
-        return nativeOperation(...args);
+        state.started = true;
+        await pending;
+        try { return await nativeOperation(...args); }
+        finally { state.finished = true; }
       },
     });
   }, { delayedMethod: method });
+}
+
+async function expireIdleDuringCrypto(page: Page) {
+  await page.waitForFunction(() => (
+    window as typeof window & { __idleCryptoGate?: { started: boolean } }
+  ).__idleCryptoGate?.started);
+  await page.clock.fastForward("15:00");
+}
+
+async function releaseDelayedCrypto(page: Page) {
+  await page.evaluate(() => {
+    const state = (window as typeof window & { __idleCryptoGate?: { release: () => void } }).__idleCryptoGate;
+    if (!state) throw new Error("Missing idle crypto test gate");
+    state.release();
+  });
+  await page.waitForFunction(() => (
+    window as typeof window & { __idleCryptoGate?: { finished: boolean } }
+  ).__idleCryptoGate?.finished);
 }
 
 test("browser persistence is requested only after the user's explicit gesture", async ({ page }) => {
@@ -442,19 +464,7 @@ test("browser persistence is requested only after the user's explicit gesture", 
 
 test("the decrypted editor locks itself and clears its secret input after inactivity", async ({ page }) => {
   test.setTimeout(45_000);
-  await page.addInitScript(() => {
-    const nativeSetTimeout = window.setTimeout.bind(window);
-    window.setTimeout = ((handler: TimerHandler, timeout?: number, ...args: unknown[]) =>
-      nativeSetTimeout(handler, timeout === 15 * 60_000 ? 7_000 : timeout, ...args)) as typeof window.setTimeout;
-    const nativeGenerateKey = crypto.subtle.generateKey.bind(crypto.subtle);
-    Object.defineProperty(crypto.subtle, "generateKey", {
-      configurable: true,
-      value: async (...args: Parameters<SubtleCrypto["generateKey"]>) => {
-        await new Promise<void>((resolve) => nativeSetTimeout(resolve, 10_000));
-        return Reflect.apply(nativeGenerateKey, crypto.subtle, args);
-      },
-    });
-  });
+  await delayCryptoOperationPastIdle(page, "generateKey");
 
   let downloads = 0;
   page.on("download", () => downloads += 1);
@@ -472,11 +482,12 @@ test("the decrypted editor locks itself and clears its secret input after inacti
   await deliveryReview.getByText("Signer ce dossier client avec une paire de clés", { exact: false }).click();
   await page.getByRole("button", { name: "Générer une nouvelle paire de clés" }).click();
 
-  await expect(page.getByRole("heading", { name: "Déverrouiller ce dossier." })).toBeVisible({ timeout: 10_000 });
+  await expireIdleDuringCrypto(page);
+  await expect(page.getByRole("heading", { name: "Déverrouiller ce dossier." })).toBeVisible();
   await expect(page.getByRole("status")).toContainText("verrouillé automatiquement");
   await expect(page.getByLabel("Phrase secrète du dossier", { exact: true })).toHaveValue("");
   await expect(page.getByRole("heading", { name: "Compléter et préparer le dossier." })).toHaveCount(0);
-  await page.waitForTimeout(3_500);
+  await releaseDelayedCrypto(page);
   expect(downloads).toBe(0);
 });
 
@@ -494,8 +505,9 @@ test("auto-lock cancels a case load that is still decrypting", async ({ page }) 
   await page.getByLabel("Phrase secrète du dossier", { exact: true }).fill(DEFAULT_CASE_PASSPHRASE);
   await page.getByRole("button", { name: "Déverrouiller le dossier", exact: true }).click();
 
-  await expect(page.getByRole("status")).toContainText("verrouillé automatiquement", { timeout: 7_000 });
-  await page.waitForTimeout(3_500);
+  await expireIdleDuringCrypto(page);
+  await expect(page.getByRole("status")).toContainText("verrouillé automatiquement");
+  await releaseDelayedCrypto(page);
   await expect(page.getByRole("heading", { name: "Compléter et préparer le dossier." })).toHaveCount(0);
   await expect(page.getByLabel("Phrase secrète du dossier", { exact: true })).toHaveValue("");
 });
@@ -517,8 +529,9 @@ test("auto-lock cancels a cleartext migration before IndexedDB is changed", asyn
   await page.getByLabel("Confirmer la phrase secrète", { exact: true }).fill(DEFAULT_CASE_PASSPHRASE);
   await page.getByRole("button", { name: "Chiffrer et ouvrir", exact: true }).click();
 
-  await expect(page.getByRole("status")).toContainText("verrouillé automatiquement", { timeout: 7_000 });
-  await page.waitForTimeout(3_500);
+  await expireIdleDuringCrypto(page);
+  await expect(page.getByRole("status")).toContainText("verrouillé automatiquement");
+  await releaseDelayedCrypto(page);
   const encrypted = await page.evaluate(async (id) => {
     const database = await new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open("blackproof-local-first");
@@ -555,8 +568,9 @@ test("auto-lock cancels a backup restore before IndexedDB is changed", async ({ 
   });
   await submitRestoreForm(page);
 
-  await expect(page.getByRole("status")).toContainText("Restauration annulée après inactivité", { timeout: 7_000 });
-  await page.waitForTimeout(3_500);
+  await expireIdleDuringCrypto(page);
+  await expect(page.getByRole("status")).toContainText("Restauration annulée après inactivité");
+  await releaseDelayedCrypto(page);
   await expect(page.getByRole("heading", { name: "Vérifier les accès avant d’écrire." })).toHaveCount(0);
   const storedCase = await page.evaluate(async (id) => {
     const database = await new Promise<IDBDatabase>((resolve, reject) => {
@@ -905,9 +919,10 @@ test("Panic Wipe invalidates an already-open editor and keeps IndexedDB empty", 
   await listPage.close();
 });
 
-test("Panic Wipe clears secrets held by creation, import and verifier tabs", async ({ page }) => {
+test("Panic Wipe clears secrets held by creation, import, crusher and verifier tabs", async ({ page }) => {
   const context = page.context();
   const importPage = await context.newPage();
+  const crusherPage = await context.newPage();
   const verifyPage = await context.newPage();
   const casesPage = await context.newPage();
 
@@ -924,6 +939,11 @@ test("Panic Wipe clears secrets held by creation, import and verifier tabs", asy
   await importPage.getByText("Coller le contenu", { exact: true }).click();
   await importPage.getByLabel("Contenu à analyser").fill("WIPE-IMPORT-CANARY-6D1F");
 
+  await crusherPage.goto("/questionnaire-crusher");
+  await crusherPage.getByLabel("Questionnaire brut").fill("Avez-vous une sauvegarde WIPE-CRUSHER-CANARY ?");
+  await crusherPage.getByRole("button", { name: "Analyser le questionnaire" }).click();
+  await expect(crusherPage.getByRole("heading", { name: "Diagnostics", exact: true })).toBeVisible();
+
   await verifyPage.goto("/verify");
   await expect(verifyPage.locator('[data-blackproof-verify-ready="true"]')).toBeVisible();
   await verifyPage.getByLabel("Ou coller le contenu JSON").fill('{"secret":"WIPE-VERIFY-CANARY-2A5C"}');
@@ -939,6 +959,9 @@ test("Panic Wipe clears secrets held by creation, import and verifier tabs", asy
   await expect(importPage.getByText("Panic Wipe détecté : l’import, le fichier et les aperçus ont été effacés.", { exact: false })).toBeVisible();
   await expect(verifyPage.getByText("Panic Wipe détecté : les fichiers et résultats de vérification ont été effacés.", { exact: false })).toBeVisible();
 
+  await expect(crusherPage.getByLabel("Questionnaire brut")).toHaveValue("");
+  await expect(crusherPage.getByRole("heading", { name: "Diagnostics", exact: true })).toHaveCount(0);
+  await expect(crusherPage.getByRole("button", { name: "Analyser le questionnaire" })).toBeDisabled();
   await expect(page.getByLabel("Nom du dossier")).toHaveValue("");
   await expect(page.getByLabel("Entreprise")).toHaveValue("");
   await expect(page.getByLabel("Questionnaire brut")).toHaveValue("");
@@ -949,7 +972,7 @@ test("Panic Wipe clears secrets held by creation, import and verifier tabs", asy
   await expect(importPage.locator('[data-blackproof-component="questionnaire-import"]')).toHaveAttribute("data-blackproof-hydrated", "false");
   await expect(verifyPage.locator("input[type=file]").first()).toBeDisabled();
 
-  await Promise.all([importPage.close(), verifyPage.close(), casesPage.close()]);
+  await Promise.all([crusherPage.close(), importPage.close(), verifyPage.close(), casesPage.close()]);
 });
 
 test("a stale cases list cannot delete a newer revision", async ({ page }) => {
@@ -2543,4 +2566,21 @@ test("Delivery export requires explicit review and excludes internal content", a
   await submitRestoreForm(page);
   await expect(page.getByText(/Sauvegarde restaurée \(structure, cohérence et intégrité cryptographique vérifiées ; origine non authentifiée\)/)).toBeVisible();
   await expect(page.locator(".case-card", { hasText: master.case.id })).toBeVisible();
+});
+
+
+test("Panic Wipe clears an editor unlock form and keeps it invalidated", async ({ page }) => {
+  await page.goto("/app");
+  await analyzeAndOpenEditor(page);
+  await page.getByRole("button", { name: "Verrouiller maintenant", exact: true }).click();
+  await page.getByLabel("Phrase secrète du dossier", { exact: true }).fill("synthetic-wipe-unlock-canary");
+  const list = await page.context().newPage();
+  await list.goto("/app/cases");
+  await expect(list.locator('[data-blackproof-ready="true"]')).toBeVisible();
+  list.once("dialog", (dialog) => void dialog.accept("EFFACER"));
+  await list.getByRole("button", { name: "Effacer les données locales", exact: true }).click();
+  await expect(page.getByText("Panic Wipe détecté dans un autre onglet.", { exact: false })).toBeVisible();
+  await expect(page.locator("input[type=password]")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Déverrouiller le dossier", exact: true })).toHaveCount(0);
+  await list.close();
 });

@@ -49,6 +49,37 @@
   let primaryFileInput: HTMLInputElement;
   let snapshotFileInput: HTMLInputElement;
   let operationGeneration = 0;
+  const protocolGenerations = { comparison: 0, signature: 0, revocation: 0, snapshots: 0 };
+  type ProtocolKind = keyof typeof protocolGenerations;
+
+  function protocolOperationIsActive(kind: ProtocolKind, generation: number, request: number): boolean {
+    return generation === operationGeneration && request === protocolGenerations[kind];
+  }
+
+  function clearVerificationResults() {
+    for (const kind of Object.keys(protocolGenerations) as ProtocolKind[]) protocolGenerations[kind] += 1;
+    errorMessage = "";
+    result = null;
+    zipResult = null;
+    deliveryResult = null;
+    deliveryZipResult = null;
+    masterProofpack = null;
+    receiptSnapshotResults = [];
+    currentDelivery = null;
+    comparisonReport = null;
+    signatureResult = null;
+    revocationResult = null;
+    protocolMessage = "";
+    isVerifying = false;
+    isLoadingDemo = false;
+  }
+
+  function handleJsonInput() {
+    operationGeneration += 1;
+    clearVerificationResults();
+    fileName = "";
+    if (primaryFileInput) primaryFileInput.value = "";
+  }
 
   function verificationDisplayText(value: string): string {
     return value
@@ -86,60 +117,44 @@
       location.hash = fragment.toString();
       window.history.replaceState(null, "", `${location.pathname}${location.search}${location.hash}`);
     }
-    return subscribeToLocalStorageWipe(() => {
+    const unsubscribe = subscribeToLocalStorageWipe(() => {
       operationGeneration += 1;
       if (primaryFileInput) primaryFileInput.value = "";
       if (snapshotFileInput) snapshotFileInput.value = "";
       fileName = "";
       rawJson = "";
-      result = null;
-      zipResult = null;
-      deliveryResult = null;
-      deliveryZipResult = null;
-      masterProofpack = null;
-      receiptSnapshotResults = [];
-      currentDelivery = null;
-      comparisonReport = null;
-      signatureResult = null;
-      revocationResult = null;
-      protocolMessage = "";
+      clearVerificationResults();
       isHydrated = false;
       errorMessage = "Panic Wipe détecté : les fichiers et résultats de vérification ont été effacés. Rechargez la page pour recommencer.";
     });
+    return () => {
+      operationGeneration += 1;
+      unsubscribe();
+    };
   });
 
-  async function verifyCurrentJson(generation = operationGeneration) {
-    errorMessage = "";
-    result = null;
-    zipResult = null;
-    deliveryResult = null;
-    deliveryZipResult = null;
-    masterProofpack = null;
-    receiptSnapshotResults = [];
-    currentDelivery = null;
-    comparisonReport = null;
-    signatureResult = null;
-    revocationResult = null;
-    protocolMessage = "";
+  async function verifyCurrentJson(generation = ++operationGeneration) {
+    const json = rawJson;
+    clearVerificationResults();
     isVerifying = true;
 
     try {
       let parsed: { formatVersion?: string } | null = null;
-      try { parsed = JSON.parse(rawJson); } catch {
-        const next = await verifyProofPackJson(rawJson);
+      try { parsed = JSON.parse(json); } catch {
+        const next = await verifyProofPackJson(json);
         if (generation === operationGeneration) result = next;
         return;
       }
       if (["blackproof-proofpack-delivery-v1", "blackproof-proofpack-delivery-v2", "blackproof-proofpack-delivery-v3", "blackproof-proofpack-delivery-v4", "blackproof-proofpack-delivery-v5"].includes(parsed?.formatVersion ?? "")) {
-        const next = await verifyProofPackDeliveryJson(rawJson);
+        const next = await verifyProofPackDeliveryJson(json);
         if (generation !== operationGeneration) return;
         deliveryResult = next;
-        if (next.isValid) currentDelivery = JSON.parse(rawJson) as ProofPackDelivery;
+        if (next.isValid) currentDelivery = JSON.parse(json) as ProofPackDelivery;
       } else {
-        const next = await verifyProofPackJson(rawJson);
+        const next = await verifyProofPackJson(json);
         if (generation !== operationGeneration) return;
         result = next;
-        if (result.validSchema) masterProofpack = JSON.parse(rawJson) as ProofPack;
+        if (result.validSchema) masterProofpack = JSON.parse(json) as ProofPack;
       }
     } catch (error) {
       if (generation !== operationGeneration) return;
@@ -160,18 +175,7 @@
     const input = event.currentTarget as HTMLInputElement;
     const file = input.files?.[0];
 
-    errorMessage = "";
-    result = null;
-    zipResult = null;
-    deliveryResult = null;
-    deliveryZipResult = null;
-    masterProofpack = null;
-    receiptSnapshotResults = [];
-    currentDelivery = null;
-    comparisonReport = null;
-    signatureResult = null;
-    revocationResult = null;
-    protocolMessage = "";
+    clearVerificationResults();
     rawJson = "";
     fileName = "";
 
@@ -181,17 +185,17 @@
 
     fileName = file.name;
 
-    const signature = new Uint8Array(await file.slice(0, 4).arrayBuffer());
-    if (generation !== operationGeneration) return;
-    const hasZipSignature = signature[0] === 0x50 && signature[1] === 0x4b
-      && ((signature[2] === 0x03 && signature[3] === 0x04)
-        || (signature[2] === 0x05 && signature[3] === 0x06)
-        || (signature[2] === 0x07 && signature[3] === 0x08));
-    const isZip = file.name.toLowerCase().endsWith(".zip")
-      || file.type === "application/zip"
-      || hasZipSignature;
-
+    isVerifying = true;
     try {
+      const signature = new Uint8Array(await file.slice(0, 4).arrayBuffer());
+      if (generation !== operationGeneration) return;
+      const hasZipSignature = signature[0] === 0x50 && signature[1] === 0x4b
+        && ((signature[2] === 0x03 && signature[3] === 0x04)
+          || (signature[2] === 0x05 && signature[3] === 0x06)
+          || (signature[2] === 0x07 && signature[3] === 0x08));
+      const isZip = file.name.toLowerCase().endsWith(".zip")
+        || file.type === "application/zip"
+        || hasZipSignature;
       if (isZip) {
         isVerifying = true;
         const verifiedZip = await verifyProofPackZipBlob(file);
@@ -253,47 +257,66 @@
   }
 
   async function compareWithPrevious(event: Event) {
+    const generation = operationGeneration;
+    const request = ++protocolGenerations.comparison;
+    const delivery = currentDelivery;
     const file = (event.currentTarget as HTMLInputElement).files?.[0];
     comparisonReport = null;
     protocolMessage = "";
-    if (!file || !currentDelivery) return;
+    if (!file || !delivery) return;
     try {
       const previous = await readDeliveryFile(file);
-      comparisonReport = await compareProofPackDeliveries(previous, currentDelivery);
+      if (!protocolOperationIsActive("comparison", generation, request)) return;
+      const next = await compareProofPackDeliveries(previous, delivery);
+      if (!protocolOperationIsActive("comparison", generation, request)) return;
+      comparisonReport = next;
       protocolMessage = "Rapport calculé localement à partir des deux dossiers clients vérifiés.";
     } catch (error) {
+      if (!protocolOperationIsActive("comparison", generation, request)) return;
       protocolMessage = error instanceof Error ? error.message : "Comparaison impossible.";
     }
   }
 
   async function verifySignatureFile(event: Event) {
+    const generation = operationGeneration;
+    const request = ++protocolGenerations.signature;
+    const delivery = currentDelivery;
     const file = (event.currentTarget as HTMLInputElement).files?.[0];
     signatureResult = null;
     protocolMessage = "";
-    if (!file || !currentDelivery) return;
+    if (!file || !delivery) return;
     try {
       if (file.size > 100_000) throw new Error("Le fichier de signature dépasse 100 ko.");
       const signature = JSON.parse(await file.text()) as ProofPackDeliverySignature;
-      const valid = await verifyDeliverySignature(signature, currentDelivery.fingerprint);
+      if (!protocolOperationIsActive("signature", generation, request)) return;
+      const valid = await verifyDeliverySignature(signature, delivery.fingerprint);
+      if (!protocolOperationIsActive("signature", generation, request)) return;
       signatureResult = { valid, issuer: signature.issuer, signedAt: signature.signedAt };
       if (!valid) protocolMessage = "La signature ne correspond pas à ce dossier client ou n’est pas valide.";
     } catch (error) {
+      if (!protocolOperationIsActive("signature", generation, request)) return;
       protocolMessage = error instanceof Error ? error.message : "Signature illisible.";
     }
   }
 
   async function verifyRevocationFile(event: Event) {
+    const generation = operationGeneration;
+    const request = ++protocolGenerations.revocation;
+    const delivery = currentDelivery;
     const file = (event.currentTarget as HTMLInputElement).files?.[0];
     revocationResult = null;
     protocolMessage = "";
-    if (!file || !currentDelivery) return;
+    if (!file || !delivery) return;
     try {
       if (file.size > 100_000) throw new Error("Le fichier de révocation dépasse 100 ko.");
       const revocation = JSON.parse(await file.text()) as ProofPackDeliveryRevocation;
-      const valid = await verifyDeliveryRevocation(revocation, currentDelivery);
+      if (!protocolOperationIsActive("revocation", generation, request)) return;
+      const valid = await verifyDeliveryRevocation(revocation, delivery);
+      if (!protocolOperationIsActive("revocation", generation, request)) return;
       revocationResult = { valid, reason: revocation.reason, revokedAt: revocation.revokedAt };
       if (!valid) protocolMessage = "La déclaration de révocation ne correspond pas à ce dossier client ou n’est pas valide.";
     } catch (error) {
+      if (!protocolOperationIsActive("revocation", generation, request)) return;
       protocolMessage = error instanceof Error ? error.message : "Révocation illisible.";
     }
   }
@@ -312,36 +335,38 @@
 
   async function handleReceiptSnapshots(event: Event) {
     const generation = operationGeneration;
+    const request = ++protocolGenerations.snapshots;
+    const master = masterProofpack;
     const input = event.currentTarget as HTMLInputElement;
     const files = [...(input.files ?? [])];
     receiptSnapshotResults = [];
     errorMessage = "";
-    if (!masterProofpack || files.length === 0) return;
+    if (!master || files.length === 0) return;
     try {
       const results: VerifyDeliveryReceiptSnapshotResult[] = [];
       const seen = new Set<string>();
       for (const file of files) {
         if (file.size > SECURITY_LIMITS.MAX_DELIVERY_SNAPSHOT_CHARS) throw new Error(`${file.name} dépasse la limite d’une copie archivée du dossier client.`);
         const deliveryJson = await file.text();
-        if (generation !== operationGeneration) return;
+        if (!protocolOperationIsActive("snapshots", generation, request)) return;
         let deliveryId = "";
         try { deliveryId = JSON.parse(deliveryJson)?.deliveryId ?? ""; } catch { /* verifier reports invalid JSON */ }
-        const receipt = masterProofpack.deliveryHistory.find((item) => item.deliveryId === deliveryId);
+        const receipt = master.deliveryHistory.find((item) => item.deliveryId === deliveryId);
         if (!receipt) throw new Error(`${file.name} ne correspond à aucun reçu du dossier client dans le dossier maître.`);
         if (seen.has(deliveryId)) throw new Error(`La copie archivée ${deliveryId} a été fournie plusieurs fois.`);
         seen.add(deliveryId);
-        results.push(await verifyDeliveryReceiptWithSnapshot(masterProofpack, receipt, deliveryJson, `/deliveryHistory/${masterProofpack.deliveryHistory.indexOf(receipt)}`));
-        if (generation !== operationGeneration) return;
+        results.push(await verifyDeliveryReceiptWithSnapshot(master, receipt, deliveryJson, `/deliveryHistory/${master.deliveryHistory.indexOf(receipt)}`));
+        if (!protocolOperationIsActive("snapshots", generation, request)) return;
       }
       receiptSnapshotResults = results;
     } catch (error) {
-      if (generation !== operationGeneration) return;
+      if (!protocolOperationIsActive("snapshots", generation, request)) return;
       errorMessage = error instanceof Error ? error.message : "Impossible de vérifier les copies archivées du dossier client fournies.";
     }
   }
 
   async function loadDemoProofPack() {
-    const generation = operationGeneration;
+    const generation = ++operationGeneration;
     errorMessage = "";
     result = null;
     zipResult = null;
@@ -429,7 +454,7 @@
 
     <label class="json-input">
       <span>Ou coller le contenu JSON</span>
-      <textarea bind:value={rawJson} rows="10" maxlength={SECURITY_LIMITS.MAX_PROOFPACK_JSON_CHARS}></textarea>
+      <textarea bind:value={rawJson} oninput={handleJsonInput} disabled={!isHydrated} rows="10" maxlength={SECURITY_LIMITS.MAX_PROOFPACK_JSON_CHARS}></textarea>
     </label>
 
     <p class="input-limit">
@@ -438,7 +463,7 @@
     </p>
 
     <div class="actions">
-      <button class="button primary" type="button" onclick={() => void verifyCurrentJson()} disabled={isVerifying || !rawJson}>
+      <button class="button primary" type="button" onclick={() => void verifyCurrentJson()} disabled={!isHydrated || isVerifying || !rawJson}>
         {isVerifying ? "Vérification..." : "Vérifier localement"}
       </button>
     </div>
