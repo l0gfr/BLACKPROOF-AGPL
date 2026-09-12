@@ -89,7 +89,7 @@ No document upload.
 The browser may store sensitive questionnaire text and evidence metadata locally,
 inside encrypted dossier and Delivery-snapshot payloads.
 
-BLACKPROOF must not silently sync these records to a server.
+BLACKPROOF must not upload or synchronize these records to any server, even with consent. Transfer an explicitly downloaded encrypted backup outside the app when changing devices.
 
 Encryption does not hide every local technical trace. IndexedDB still exposes an
 opaque case identifier, envelope/version flags and creation/update timestamps. A
@@ -183,9 +183,21 @@ snapshot. Le nettoyage des orphelins lit les dossiers et snapshots puis supprime
 dans cette même transaction, afin de se sérialiser avec les écritures Master/snapshot.
 
 
+## Display preference
+
+The display theme is a separate, non-sensitive preference in the
+`blackproof-ui-preferences` IndexedDB database. Only `dark` or `light` is stored,
+without an identifier or timestamp. It never opens the working-dossier database
+and is not removed by the working-data wipe. Clearing the site's browser data
+also removes this display preference. Storage denial does not prevent switching
+themes for the current page.
+
 ## Panic Wipe
 
-`/app/cases` provides a Panic Wipe action.
+`/app/cases` provides the “Effacer les données locales” (Panic Wipe) action,
+separate from refresh and restore. It remains useful in a local-only product:
+saved cases remain in the browser until removed. Preserve an encrypted backup
+first if you need to restore them later.
 
 The wipe advances a persistent storage epoch in the same IndexedDB transaction
 that clears cases, Delivery snapshots and locally persisted product/legacy

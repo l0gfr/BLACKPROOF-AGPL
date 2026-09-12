@@ -31,17 +31,18 @@ The authoritative local gate is:
 
 ```sh
 pnpm verify:all
-pnpm test:e2e
 ```
 
 `pnpm verify:all` runs schema drift checks, TypeScript/Astro/Svelte validation,
-unit tests, the static build, the production dependency audit and the repository
-security audit.
+unit tests, the static build, CSP generation, local-only artifact checks, the dependency
+and repository security audits, and the Chromium end-to-end tests.
 
 ## Local-first boundary
 
-Questionnaires, ProofPacks and Delivery snapshots stay in browser IndexedDB by
-default. No server upload is implemented or permitted for creation, editing, backup or verification.
+Questionnaires, ProofPacks and Delivery snapshots are processed on the user's device;
+saved dossiers are encrypted in browser IndexedDB. No server upload is implemented
+or permitted for import, creation, editing, backup or verification. Downloading an
+export saves a local file; users transmit it separately, outside BLACKPROOF.
 See `docs/LOCAL_FIRST_STORAGE.md` and `docs/SECURITY_MODEL.md` before changing a
 storage, export or destructive operation.
 

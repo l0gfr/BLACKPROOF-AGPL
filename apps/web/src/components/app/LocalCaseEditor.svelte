@@ -3481,7 +3481,7 @@
 <style>
   .case-editor-shell {
     padding: clamp(3.8rem, 8vw, 6.5rem) 0 7rem;
-    background: radial-gradient(circle at 8% 5%, rgba(129, 218, 203, 0.075), transparent 30rem);
+    background: radial-gradient(circle at 8% 5%, light-dark(rgba(62, 105, 97, 0.075), rgba(129, 218, 203, 0.075)), transparent 30rem);
   }
 
   .case-editor-panel {
@@ -3523,7 +3523,7 @@
   .evidence-advanced-fields {
     border: 1px solid var(--line);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .editor-overview {
@@ -3574,7 +3574,7 @@
   }
 
   .error-box {
-    border: 1px solid rgba(213, 106, 96, 0.45);
+    border: 1px solid light-dark(rgba(102, 51, 46, 0.45), rgba(213, 106, 96, 0.45));
     border-radius: 16px;
     padding: 1rem;
     margin-top: 1rem;
@@ -3587,13 +3587,13 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .unlock-panel {
     width: min(620px, 100%);
     margin: 1.5rem auto 0;
-    border: 1px solid rgba(121, 216, 200, 0.34);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.34), rgba(121, 216, 200, 0.34));
     border-radius: 14px;
     padding: 1rem;
     background: var(--accent-soft);
@@ -3646,7 +3646,7 @@
     border-radius: 18px;
     padding: 1rem;
     min-width: 160px;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .score-card span {
@@ -3673,7 +3673,7 @@
     border: 1px solid var(--line);
     border-radius: 18px;
     padding: 1.1rem;
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .metric span {
@@ -3716,7 +3716,7 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .export-posture {
@@ -3813,7 +3813,7 @@
     border-radius: 12px;
     padding: 0.65rem;
     color: var(--muted);
-    background: rgba(255, 255, 255, 0.03);
+    background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
   }
 
   .readiness-grid strong {
@@ -3854,7 +3854,7 @@
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 0.7rem;
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .micro-steps li > span {
@@ -3863,7 +3863,7 @@
     place-items: center;
     width: 1.45rem;
     height: 1.45rem;
-    border: 1px solid rgba(121, 216, 200, 0.38);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.38), rgba(121, 216, 200, 0.38));
     border-radius: 999px;
     color: var(--accent);
     font-family: var(--font-mono);
@@ -3887,10 +3887,10 @@
     align-items: center;
     gap: 0.65rem;
     margin: 0.85rem 0;
-    border: 1px solid rgba(121, 216, 200, 0.2);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.2), rgba(121, 216, 200, 0.2));
     border-radius: 12px;
     padding: 0.75rem;
-    background: rgba(121, 216, 200, 0.035);
+    background: light-dark(rgba(58, 104, 96, 0.035), rgba(121, 216, 200, 0.035));
   }
 
   .work-quick-actions > div {
@@ -3915,7 +3915,7 @@
     border-radius: 12px;
     padding: 0.75rem 0.85rem;
     color: var(--muted);
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .context-help summary {
@@ -3956,9 +3956,9 @@
     gap: 0.65rem;
     margin-top: 1rem;
     padding: 0.8rem;
-    border: 1px solid rgba(121, 216, 200, 0.28);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.28), rgba(121, 216, 200, 0.28));
     border-radius: 12px;
-    background: rgba(121, 216, 200, 0.045);
+    background: light-dark(rgba(58, 104, 96, 0.045), rgba(121, 216, 200, 0.045));
   }
 
   .delivery-batch-actions > div {
@@ -3979,7 +3979,7 @@
     margin-top: 0.9rem;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.02);
+    background: light-dark(rgba(24, 66, 46, 0.02), rgba(255, 255, 255, 0.02));
   }
 
   .delivery-selection-details > summary {
@@ -4068,7 +4068,7 @@
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 0.8rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
   }
 
   .delivery-list label.ineligible {
@@ -4103,7 +4103,7 @@
     padding: 1rem;
     border: 1px solid var(--line-strong);
     border-radius: 12px;
-    background: rgba(0, 0, 0, 0.18);
+    background: light-dark(rgba(248, 250, 246, 0.18), rgba(0, 0, 0, 0.18));
   }
 
   .delivery-preview-head {
@@ -4180,7 +4180,7 @@
     margin: 0.75rem 0 0;
     padding: 0.85rem;
     border-radius: 8px;
-    background: #090d12;
+    background: light-dark(rgba(248, 250, 246, 1), #090d12);
     color: var(--text);
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -4237,11 +4237,11 @@
   }
 
   .answer-editor {
-    border: 1px solid rgba(196, 218, 207, 0.11);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(196, 218, 207, 0.11));
     border-radius: 20px;
     padding: 1.25rem;
     margin: 1rem 0;
-    background: linear-gradient(145deg, rgba(21, 28, 26, 0.8), rgba(12, 17, 16, 0.72));
+    background: linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.8), rgba(21, 28, 26, 0.8)), light-dark(rgba(248, 250, 246, 0.72), rgba(12, 17, 16, 0.72)));
   }
 
   .question-action-strip {
@@ -4251,16 +4251,16 @@
     gap: 0.75rem;
     margin-top: 0.9rem;
     padding: 0.7rem;
-    border: 1px solid rgba(214, 181, 111, 0.35);
+    border: 1px solid light-dark(rgba(103, 87, 53, 0.35), rgba(214, 181, 111, 0.35));
     border-radius: 12px;
     color: var(--warning);
-    background: rgba(214, 181, 111, 0.06);
+    background: light-dark(rgba(103, 87, 53, 0.06), rgba(214, 181, 111, 0.06));
   }
 
   .question-action-strip.ready {
-    border-color: rgba(121, 216, 200, 0.3);
+    border-color: light-dark(rgba(58, 104, 96, 0.3), rgba(121, 216, 200, 0.3));
     color: var(--accent);
-    background: rgba(121, 216, 200, 0.045);
+    background: light-dark(rgba(58, 104, 96, 0.045), rgba(121, 216, 200, 0.045));
   }
 
   .evidence-section-head,
@@ -4373,17 +4373,17 @@
   }
 
   .answer-badge.ready {
-    border-color: rgba(128, 200, 154, 0.45);
+    border-color: light-dark(rgba(61, 96, 74, 0.45), rgba(128, 200, 154, 0.45));
     color: var(--ok);
   }
 
   .answer-badge.reserved {
-    border-color: rgba(214, 181, 111, 0.45);
+    border-color: light-dark(rgba(103, 87, 53, 0.45), rgba(214, 181, 111, 0.45));
     color: var(--warning);
   }
 
   .answer-badge.blocked {
-    border-color: rgba(224, 120, 111, 0.45);
+    border-color: light-dark(rgba(108, 58, 53, 0.45), rgba(224, 120, 111, 0.45));
     color: var(--danger);
   }
 
@@ -4420,7 +4420,7 @@
     border-radius: 20px;
     padding: 0;
     scroll-margin-top: 6rem;
-    background: linear-gradient(145deg, rgba(21, 28, 26, 0.8), rgba(12, 17, 16, 0.72));
+    background: linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.8), rgba(21, 28, 26, 0.8)), light-dark(rgba(248, 250, 246, 0.72), rgba(12, 17, 16, 0.72)));
   }
 
   .question-head {
@@ -4462,12 +4462,12 @@
 
   .criticality.critical,
   .criticality.high {
-    border-color: rgba(224, 120, 111, 0.45);
+    border-color: light-dark(rgba(108, 58, 53, 0.45), rgba(224, 120, 111, 0.45));
     color: var(--danger);
   }
 
   .criticality.medium {
-    border-color: rgba(214, 181, 111, 0.45);
+    border-color: light-dark(rgba(103, 87, 53, 0.45), rgba(214, 181, 111, 0.45));
     color: var(--warning);
   }
 
@@ -4508,7 +4508,7 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 0.85rem;
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .evidence-summary,
@@ -4559,7 +4559,7 @@
     margin-top: 0.75rem;
     border: 1px solid var(--line);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.022);
+    background: light-dark(rgba(24, 66, 46, 0.022), rgba(255, 255, 255, 0.022));
   }
 
   .evidence-qualification-fields > summary,
@@ -4630,10 +4630,10 @@
 
   .evidence-completion {
     margin: 0.9rem 0;
-    border: 1px solid rgba(121, 216, 200, 0.28);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.28), rgba(121, 216, 200, 0.28));
     border-radius: 12px;
     padding: 0.75rem;
-    background: rgba(121, 216, 200, 0.045);
+    background: light-dark(rgba(58, 104, 96, 0.045), rgba(121, 216, 200, 0.045));
   }
 
   .evidence-completion > div {
@@ -4712,7 +4712,7 @@
     border-left: 4px solid var(--line-strong);
     border-radius: 12px;
     padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .debt-list li.critical,
@@ -4756,10 +4756,10 @@
   }
 
   .knowledge-matches article {
-    border: 1px solid rgba(121, 216, 200, 0.28);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.28), rgba(121, 216, 200, 0.28));
     border-radius: 12px;
     padding: 0.8rem;
-    background: rgba(121, 216, 200, 0.045);
+    background: light-dark(rgba(58, 104, 96, 0.045), rgba(121, 216, 200, 0.045));
   }
 
   .knowledge-matches strong,
@@ -4773,10 +4773,10 @@
 
   .knowledge-form {
     margin-bottom: 1rem;
-    border: 1px solid rgba(121, 216, 200, 0.34);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.34), rgba(121, 216, 200, 0.34));
     border-radius: 12px;
     padding: 0.9rem;
-    background: rgba(121, 216, 200, 0.055);
+    background: light-dark(rgba(58, 104, 96, 0.055), rgba(121, 216, 200, 0.055));
   }
 
   .knowledge-form h4,

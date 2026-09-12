@@ -8,7 +8,7 @@ const externalShareHosts = new Set([
   "www.facebook.com",
 ]);
 
-test("home and analyses expose passive share links without contacting social networks", async ({ page }) => {
+test("public pages expose passive share links without contacting social networks", async ({ page }) => {
   const contactedExternalHosts = new Set<string>();
 
   page.on("request", (request) => {
@@ -18,7 +18,10 @@ test("home and analyses expose passive share links without contacting social net
 
   for (const [path, canonicalUrl, heading] of [
     ["/", "https://blackproof.fr/", "Partager BLACKPROOF"],
-    [analysisPath, `https://blackproof.fr${analysisPath}`, "Partager cette analyse"],
+    [analysisPath, `https://blackproof.fr${analysisPath}`, "Partager cette page"],
+    ["/faq", "https://blackproof.fr/faq/", "Partager cette page"],
+    ["/proofpack-example", "https://blackproof.fr/proofpack-example/", "Partager cette page"],
+    ["/start", "https://blackproof.fr/start/", "Partager cette page"],
   ] as const) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
@@ -35,6 +38,7 @@ test("home and analyses expose passive share links without contacting social net
     };
 
     for (const link of [destinations.x, destinations.bluesky, destinations.linkedin, destinations.facebook]) {
+      await expect(link.locator("svg")).toHaveCount(1);
       await expect(link).toHaveAttribute("target", "_blank");
       await expect(link).toHaveAttribute("rel", /noreferrer/);
       await expect(link).toHaveAttribute("rel", /nofollow/);

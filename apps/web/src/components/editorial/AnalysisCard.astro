@@ -37,7 +37,7 @@ const { data } = entry;
     border-radius: var(--radius-lg);
     padding: clamp(1.25rem, 2.5vw, 1.8rem);
     background:
-      linear-gradient(145deg, rgba(25, 34, 31, 0.9), rgba(10, 14, 14, 0.92));
+      linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.9), rgba(25, 34, 31, 0.9)), light-dark(rgba(248, 250, 246, 0.92), rgba(10, 14, 14, 0.92)));
     box-shadow: var(--shadow-tight);
   }
 
@@ -56,8 +56,8 @@ const { data } = entry;
     grid-column: 1 / -1;
     padding: clamp(1.45rem, 3vw, 2.2rem);
     background:
-      radial-gradient(circle at 92% 8%, rgba(129, 218, 203, 0.09), transparent 22rem),
-      linear-gradient(145deg, rgba(25, 34, 31, 0.94), rgba(10, 14, 14, 0.94));
+      radial-gradient(circle at 92% 8%, light-dark(rgba(62, 105, 97, 0.09), rgba(129, 218, 203, 0.09)), transparent 22rem),
+      linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.94), rgba(25, 34, 31, 0.94)), light-dark(rgba(248, 250, 246, 0.94), rgba(10, 14, 14, 0.94)));
   }
 
   .analysis-card-meta,

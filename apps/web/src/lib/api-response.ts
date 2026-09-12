@@ -9,7 +9,7 @@ export function jsonResponse(body: unknown, cacheSeconds = 3600): Response {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": `public, max-age=${cacheSeconds}`,
       "X-Blackproof-Api-Version": BLACKPROOF_PUBLIC_API_VERSION,
-      "X-Blackproof-No-Upload-Default": "true",
+      "X-Blackproof-No-Document-Upload": "true",
     },
   });
 }
@@ -22,7 +22,7 @@ export function apiEnvelope(resource: string, body: Record<string, unknown>) {
     posture: {
       publicSurface: true,
       defaultMode: "lecture-seule",
-      noUploadByDefault: true,
+      noDocumentUpload: true,
       sensitiveEvidenceAccepted: false,
     },
     disclaimer: BLACKPROOF_API_DISCLAIMER,

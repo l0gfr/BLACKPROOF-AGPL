@@ -29,6 +29,9 @@
     if (event.key !== "Escape") return;
 
     for (const group of groups) {
+      if (group.open && group.contains(document.activeElement)) {
+        group.querySelector("summary")?.focus();
+      }
       group.removeAttribute("open");
     }
   });

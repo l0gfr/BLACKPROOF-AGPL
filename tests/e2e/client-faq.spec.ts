@@ -6,14 +6,14 @@ const screenshotPaths = [
   "/guides/faq-sauvegarde.png",
 ] as const;
 
-test("client FAQ states the current account and local-storage boundary plainly", async ({ page }) => {
+test("FAQ states the free software and strictly local-storage boundary plainly", async ({ page }) => {
   await page.goto("/faq");
 
   await expect(page.getByRole("heading", {
     level: 1,
-    name: "Retrouver ses dossiers sans confondre compte et stockage local.",
+    name: "Vos dossiers locaux, de la première ouverture à la sauvegarde.",
   })).toBeVisible();
-  await expect(page.getByText("pas de login", { exact: false })).toBeVisible();
+  await expect(page.locator(".faq-hero .lead")).toContainText("utilisable sans compte");
   await expect(page.getByRole("link", { name: "Voir mes dossiers locaux" }).first()).toHaveAttribute("href", "/app/cases");
   await expect(page.getByRole("heading", { name: "Un logiciel ouvert, des dossiers locaux." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Sauvegarder et restaurer" })).toBeVisible();
@@ -47,15 +47,15 @@ test("FAQ illustrations are local, descriptive and available", async ({ page, re
 
 test("account, access, cases and resources point users to the FAQ", async ({ page }) => {
   for (const [path, label] of [
-    ["/app/cases", "Comment retrouver et sauvegarder mes dossiers ?"],
-    ["/resources", "FAQ client"],
+    ["/app/cases", "Aide et sauvegardes"],
+    ["/resources", "Aide et FAQ"],
   ] as const) {
     await page.goto(path);
     await expect(page.getByRole("link", { name: label }).first()).toBeVisible();
   }
 });
 
-test("client FAQ remains readable without horizontal overflow", async ({ page }) => {
+test("user FAQ remains readable without horizontal overflow", async ({ page }) => {
   for (const viewport of [
     { width: 1280, height: 820 },
     { width: 390, height: 844 },

@@ -201,7 +201,7 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1.35rem;
-    background: linear-gradient(180deg, rgba(18, 23, 22, 0.96), rgba(12, 16, 17, 0.96));
+    background: linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(18, 23, 22, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(12, 16, 17, 0.96)));
     box-shadow: var(--shadow-soft);
   }
 
@@ -210,7 +210,7 @@
     border-radius: 14px;
     padding: 1rem;
     color: var(--muted);
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   label {
@@ -243,7 +243,7 @@
   }
 
   .error-box {
-    border: 1px solid rgba(255, 95, 87, 0.45);
+    border: 1px solid light-dark(rgba(122, 46, 42, 0.45), rgba(255, 95, 87, 0.45));
     border-radius: 16px;
     padding: 1rem;
     margin-top: 1rem;
@@ -262,7 +262,7 @@
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .metric span {
@@ -288,15 +288,15 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1.2rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .question-card.critical {
-    border-color: rgba(213, 170, 98, 0.45);
+    border-color: light-dark(rgba(102, 82, 47, 0.45), rgba(213, 170, 98, 0.45));
   }
 
   .question-card.unmapped {
-    border-color: rgba(213, 106, 96, 0.45);
+    border-color: light-dark(rgba(102, 51, 46, 0.45), rgba(213, 106, 96, 0.45));
   }
 
   .question-head {

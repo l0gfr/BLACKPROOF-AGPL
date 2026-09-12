@@ -645,7 +645,7 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1.35rem;
-    background: linear-gradient(180deg, rgba(18, 23, 22, 0.96), rgba(12, 16, 17, 0.96));
+    background: linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(18, 23, 22, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(12, 16, 17, 0.96)));
     box-shadow: var(--shadow-soft);
   }
 
@@ -677,7 +677,7 @@
   }
 
   .question-preview small.cachedFormula {
-    color: var(--warning, #f5c46b);
+    color: var(--warning, light-dark(var(--warning), #f5c46b));
     font-weight: 700;
   }
 
@@ -765,7 +765,7 @@
     border-radius: 14px;
     padding: 0.85rem 1rem;
     margin-top: 0.8rem;
-    background: rgba(255, 255, 255, 0.02);
+    background: light-dark(rgba(24, 66, 46, 0.02), rgba(255, 255, 255, 0.02));
   }
 
   .limits-panel summary {
@@ -788,7 +788,7 @@
   }
 
   .error-box {
-    border: 1px solid rgba(213, 106, 96, 0.45);
+    border: 1px solid light-dark(rgba(102, 51, 46, 0.45), rgba(213, 106, 96, 0.45));
     border-radius: 16px;
     padding: 1rem;
     margin-top: 1rem;
@@ -800,7 +800,7 @@
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .warnings,
@@ -874,11 +874,11 @@
     grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
     align-items: start;
     gap: 1rem;
-    border: 1px solid rgba(121, 216, 200, 0.35);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.35), rgba(121, 216, 200, 0.35));
     border-radius: 14px;
     padding: 1rem;
     margin-top: 1rem;
-    background: linear-gradient(135deg, rgba(121, 216, 200, 0.10), rgba(128, 200, 154, 0.055));
+    background: linear-gradient(135deg, light-dark(rgba(58, 104, 96, 0.1), rgba(121, 216, 200, 0.10)), light-dark(rgba(61, 96, 74, 0.055), rgba(128, 200, 154, 0.055)));
   }
 
   .next-step h2 {
@@ -908,7 +908,7 @@
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 0.9rem;
-    background: rgba(8, 12, 12, 0.52);
+    background: light-dark(rgba(248, 250, 246, 0.52), rgba(8, 12, 12, 0.52));
   }
 
   .secret-fields label {
@@ -959,8 +959,8 @@
     overflow: hidden;
     padding: clamp(3.5rem, 7vw, 6.5rem) 0 7rem;
     background:
-      radial-gradient(circle at 12% 7%, rgba(121, 216, 200, 0.095), transparent 29rem),
-      radial-gradient(circle at 91% 30%, rgba(128, 200, 154, 0.06), transparent 25rem);
+      radial-gradient(circle at 12% 7%, light-dark(rgba(58, 104, 96, 0.095), rgba(121, 216, 200, 0.095)), transparent 29rem),
+      radial-gradient(circle at 91% 30%, light-dark(rgba(61, 96, 74, 0.06), rgba(128, 200, 154, 0.06)), transparent 25rem);
   }
 
   .import-shell::before {
@@ -969,7 +969,7 @@
     right: -8rem;
     width: 21rem;
     height: 21rem;
-    border: 1px solid rgba(121, 216, 200, 0.09);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.09), rgba(121, 216, 200, 0.09));
     border-radius: 50%;
     content: "";
     pointer-events: none;
@@ -1008,7 +1008,7 @@
   .intro-copy .lead {
     max-width: 680px;
     margin: 0;
-    color: #b5beb8;
+    color: light-dark(var(--muted), #b5beb8);
     font-size: clamp(1rem, 1.5vw, 1.16rem);
     line-height: 1.72;
   }
@@ -1017,10 +1017,10 @@
     display: grid;
     gap: 0;
     overflow: hidden;
-    border: 1px solid rgba(196, 218, 207, 0.11);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(196, 218, 207, 0.11));
     border-radius: 18px;
     background:
-      linear-gradient(155deg, rgba(29, 39, 36, 0.86), rgba(14, 19, 19, 0.9));
+      linear-gradient(155deg, light-dark(rgba(248, 250, 246, 0.86), rgba(29, 39, 36, 0.86)), light-dark(rgba(248, 250, 246, 0.9), rgba(14, 19, 19, 0.9)));
     box-shadow: 0 18px 54px rgba(0, 0, 0, 0.12);
   }
 
@@ -1035,7 +1035,7 @@
   }
 
   .privacy-card > div + div {
-    border-top: 1px solid rgba(176, 201, 190, 0.11);
+    border-top: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(176, 201, 190, 0.11));
   }
 
   .privacy-card strong,
@@ -1092,11 +1092,11 @@
 
   .source-stage {
     margin-top: 1.5rem;
-    border: 1px solid rgba(196, 218, 207, 0.11);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(196, 218, 207, 0.11));
     border-radius: 22px;
     padding: clamp(1.25rem, 4vw, 2.4rem);
     background:
-      linear-gradient(145deg, rgba(22, 29, 27, 0.96), rgba(12, 16, 17, 0.985));
+      linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.985), rgba(12, 16, 17, 0.985)));
     box-shadow: 0 24px 76px rgba(0, 0, 0, 0.17);
   }
 
@@ -1114,10 +1114,10 @@
     place-items: center;
     width: 2.45rem;
     height: 2.45rem;
-    border: 1px solid rgba(121, 216, 200, 0.26);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.26), rgba(121, 216, 200, 0.26));
     border-radius: 50%;
     color: var(--accent);
-    background: rgba(121, 216, 200, 0.055);
+    background: light-dark(rgba(58, 104, 96, 0.055), rgba(121, 216, 200, 0.055));
     font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 800;
@@ -1146,36 +1146,36 @@
     min-height: 170px;
     margin: 0;
     overflow: hidden;
-    border: 1px dashed rgba(121, 216, 200, 0.45);
+    border: 1px dashed light-dark(rgba(58, 104, 96, 0.45), rgba(121, 216, 200, 0.45));
     border-radius: 22px;
     padding: clamp(1.2rem, 4vw, 2rem);
     cursor: pointer;
     background:
-      radial-gradient(circle at 12% 15%, rgba(121, 216, 200, 0.12), transparent 18rem),
-      linear-gradient(135deg, rgba(121, 216, 200, 0.065), rgba(255, 255, 255, 0.018));
+      radial-gradient(circle at 12% 15%, light-dark(rgba(58, 104, 96, 0.12), rgba(121, 216, 200, 0.12)), transparent 18rem),
+      linear-gradient(135deg, light-dark(rgba(58, 104, 96, 0.065), rgba(121, 216, 200, 0.065)), light-dark(rgba(24, 66, 46, 0.018), rgba(255, 255, 255, 0.018)));
     transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
   }
 
   .file-input.primary-source:hover,
   .file-input.primary-source:has(input:focus-visible) {
-    border-color: rgba(121, 216, 200, 0.8);
+    border-color: light-dark(rgba(58, 104, 96, 0.8), rgba(121, 216, 200, 0.8));
     background:
-      radial-gradient(circle at 12% 15%, rgba(121, 216, 200, 0.17), transparent 18rem),
-      linear-gradient(135deg, rgba(121, 216, 200, 0.09), rgba(255, 255, 255, 0.025));
+      radial-gradient(circle at 12% 15%, light-dark(rgba(58, 104, 96, 0.17), rgba(121, 216, 200, 0.17)), transparent 18rem),
+      linear-gradient(135deg, light-dark(rgba(58, 104, 96, 0.09), rgba(121, 216, 200, 0.09)), light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025)));
     transform: translateY(-1px);
   }
 
   .file-input.primary-source:has(input:focus-visible) {
-    outline: 2px solid rgba(121, 216, 200, 0.28);
+    outline: 2px solid light-dark(rgba(58, 104, 96, 0.28), rgba(121, 216, 200, 0.28));
     outline-offset: 4px;
   }
 
   .source-icon {
     width: 4.15rem;
     height: 4.15rem;
-    border: 1px solid rgba(121, 216, 200, 0.2);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.2), rgba(121, 216, 200, 0.2));
     border-radius: 18px;
-    background: rgba(8, 15, 14, 0.52);
+    background: light-dark(rgba(248, 250, 246, 0.52), rgba(8, 15, 14, 0.52));
     box-shadow: inset 0 0 28px rgba(121, 216, 200, 0.055);
   }
 
@@ -1213,7 +1213,7 @@
   }
 
   .source-cta {
-    border: 1px solid rgba(121, 216, 200, 0.36);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.36), rgba(121, 216, 200, 0.36));
     border-radius: 11px;
     padding: 0.8rem 1.1rem;
     color: #07100e;
@@ -1245,11 +1245,11 @@
   .quick-action {
     min-width: 0;
     margin: 0;
-    border: 1px solid rgba(176, 201, 190, 0.14);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.14), rgba(176, 201, 190, 0.14));
     border-radius: 17px;
     padding: 0;
     color: var(--text);
-    background: rgba(255, 255, 255, 0.022);
+    background: light-dark(rgba(24, 66, 46, 0.022), rgba(255, 255, 255, 0.022));
     transition: border-color 160ms ease, background 160ms ease;
   }
 
@@ -1272,8 +1272,8 @@
 
   .quick-action:hover,
   .quick-action[open] {
-    border-color: rgba(121, 216, 200, 0.3);
-    background: rgba(121, 216, 200, 0.04);
+    border-color: light-dark(rgba(58, 104, 96, 0.3), rgba(121, 216, 200, 0.3));
+    background: light-dark(rgba(58, 104, 96, 0.04), rgba(121, 216, 200, 0.04));
   }
 
   .quick-action > summary {
@@ -1342,7 +1342,7 @@
     gap: 0.8rem;
     margin-top: 1.75rem;
     padding-top: 1.1rem;
-    border-top: 1px solid rgba(176, 201, 190, 0.1);
+    border-top: 1px solid light-dark(rgba(24, 66, 46, 0.1), rgba(176, 201, 190, 0.1));
   }
 
   .source-help .security-note,
@@ -1352,14 +1352,14 @@
     border-radius: 14px;
     padding: 0.85rem 1rem;
     color: var(--muted);
-    background: rgba(255, 255, 255, 0.018);
+    background: light-dark(rgba(24, 66, 46, 0.018), rgba(255, 255, 255, 0.018));
   }
 
   .source-help summary,
   .import-details summary,
   .technical-checks summary,
   .context-help summary {
-    color: #cdd5cf;
+    color: light-dark(var(--muted), #cdd5cf);
     font-size: 0.82rem;
     font-weight: 680;
   }
@@ -1381,15 +1381,15 @@
   .xlsx-review,
   .preview,
   .next-step {
-    border: 1px solid rgba(196, 218, 207, 0.11);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(196, 218, 207, 0.11));
     border-radius: 20px;
     padding: clamp(1.2rem, 3vw, 1.8rem);
-    background: linear-gradient(145deg, rgba(23, 31, 29, 0.96), rgba(12, 16, 17, 0.97));
+    background: linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.96), rgba(23, 31, 29, 0.96)), light-dark(rgba(248, 250, 246, 0.97), rgba(12, 16, 17, 0.97)));
     box-shadow: 0 18px 58px rgba(0, 0, 0, 0.12);
   }
 
   .xlsx-review {
-    border-left: 1px solid rgba(176, 201, 190, 0.16);
+    border-left: 1px solid light-dark(rgba(24, 66, 46, 0.16), rgba(176, 201, 190, 0.16));
     color: var(--muted);
   }
 
@@ -1408,9 +1408,9 @@
   .result-heading > span {
     width: 2.35rem;
     height: 2.35rem;
-    border: 1px solid rgba(121, 216, 200, 0.34);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.34), rgba(121, 216, 200, 0.34));
     color: var(--accent);
-    background: rgba(121, 216, 200, 0.08);
+    background: light-dark(rgba(58, 104, 96, 0.08), rgba(121, 216, 200, 0.08));
   }
 
   .preview pre,
@@ -1418,10 +1418,10 @@
     max-height: 440px;
     margin: 1.25rem 0 0;
     overflow: auto;
-    border: 1px solid rgba(176, 201, 190, 0.12);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.12), rgba(176, 201, 190, 0.12));
     border-radius: 18px;
     padding: 1.15rem;
-    background: rgba(6, 10, 10, 0.42);
+    background: light-dark(rgba(248, 250, 246, 0.42), rgba(6, 10, 10, 0.42));
   }
 
   .question-preview {
@@ -1430,24 +1430,24 @@
 
   .import-details {
     margin-top: 1rem;
-    border-color: rgba(176, 201, 190, 0.12);
+    border-color: light-dark(rgba(24, 66, 46, 0.12), rgba(176, 201, 190, 0.12));
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.018);
+    background: light-dark(rgba(24, 66, 46, 0.018), rgba(255, 255, 255, 0.018));
   }
 
   .import-details dl div {
     border: 0;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .next-step {
     grid-template-columns: minmax(0, 0.85fr) minmax(340px, 1.15fr);
     gap: clamp(1.5rem, 5vw, 4rem);
-    border-color: rgba(121, 216, 200, 0.26);
+    border-color: light-dark(rgba(58, 104, 96, 0.26), rgba(121, 216, 200, 0.26));
     background:
-      radial-gradient(circle at 0 0, rgba(121, 216, 200, 0.12), transparent 22rem),
-      linear-gradient(145deg, rgba(22, 31, 28, 0.97), rgba(12, 17, 17, 0.98));
+      radial-gradient(circle at 0 0, light-dark(rgba(58, 104, 96, 0.12), rgba(121, 216, 200, 0.12)), transparent 22rem),
+      linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.97), rgba(22, 31, 28, 0.97)), light-dark(rgba(248, 250, 246, 0.98), rgba(12, 17, 17, 0.98)));
   }
 
   .next-step h2 {
@@ -1457,25 +1457,25 @@
 
   .secret-fields {
     gap: 0.85rem;
-    border-color: rgba(176, 201, 190, 0.15);
+    border-color: light-dark(rgba(24, 66, 46, 0.15), rgba(176, 201, 190, 0.15));
     border-radius: 18px;
     padding: 1.15rem;
-    background: rgba(5, 9, 9, 0.38);
+    background: light-dark(rgba(248, 250, 246, 0.38), rgba(5, 9, 9, 0.38));
   }
 
   input,
   select,
   textarea {
     border-radius: 12px;
-    border-color: rgba(176, 201, 190, 0.18);
-    background: rgba(7, 11, 12, 0.72);
+    border-color: light-dark(rgba(24, 66, 46, 0.18), rgba(176, 201, 190, 0.18));
+    background: light-dark(rgba(248, 250, 246, 0.72), rgba(7, 11, 12, 0.72));
   }
 
   input:focus,
   select:focus,
   textarea:focus {
-    border-color: rgba(121, 216, 200, 0.62);
-    outline: 3px solid rgba(121, 216, 200, 0.1);
+    border-color: light-dark(rgba(58, 104, 96, 0.62), rgba(121, 216, 200, 0.62));
+    outline: 3px solid light-dark(rgba(58, 104, 96, 0.1), rgba(121, 216, 200, 0.1));
   }
 
   @media (max-width: 900px) {
@@ -1495,7 +1495,7 @@
 
     .privacy-card > div + div {
       border-top: 0;
-      border-left: 1px solid rgba(176, 201, 190, 0.11);
+      border-left: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(176, 201, 190, 0.11));
     }
 
     .next-step {
@@ -1523,7 +1523,7 @@
     }
 
     .privacy-card > div + div {
-      border-top: 1px solid rgba(176, 201, 190, 0.11);
+      border-top: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(176, 201, 190, 0.11));
       border-left: 0;
     }
 

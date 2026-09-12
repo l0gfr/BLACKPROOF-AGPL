@@ -163,14 +163,14 @@ const outputs = [
       border-radius: 8px;
       padding: 1rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.95), rgba(13, 17, 18, 0.95));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.95), rgba(22, 29, 27, 0.95)), light-dark(rgba(248, 250, 246, 0.95), rgba(13, 17, 18, 0.95)));
       box-shadow: var(--shadow-tight);
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
 
     .usecase-card:hover {
       border-color: var(--line-strong);
-      background: rgba(255, 255, 255, 0.055);
+      background: light-dark(rgba(24, 66, 46, 0.055), rgba(255, 255, 255, 0.055));
       transform: translateY(-1px);
     }
 
@@ -219,7 +219,7 @@ const outputs = [
       border: 1px solid var(--line-strong);
       border-radius: 8px;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
     }
 
     .output-panel p {
@@ -237,7 +237,7 @@ const outputs = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .situation-list strong,

@@ -880,7 +880,7 @@ test("Panic Wipe invalidates an already-open editor and keeps IndexedDB empty", 
   await listPage.goto("/app/cases");
   await expect(listPage.locator('[data-blackproof-ready="true"]')).toBeVisible();
   const confirmation = listPage.waitForEvent("dialog");
-  const wipe = listPage.getByRole("button", { name: "Panic Wipe", exact: true }).click();
+  const wipe = listPage.getByRole("button", { name: "Effacer les données locales", exact: true }).click();
   await (await confirmation).accept("EFFACER");
   await wipe;
   await expect(listPage.getByText("Dossiers, snapshots et coffre personnel supprimés de ce navigateur.", { exact: false })).toBeVisible();
@@ -931,7 +931,7 @@ test("Panic Wipe clears secrets held by creation, import and verifier tabs", asy
   await casesPage.goto("/app/cases");
   await expect(casesPage.locator('[data-blackproof-ready="true"]')).toBeVisible();
   const confirmation = casesPage.waitForEvent("dialog");
-  const wipe = casesPage.getByRole("button", { name: "Panic Wipe", exact: true }).click();
+  const wipe = casesPage.getByRole("button", { name: "Effacer les données locales", exact: true }).click();
   await (await confirmation).accept("EFFACER");
   await wipe;
 

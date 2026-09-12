@@ -30,7 +30,7 @@ const endpoints = [
         <p class="lead">
           L'API publique BLACKPROOF expose la méthode, les schémas, les cartographies,
           ProofDebt et le contrat de vérification. Elle est en lecture seule et ne reçoit
-          pas de questionnaires ou de preuves sensibles par défaut.
+          aucun questionnaire, document de preuve ou dossier de travail.
         </p>
         <div class="actions">
           <a class="button primary" href="/api/index.json">Lire le manifeste JSON</a>
@@ -69,9 +69,14 @@ const endpoints = [
   <section class="section">
     <div class="container">
       <div class="notice">
-        Une future API dynamique devra être explicite, bornée et non persistante.
-        La V0 publique reste volontairement en lecture seule.
+        Aucun traitement de dossier n’est effectué sur le serveur BLACKPROOF.
+        Ces routes distribuent uniquement des ressources publiques statiques.
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .flow, .flow-item { min-width: 0; }
+  .flow-item { overflow-wrap: anywhere; }
+</style>

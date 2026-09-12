@@ -68,7 +68,7 @@ from internal metadata.
 
 ## Security principle
 
-BLACKPROOF should never push users to upload sensitive proof by default.
+BLACKPROOF must never upload any document of proof. References and evidence metadata are processed locally; downloaded exports are shared by the user outside the app.
 
 A strong dossier can reference evidence, describe controlled extracts, or document reservations without exposing secrets.
 

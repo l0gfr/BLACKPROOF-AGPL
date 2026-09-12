@@ -222,14 +222,14 @@ const productSteps = [
     .pilot-flow {
       border: 1px solid var(--line-strong);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       box-shadow: var(--shadow-tight);
     }
 
     .position-card {
       padding: 1rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(8, 11, 12, 0.96)));
     }
 
     .position-card span,
@@ -289,11 +289,11 @@ const productSteps = [
       font-family: var(--font-display);
       font-size: 0.68rem;
       text-transform: uppercase;
-      background: rgba(121, 216, 200, 0.065);
+      background: light-dark(rgba(58, 104, 96, 0.065), rgba(121, 216, 200, 0.065));
     }
 
     .category-row.highlight {
-      background: rgba(121, 216, 200, 0.055);
+      background: light-dark(rgba(58, 104, 96, 0.055), rgba(121, 216, 200, 0.055));
     }
 
     .category-row strong {
@@ -330,7 +330,7 @@ const productSteps = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .proof-dossier-grid strong,

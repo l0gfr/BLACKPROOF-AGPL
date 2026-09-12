@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join, relative } from "node:path";
 import test from "node:test";
 
@@ -67,6 +67,32 @@ test("public surfaces contain no payment or access-licensing flow", () => {
     const source = readFileSync(join(root, path), "utf8");
     assert.doesNotMatch(source, /\bStripe\b|\babonnement\b|souscrire|offre Solo|licence-required/i, `${relative(root, path)} exposes a retired commercial flow`);
   }
+});
+
+test("documentation and public copy describe an unconditional local-only product", () => {
+  const files = [...publicFiles, ...listFiles("docs").filter((path) => extname(path) === ".md"), ...listFiles("apps/web/public/media").filter((path) => extname(path) === ".vtt"), "README.md"];
+  for (const path of files) {
+    const source = readFileSync(join(root, path), "utf8");
+    assert.doesNotMatch(source, /FAQ clients?|\babonnements?\b|\bsubscriptions?\b|compte payant|paid account|offre Solo|les offres|ne (?:collecte|reçoit)[^.\n]*par défaut|(?:no|not|never)[^.\n]*upload[^.\n]*by default|locaux par défaut/i, path);
+  }
+  const faq = readFileSync(join(root, "apps/web/src/pages/faq.astro"), "utf8");
+  assert.doesNotMatch(faq, /Non par défaut|login actuel|me reconnecter|synchronisation d’équipe/i);
+  const legal = readFileSync(join(root, "apps/web/src/components/LegalNotice.astro"), "utf8");
+  assert.doesNotMatch(legal, /par défaut/i);
+  assert.match(legal, /Aucun téléversement/);
+  assert.match(readFileSync(join(root, "apps/web/src/lib/api-response.ts"), "utf8"), /noDocumentUpload: true/);
+});
+
+test("the local-only demonstration replaces retired commercial media", () => {
+  for (const name of ["blackproof-parcours-utilisateur.mp4", "blackproof-parcours-utilisateur-poster.jpg"]) {
+    assert.equal(existsSync(join(root, "apps/web/public/media", name)), false, name);
+  }
+  const home = readFileSync(join(root, "apps/web/src/pages/index.astro"), "utf8");
+  for (const name of ["blackproof-parcours-local.webm", "blackproof-parcours-local-poster.jpg", "blackproof-parcours-local.fr.vtt"]) {
+    assert.ok(existsSync(join(root, "apps/web/public/media", name)), name);
+    assert.ok(home.includes(name), name);
+  }
+  assert.match(home, /Lire le parcours sans vidéo/);
 });
 
 test("public wording does not overstate automated judgment", () => {

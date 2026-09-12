@@ -34,11 +34,15 @@ test("homepage demonstration opens in a full-viewport accessible player", async 
   await expect(video).toHaveAttribute("preload", "none");
   await expect(video.locator("source")).toHaveAttribute(
     "src",
-    "/media/blackproof-parcours-utilisateur.mp4",
+    "/media/blackproof-parcours-local.webm",
   );
 
   await launchVideo.click();
   await expect(videoDialog).toBeVisible();
+  await expect.poll(() => video.evaluate((el: HTMLVideoElement) => Number.isFinite(el.duration) && el.duration > 60 && el.duration < 120)).toBe(true);
+  await expect(video.locator('track[kind="captions"]')).toHaveAttribute("src", "/media/blackproof-parcours-local.fr.vtt");
+  await video.evaluate((el: HTMLVideoElement) => { el.textTracks[0].mode = "hidden"; });
+  await expect.poll(() => video.evaluate((el: HTMLVideoElement) => el.textTracks[0].cues?.length)).toBe(13);
 
   const viewport = page.viewportSize();
   const dialogBox = await videoDialog.boundingBox();

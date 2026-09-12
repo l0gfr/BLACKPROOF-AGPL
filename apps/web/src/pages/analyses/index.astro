@@ -110,8 +110,8 @@ const principles = [
     border-radius: var(--radius-lg);
     padding: 1.35rem;
     background:
-      linear-gradient(155deg, rgba(129, 218, 203, 0.07), transparent 72%),
-      rgba(12, 17, 16, 0.86);
+      linear-gradient(155deg, light-dark(rgba(62, 105, 97, 0.07), rgba(129, 218, 203, 0.07)), transparent 72%),
+      light-dark(rgba(248, 250, 246, 0.86), rgba(12, 17, 16, 0.86));
     box-shadow: var(--shadow-tight);
   }
 
@@ -127,7 +127,7 @@ const principles = [
 
   .analyses-list {
     border-top: 1px solid var(--line);
-    background: rgba(4, 7, 7, 0.18);
+    background: light-dark(rgba(248, 250, 246, 0.18), rgba(4, 7, 7, 0.18));
   }
 
   .section-heading {

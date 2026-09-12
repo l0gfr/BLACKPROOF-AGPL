@@ -10,6 +10,7 @@ interface Props {
     | "lock"
     | "key"
     | "eye-off"
+    | "eye"
     | "server-off"
     | "braces"
     | "toggle"
@@ -22,12 +23,13 @@ interface Props {
     | "fingerprint"
     | "buyers";
   tone?: "teal" | "blue" | "violet" | "gold";
+  variant?: "card" | "nav";
 }
 
-const { name, tone = "teal" } = Astro.props;
+const { name, tone = "teal", variant = "card" } = Astro.props;
 ---
 
-<span class:list={["card-icon", `card-icon--${tone}`]} aria-hidden="true" data-card-icon={name}>
+<span class:list={["card-icon", `card-icon--${tone}`, { "card-icon--nav": variant === "nav" }]} aria-hidden="true" data-card-icon={variant === "card" ? name : undefined}>
   <svg viewBox="0 0 24 24" fill="none">
     {name === "repeat" && (
       <>
@@ -83,6 +85,9 @@ const { name, tone = "teal" } = Astro.props;
         <path d="M3 3 21 21M10.6 10.6a2 2 0 0 0 2.8 2.8" />
         <path d="M9.2 5.3A10.8 10.8 0 0 1 12 5c5.4 0 9 7 9 7a16 16 0 0 1-2.2 3M6.4 6.4C4.3 7.8 3 10 3 12c0 0 3.6 7 9 7a9.8 9.8 0 0 0 4-.9" />
       </>
+    )}
+    {name === "eye" && (
+      <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></>
     )}
     {name === "server-off" && (
       <>
@@ -206,4 +211,18 @@ const { name, tone = "teal" } = Astro.props;
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
   }
+
+  .card-icon--nav {
+    width: 1.1rem;
+    height: 1.1rem;
+    min-width: 1.1rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .card-icon--nav::after { display: none; }
+  .card-icon--nav svg { width: 100%; height: 100%; stroke-width: 1.7; }
 </style>

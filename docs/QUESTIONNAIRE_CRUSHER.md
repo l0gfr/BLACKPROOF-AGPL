@@ -35,9 +35,9 @@ The current alpha classifier is local, deterministic and rule-based. It should l
 
 ## Security principle
 
-The module runs locally and must not upload questionnaires by default.
+The module runs entirely on the user's device and must never upload questionnaires.
 
-## Commercial promise
+## Product scope
 
 Say:
 

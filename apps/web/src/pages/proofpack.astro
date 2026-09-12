@@ -129,8 +129,8 @@ const plainFilePurpose: Record<string, string> = {
       border-radius: var(--radius-lg);
       padding: 1.1rem;
       background:
-        linear-gradient(135deg, rgba(121, 216, 200, 0.08), rgba(128, 200, 154, 0.055)),
-        rgba(255, 255, 255, 0.035);
+        linear-gradient(135deg, light-dark(rgba(58, 104, 96, 0.08), rgba(121, 216, 200, 0.08)), light-dark(rgba(61, 96, 74, 0.055), rgba(128, 200, 154, 0.055))),
+        light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       box-shadow: var(--shadow-tight);
     }
 
@@ -145,7 +145,7 @@ const plainFilePurpose: Record<string, string> = {
       border: 1px solid var(--line);
       border-radius: 13px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.55);
+      background: light-dark(rgba(248, 250, 246, 0.55), rgba(8, 11, 12, 0.55));
     }
 
     .demo-stack span,

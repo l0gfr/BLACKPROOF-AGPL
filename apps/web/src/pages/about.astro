@@ -159,8 +159,8 @@ const credibility = [
       border-radius: 8px;
       padding: 1.1rem;
       background:
-        linear-gradient(135deg, rgba(121, 216, 200, 0.08), rgba(128, 200, 154, 0.045)),
-        rgba(255, 255, 255, 0.03);
+        linear-gradient(135deg, light-dark(rgba(58, 104, 96, 0.08), rgba(121, 216, 200, 0.08)), light-dark(rgba(61, 96, 74, 0.045), rgba(128, 200, 154, 0.045))),
+        light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
       box-shadow: var(--shadow-tight);
     }
 
@@ -176,7 +176,7 @@ const credibility = [
       border: 1px solid var(--line);
       border-radius: 8px;
       overflow: hidden;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .doctrine-pipeline article {
@@ -218,7 +218,7 @@ const credibility = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.78rem 0.9rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     @media (max-width: 980px) {

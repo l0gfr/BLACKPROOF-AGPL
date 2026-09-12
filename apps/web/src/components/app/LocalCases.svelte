@@ -149,11 +149,11 @@
 
   async function panicWipe() {
     const confirmation = window.prompt(
-      "Panic Wipe BLACKPROOF : cette action supprime les dossiers, snapshots et coffre personnel de ce navigateur. Les fichiers déjà téléchargés et le presse-papiers ne peuvent pas être rappelés. Tapez EFFACER pour confirmer."
+      "Effacement local BLACKPROOF (Panic Wipe) : cette action supprime les dossiers, snapshots et coffre personnel de ce navigateur. Les fichiers déjà téléchargés et le presse-papiers ne peuvent pas être rappelés. Tapez EFFACER pour confirmer."
     );
 
     if (confirmation !== "EFFACER") {
-      wipeMessage = "Panic Wipe annulé.";
+      wipeMessage = "Effacement local annulé. Aucune donnée n’a été supprimée.";
       return;
     }
 
@@ -349,14 +349,21 @@
     <div class="actions primary-actions" role="group" aria-label="Actions principales">
       <a class="button primary" href="/questionnaire-import">Importer un questionnaire</a>
       <a class="button" href="/app">Créer sans fichier</a>
-      <a class="button" href="/faq#retrouver-dossiers">Comment retrouver et sauvegarder mes dossiers ?</a>
+      <a class="button" href="/faq#retrouver-dossiers">Aide et sauvegardes</a>
       {#if knowledgeVaultEnabled}<a class="button" href="/app/knowledge">Base personnelle</a>{/if}
     </div>
     <div class="actions utility-actions" role="group" aria-label="Sauvegarde et sécurité locales">
       <span>Outils locaux</span>
       <button class="button" type="button" onclick={refreshCases}>Rafraîchir</button>
       <label class="button" class:disabled={isLoading}>Restaurer une sauvegarde<input bind:this={restoreFileInput} class="sr-only" type="file" accept=".zip,application/zip" onchange={selectBackup} disabled={isLoading} /></label>
-      <button class="button danger" type="button" onclick={panicWipe}>Panic Wipe</button>
+    </div>
+
+    <div class="local-erasure">
+      <div id="local-wipe-help">
+        <strong>Effacement de ce navigateur</strong>
+        <p>Supprime les dossiers et données de travail BLACKPROOF conservés ici. Gardez une sauvegarde si vous souhaitez les retrouver. Les fichiers téléchargés ne sont pas effacés.</p>
+      </div>
+      <button class="button danger" type="button" aria-describedby="local-wipe-help" onclick={panicWipe}>Effacer les données locales</button>
     </div>
 
     {#if selectedRestoreFile}
@@ -511,7 +518,7 @@
 <style>
   .cases-shell {
     padding: clamp(3.8rem, 8vw, 6.5rem) 0 7rem;
-    background: radial-gradient(circle at 8% 5%, rgba(129, 218, 203, 0.075), transparent 30rem);
+    background: radial-gradient(circle at 8% 5%, light-dark(rgba(62, 105, 97, 0.075), rgba(129, 218, 203, 0.075)), transparent 30rem);
   }
 
   .cases-panel {
@@ -543,7 +550,7 @@
     border: 1px solid var(--line);
     border-radius: 20px;
     padding: 1.4rem;
-    background: rgba(255, 255, 255, 0.025);
+    background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
   }
 
   .empty-state strong {
@@ -573,7 +580,34 @@
     align-items: center;
     margin-top: 1rem;
     border-top: 1px solid var(--line);
-    padding-top: 1rem;
+    padding: 1rem 0;
+  }
+
+  .local-erasure {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin: 0.5rem 0 1.25rem;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--panel);
+  }
+
+  .local-erasure > div { flex: 1 1 26rem; min-width: 0; }
+  .local-erasure p { margin: 0.4rem 0 0; color: var(--muted); line-height: 1.65; }
+  .local-erasure .button { flex: 0 1 auto; }
+
+  .wipe-box {
+    margin: 1.25rem 0;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    background: var(--accent-soft);
+    color: var(--text);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
   }
 
   .utility-actions > span {
@@ -588,10 +622,10 @@
 
   .restore-panel {
     margin-top: 1rem;
-    border: 1px solid rgba(121, 216, 200, 0.38);
+    border: 1px solid light-dark(rgba(58, 104, 96, 0.38), rgba(121, 216, 200, 0.38));
     border-radius: 20px;
     padding: 1.4rem;
-    background: rgba(121, 216, 200, 0.055);
+    background: light-dark(rgba(58, 104, 96, 0.055), rgba(121, 216, 200, 0.055));
   }
 
   .restore-head {
@@ -655,7 +689,7 @@
 
   .restore-risk {
     margin-top: 1rem;
-    border: 1px solid rgba(213, 106, 96, 0.5);
+    border: 1px solid light-dark(rgba(102, 51, 46, 0.5), rgba(213, 106, 96, 0.5));
     border-radius: 10px;
     padding: 0.85rem;
     color: var(--danger);
@@ -682,7 +716,7 @@
     border: 0;
     border-radius: 0;
     padding: 1.15rem;
-    background: rgba(15, 21, 19, 0.96);
+    background: light-dark(rgba(248, 250, 246, 0.96), rgba(15, 21, 19, 0.96));
   }
 
   .dashboard-strip span,
@@ -704,15 +738,15 @@
   .dashboard-strip article:nth-child(4) { --metric-accent: var(--accent-gold); }
 
   .case-card {
-    border: 1px solid rgba(196, 218, 207, 0.11);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(196, 218, 207, 0.11));
     border-radius: 20px;
     padding: 1.4rem;
-    background: linear-gradient(145deg, rgba(21, 28, 26, 0.82), rgba(12, 17, 16, 0.76));
+    background: linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.82), rgba(21, 28, 26, 0.82)), light-dark(rgba(248, 250, 246, 0.76), rgba(12, 17, 16, 0.76)));
     box-shadow: 0 18px 54px rgba(0, 0, 0, 0.11);
   }
 
   .case-card.controlled {
-    border-color: rgba(113, 191, 155, 0.45);
+    border-color: light-dark(rgba(54, 92, 74, 0.45), rgba(113, 191, 155, 0.45));
   }
 
   .case-head {
@@ -738,7 +772,7 @@
     border-radius: 14px;
     padding: 0.75rem;
     text-align: right;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .score-block span {
@@ -802,12 +836,12 @@
   }
 
   .button.danger {
-    border-color: rgba(213, 106, 96, 0.45);
+    border-color: light-dark(rgba(102, 51, 46, 0.45), rgba(213, 106, 96, 0.45));
     color: var(--danger);
   }
 
   .error-box {
-    border: 1px solid rgba(213, 106, 96, 0.45);
+    border: 1px solid light-dark(rgba(102, 51, 46, 0.45), rgba(213, 106, 96, 0.45));
     border-radius: 16px;
     padding: 1rem;
     margin-top: 1rem;
