@@ -347,10 +347,10 @@
 
 <style>
   .knowledge-shell { padding: 4rem 0; }
-  .knowledge-panel { width: min(980px, calc(100% - 2rem)); margin: 0 auto; border: 1px solid var(--line); border-radius: 14px; padding: 1.35rem; background: rgba(12, 16, 17, .96); box-shadow: var(--shadow-soft); }
+  .knowledge-panel { width: min(980px, calc(100% - 2rem)); margin: 0 auto; border: 1px solid var(--line); border-radius: 14px; padding: 1.35rem; background: light-dark(rgba(248, 250, 246, 0.96), rgba(12, 16, 17, .96)); box-shadow: var(--shadow-soft); }
   .actions, .tags { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1rem; }
   .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.2rem 0; }
-  .metrics article, .entry-card { border: 1px solid var(--line); border-radius: 12px; padding: 1rem; background: rgba(255,255,255,.025); }
+  .metrics article, .entry-card { border: 1px solid var(--line); border-radius: 12px; padding: 1rem; background: light-dark(rgba(24, 66, 46, 0.025), rgba(255,255,255,.025)); }
   .metrics span, .metrics strong { display: block; }
   .metrics strong { color: var(--accent); font-size: 1.5rem; }
   .entry-list { display: grid; gap: .9rem; }
@@ -359,12 +359,12 @@
   .entry-head > span, .tags span { border: 1px solid var(--line); border-radius: 999px; padding: .25rem .5rem; color: var(--accent); font-size: .72rem; }
   .entry-card > small { display: block; color: var(--muted); overflow-wrap: anywhere; }
   .reservation { color: var(--warning); }
-  .inline-form { margin-top: 1rem; border: 1px solid rgba(121,216,200,.35); border-radius: 12px; padding: 1rem; background: var(--accent-soft); scroll-margin-top: 8rem; }
+  .inline-form { margin-top: 1rem; border: 1px solid light-dark(rgba(58, 104, 96, 0.35), rgba(121,216,200,.35)); border-radius: 12px; padding: 1rem; background: var(--accent-soft); scroll-margin-top: 8rem; }
   .inline-form h2 { margin: .2rem 0; font-size: 1.2rem; }
   .inline-form p { color: var(--muted); }
   .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin-bottom: 1rem; }
   .inline-form label { display: grid; gap: .4rem; margin-top: .7rem; color: var(--muted); font-weight: 750; }
   .inline-form input, .inline-form textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 10px; padding: .75rem; background: var(--field); color: var(--text); font: inherit; }
-  .revision-form { border-color: var(--line); background: rgba(255,255,255,.025); }
+  .revision-form { border-color: var(--line); background: light-dark(rgba(24, 66, 46, 0.025), rgba(255,255,255,.025)); }
   @media (max-width: 700px) { .metrics, .form-grid { grid-template-columns: 1fr; } .entry-head { display: block; } }
 </style>

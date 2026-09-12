@@ -60,13 +60,18 @@ test("CSP blocks fetch, XHR, beacon and form submissions before transport", asyn
   expect(transmitted).toBe(0);
 });
 
-test("v11 to v12 removes only access state and preserves encrypted dossier and snapshot bytes", async ({ page }) => {
-  await page.goto("/app");
-  await expect(page.locator('[data-blackproof-hydrated="true"]')).toBeVisible();
-  await page.getByLabel("Phrase secrète du dossier", { exact: true }).fill(passphrase);
-  await page.getByLabel("Confirmer la phrase secrète", { exact: true }).fill(passphrase);
-  await page.getByRole("button", { name: "Analyser et ouvrir l’éditeur", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Compléter et préparer le dossier." })).toBeVisible();
+test("v11 to v12 removes only access state and preserves encrypted dossier and snapshot bytes", async ({ page: editorPage }) => {
+  await editorPage.goto("/app");
+  await expect(editorPage.locator('[data-blackproof-hydrated="true"]')).toBeVisible();
+  await editorPage.getByLabel("Phrase secrète du dossier", { exact: true }).fill(passphrase);
+  await editorPage.getByLabel("Confirmer la phrase secrète", { exact: true }).fill(passphrase);
+  await editorPage.getByRole("button", { name: "Analyser et ouvrir l’éditeur", exact: true }).click();
+  await expect(editorPage.getByRole("heading", { name: "Compléter et préparer le dossier." })).toBeVisible();
+  // Fixture setup replaces the database with a historical schema. A navigation
+  // may keep the editor's connection alive in the back-forward cache; close its
+  // page explicitly before replacement, without weakening any migration check.
+  const page = await editorPage.context().newPage();
+  await editorPage.close();
   await page.goto("/");
   const snapshotPayload = await encryptLocalPayload({ deliveryJson: "synthetic historical snapshot" }, passphrase);
   const originals = await page.evaluate(async (payload) => {

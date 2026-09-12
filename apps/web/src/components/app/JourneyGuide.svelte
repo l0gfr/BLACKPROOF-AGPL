@@ -65,11 +65,11 @@
     z-index: 10;
     margin: 0 0 1.25rem;
     overflow: hidden;
-    border: 1px solid rgba(196, 218, 207, 0.1);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.1), rgba(196, 218, 207, 0.1));
     border-radius: 18px;
     background:
-      linear-gradient(110deg, rgba(129, 218, 203, 0.075), transparent 42%),
-      rgba(16, 22, 20, 0.68);
+      linear-gradient(110deg, light-dark(rgba(62, 105, 97, 0.075), rgba(129, 218, 203, 0.075)), transparent 42%),
+      light-dark(rgba(248, 250, 246, 0.68), rgba(16, 22, 20, 0.68));
     box-shadow: 0 18px 54px rgba(0, 0, 0, 0.12);
   }
 
@@ -207,7 +207,7 @@
   }
 
   .guide-steps li.done {
-    color: #b4beb8;
+    color: light-dark(var(--muted), #b4beb8);
     background: transparent;
   }
 

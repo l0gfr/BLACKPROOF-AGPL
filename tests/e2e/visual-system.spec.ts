@@ -167,7 +167,7 @@ test("structural cards share one restrained line-icon language", async ({ page }
     ["/security", 6],
     ["/start", 4],
     ["/resources", 3],
-    ["/use-cases", 4],
+    ["/use-cases", 6],
   ] as const) {
     await page.goto(path);
     const icons = page.locator("[data-card-icon]");

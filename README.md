@@ -3,10 +3,15 @@
 BLACKPROOF is a free, open-source, local-first cyber evidence app under AGPL-3.0-only.
 Create, import, encrypt, export and verify dossiers directly in your browser.
 No account, activation key or application server is required.
+Use it to prepare cyber reviews, internal audits and supplier questionnaires.
+Bring your own review checklist, document answers, evidence references and
+reservations, then track the remaining preparation work. Source documents and
+audit conclusions still require human assessment; this is not a system scanner
+or an automated certification service.
 
 Core flow:
 
-questionnaire fournisseur → mapping NIS2/ReCyF → preuves attendues → dette de preuve → Master interne → Delivery externe revu.
+questionnaire ou grille d'audit → réponses et références → preuves attendues → points à corriger → dossier interne → export relu facultatif.
 
 ## Project structure
 
@@ -31,17 +36,18 @@ The authoritative local gate is:
 
 ```sh
 pnpm verify:all
-pnpm test:e2e
 ```
 
 `pnpm verify:all` runs schema drift checks, TypeScript/Astro/Svelte validation,
-unit tests, the static build, the production dependency audit and the repository
-security audit.
+unit tests, the static build, CSP generation, local-only artifact checks, the dependency
+and repository security audits, and the Chromium end-to-end tests.
 
 ## Local-first boundary
 
-Questionnaires, ProofPacks and Delivery snapshots stay in browser IndexedDB by
-default. No server upload is implemented or permitted for creation, editing, backup or verification.
+Questionnaires, ProofPacks and Delivery snapshots are processed on the user's device;
+saved dossiers are encrypted in browser IndexedDB. No server upload is implemented
+or permitted for import, creation, editing, backup or verification. Downloading an
+export saves a local file; users transmit it separately, outside BLACKPROOF.
 See `docs/LOCAL_FIRST_STORAGE.md` and `docs/SECURITY_MODEL.md` before changing a
 storage, export or destructive operation.
 

@@ -5,17 +5,22 @@ interface Props {
   url: string;
   title: string;
   heading?: string;
+  localWorkspace?: boolean;
 }
 
 const {
   url,
   title,
   heading = "Partager",
+  localWorkspace = false,
 } = Astro.props;
 
 const defaultSiteUrl = "https:" + "//blackproof.fr";
 const siteUrl = Astro.site ?? defaultSiteUrl;
-const canonicalUrl = new URL(url, siteUrl).toString();
+const publicUrl = new URL(url, siteUrl);
+publicUrl.search = "";
+publicUrl.hash = "";
+const canonicalUrl = publicUrl.toString();
 const shareText = `${title}\n${canonicalUrl}`;
 
 const socialLinks = [
@@ -50,9 +55,8 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
 
 <section class="share-panel" aria-labelledby="share-heading" data-share-panel>
   <div class="share-intro">
-    <p class="share-kicker">Diffusion maîtrisée</p>
     <h2 id="share-heading">{heading}</h2>
-    <p>Aucun réseau n’est contacté avant votre clic.</p>
+    <p>{localWorkspace ? "Le site uniquement, jamais vos dossiers." : "Aucun réseau n’est contacté avant votre clic."}</p>
   </div>
 
   <div class="share-actions" role="group" aria-label={heading}>
@@ -62,6 +66,7 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
         href={link.href}
         target="_blank"
         rel="noopener noreferrer nofollow"
+        referrerpolicy="no-referrer"
         aria-label={link.label}
         data-share-destination={link.icon}
       >
@@ -71,11 +76,11 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
               <path d="M5.1 5.2c2.8 2.1 5.8 6.2 6.9 8.5 1.1-2.3 4.1-6.4 6.9-8.5 2-1.5 5.1-2.7 5.1 1.1 0 .8-.5 6.5-.8 7.4-1.1 3.8-4.9 4.8-8.3 4.2 5.9 1 7.4 4.4 4.2 7.8-6.1 6.3-8.8-1.6-9.5-3.7-.1-.4-.2-.6-.3-.8 0 .2-.1.4-.3.8-.8 2.1-3.5 10-9.5 3.7-3.2-3.4-1.7-6.8 4.2-7.8-3.4.6-7.2-.4-8.3-4.2-.3-.9-.8-6.6-.8-7.4 0-3.8 3.1-2.6 5.1-1.1Z" transform="scale(.64) translate(6.75 2.4)" />
             </svg>
           ) : link.icon === "linkedin" ? (
-            <span>in</span>
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52C22 2.68 21.31 2 20.45 2ZM7.93 18.74H4.97V9.2h2.96ZM6.45 7.9a1.72 1.72 0 1 1 0-3.44 1.72 1.72 0 0 1 0 3.44ZM19.03 18.74h-2.96V14.1c0-1.1-.02-2.52-1.54-2.52-1.54 0-1.77 1.2-1.77 2.44v4.72H9.8V9.2h2.84v1.3h.04c.4-.75 1.37-1.54 2.81-1.54 3 0 3.55 1.98 3.55 4.55Z" /></svg>
           ) : link.icon === "facebook" ? (
-            <span>f</span>
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12Z" /></svg>
           ) : (
-            <span>𝕏</span>
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-7.4L5.6 22H2.46l8.16-9.33L.8 2h6.4l4.42 6.7Zm-1.1 18h1.73L6.25 4H4.4Z" /></svg>
           )}
         </span>
         <span>{link.name}</span>
@@ -128,41 +133,29 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
 
 <style>
   .share-panel {
-    display: grid;
-    grid-template-columns: minmax(190px, 0.32fr) minmax(0, 0.68fr);
-    gap: clamp(1rem, 3vw, 2.4rem);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem 1.4rem;
     align-items: center;
-    border: 1px solid var(--line-strong);
-    border-radius: var(--radius-lg);
-    padding: clamp(1rem, 2.2vw, 1.45rem);
-    background:
-      linear-gradient(90deg, rgba(142, 229, 209, 0.055), transparent 38%),
-      rgba(12, 19, 16, 0.82);
-    box-shadow: var(--shadow-tight);
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 0;
   }
 
   .share-intro {
     min-width: 0;
   }
 
-  .share-kicker {
-    margin: 0 0 0.35rem;
-    color: var(--accent);
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
   .share-intro h2 {
     margin: 0;
-    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    font-size: 0.9rem;
+    letter-spacing: 0;
   }
 
   .share-intro > p:last-child {
-    margin: 0.4rem 0 0;
+    margin: 0.25rem 0 0;
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.7rem;
   }
 
   .share-actions {
@@ -178,9 +171,9 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
     align-items: center;
     gap: 0.55rem;
     border: 1px solid var(--line-strong);
-    border-radius: var(--radius-md);
+    border-radius: 0.65rem;
     padding: 0.5rem 0.72rem;
-    background: rgba(5, 10, 8, 0.72);
+    background: light-dark(rgba(248, 250, 246, 0.72), rgba(5, 10, 8, 0.72));
     color: var(--muted);
     font: inherit;
     font-family: var(--font-display);
@@ -196,8 +189,8 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
 
   .share-action:hover {
     transform: translateY(-1px);
-    border-color: rgba(142, 229, 209, 0.5);
-    background: rgba(142, 229, 209, 0.07);
+    border-color: light-dark(rgba(68, 110, 100, 0.5), rgba(142, 229, 209, 0.5));
+    background: light-dark(rgba(68, 110, 100, 0.07), rgba(142, 229, 209, 0.07));
     color: var(--text);
   }
 
@@ -207,12 +200,12 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
   }
 
   .share-action[data-copy-state="copied"] {
-    border-color: rgba(128, 200, 154, 0.55);
+    border-color: light-dark(rgba(61, 96, 74, 0.55), rgba(128, 200, 154, 0.55));
     color: var(--ok);
   }
 
   .share-action[data-copy-state="error"] {
-    border-color: rgba(224, 120, 111, 0.55);
+    border-color: light-dark(rgba(108, 58, 53, 0.55), rgba(224, 120, 111, 0.55));
     color: var(--danger);
   }
 
@@ -241,12 +234,11 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
     stroke: none;
   }
 
-  .share-icon--x,
-  .share-icon--linkedin,
-  .share-icon--facebook {
-    font-family: var(--font-display);
-    font-size: 0.88rem;
-    font-weight: 780;
+  .share-icon--x svg,
+  .share-icon--linkedin svg,
+  .share-icon--facebook svg {
+    fill: currentColor;
+    stroke: none;
   }
 
   .share-copy-fallback {
@@ -258,40 +250,35 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
     pointer-events: none;
   }
 
-  .share-icon--linkedin {
-    border: 1px solid currentColor;
-    border-radius: 2px;
-    font-size: 0.65rem;
-    line-height: 1;
-  }
-
-  .share-icon--facebook {
-    font-size: 1.05rem;
-  }
-
   @media (max-width: 860px) {
-    .share-panel {
-      grid-template-columns: 1fr;
-    }
-
     .share-actions {
       justify-content: flex-start;
     }
   }
 
   @media (max-width: 560px) {
-    .share-panel {
-      padding: 0.95rem;
-    }
-
     .share-actions {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.4rem;
     }
 
     .share-action {
-      width: 100%;
-      justify-content: flex-start;
+      width: 2.75rem;
+      padding: 0.6rem;
+      justify-content: center;
     }
+
+    .share-action > span:not(.share-icon) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .share-action { transition: none; }
+    .share-action:hover { transform: none; }
   }
 </style>

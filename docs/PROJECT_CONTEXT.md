@@ -37,7 +37,7 @@ BlackProof transforme vos réponses cyber en registre de préparation et de déf
 
 ## Positionnement
 
-Ne pas vendre BLACKPROOF comme :
+Ne pas présenter BLACKPROOF comme :
 
 - un outil de conformité NIS2 généraliste ;
 - une certification ;
@@ -46,7 +46,7 @@ Ne pas vendre BLACKPROOF comme :
 - un outil GRC classique ;
 - un produit blockchain compliance.
 
-Vendre BLACKPROOF comme :
+Présenter BLACKPROOF comme un logiciel libre sous AGPL-3.0-only, sans compte :
 
 Cyber evidence pack for suppliers under regulatory and commercial pressure.
 
@@ -73,10 +73,10 @@ Questionnaire fournisseur
 - Verify
 - Public API
 
-## Stack recommandée
+## Stack implémentée
 
 Frontend public :
-Astro + TypeScript + Markdown/MDX
+Astro + TypeScript + Markdown
 
 App :
 Astro /app + Svelte + TypeScript
@@ -85,13 +85,10 @@ Stockage local :
 IndexedDB + Dexie
 
 Validation :
-Zod
+Ajv et schémas JSON générés
 
 Exports :
 JSON, Markdown, CSV, HTML
-
-Recherche statique :
-Pagefind
 
 Déploiement :
 GitHub public → artefact GitHub Actions vérifié → Debian → Apache

@@ -23,7 +23,7 @@ const publicContracts = [
   ["/schemas/delivery-protocol/change-report-v1.schema.json", "Comparaison de versions V1", "Description du rapport entre deux versions client."],
   ["/schemas/delivery-protocol/signature-v1.schema.json", "Signature V1", "Description de la signature optionnelle de l’émetteur."],
   ["/schemas/delivery-protocol/revocation-v1.schema.json", "Révocation V1", "Description du fichier qui annule une version client."],
-  ["/schemas/delivery-protocol/status-v1.schema.json", "Statut public V1", "Description de la réponse consultable sans compte."],
+  ["/schemas/delivery-protocol/status-v1.schema.json", "Format historique de statut V1", "Schéma conservé pour compatibilité. Aucun registre de statut en ligne n’est proposé."],
   ["/canonicalization-vectors.json", "Vecteurs de canonicalisation", "Octets UTF-8 et SHA-256 de référence V1/V2."],
   ["/api/verify.json", "Vérification", "Contrat de vérification locale."]
 ];
@@ -189,7 +189,7 @@ const statusChecks = [
     .boundary-panel {
       border: 1px solid var(--line-strong);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       box-shadow: var(--shadow-tight);
     }
 
@@ -202,7 +202,7 @@ const statusChecks = [
 
     .status-note {
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(8, 11, 12, 0.96)));
     }
 
     .status-note span,
@@ -253,7 +253,7 @@ const statusChecks = [
       border-radius: 8px;
       padding: 0.85rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.92), rgba(10, 13, 14, 0.92));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.92), rgba(22, 29, 27, 0.92)), light-dark(rgba(248, 250, 246, 0.92), rgba(10, 13, 14, 0.92)));
     }
 
     .status-grid p {
@@ -273,7 +273,7 @@ const statusChecks = [
 
     .contract-grid a:hover {
       border-color: var(--line-strong);
-      background: rgba(255, 255, 255, 0.055);
+      background: light-dark(rgba(24, 66, 46, 0.055), rgba(255, 255, 255, 0.055));
       transform: translateY(-1px);
     }
 

@@ -1,7 +1,6 @@
 ---
 import { render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ShareLinks from "../../components/ShareLinks.astro";
 import {
   formatAnalysisDate,
   getAnalysisLastModified,
@@ -28,7 +27,6 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content, headings } = await render(entry);
 const articlePath = getAnalysisPath(entry);
-const articleUrl = new URL(articlePath, Astro.site ?? "https://blackproof.fr").toString();
 const lastModified = getAnalysisLastModified(entry);
 const lastVerified = getAnalysisLastVerified(entry);
 const articleHeadings = headings.filter((heading) => heading.depth === 2);
@@ -156,14 +154,6 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
           </p>
         </aside>
 
-        <div class="analysis-share">
-          <ShareLinks
-            url={articleUrl}
-            title={data.title}
-            heading="Partager cette analyse"
-          />
-        </div>
-
         <a class="back-link" href="/analyses">← Toutes les analyses</a>
       </div>
     </div>
@@ -175,8 +165,8 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
     border-bottom: 1px solid var(--line);
     padding: clamp(3.8rem, 8vw, 6.5rem) 0 3.4rem;
     background:
-      radial-gradient(circle at 82% 4%, rgba(129, 218, 203, 0.08), transparent 28rem),
-      rgba(8, 12, 12, 0.22);
+      radial-gradient(circle at 82% 4%, light-dark(rgba(62, 105, 97, 0.08), rgba(129, 218, 203, 0.08)), transparent 28rem),
+      light-dark(rgba(248, 250, 246, 0.22), rgba(8, 12, 12, 0.22));
   }
 
   .analysis-header-inner {
@@ -256,7 +246,7 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: 1rem;
-    background: rgba(13, 18, 17, 0.75);
+    background: light-dark(rgba(248, 250, 246, 0.75), rgba(13, 18, 17, 0.75));
   }
 
   .analysis-status dl,
@@ -308,12 +298,8 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
     min-width: 0;
   }
 
-  .analysis-share {
-    margin-top: 1.5rem;
-  }
-
   .analysis-body {
-    color: #dbe1dc;
+    color: light-dark(var(--muted), #dbe1dc);
     font-size: clamp(1rem, 1.2vw, 1.08rem);
     line-height: 1.82;
   }
@@ -386,7 +372,7 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
     border: 1px solid var(--line-strong);
     border-radius: var(--radius-lg);
     padding: clamp(0.8rem, 2vw, 1.3rem) clamp(0.8rem, 2vw, 1.3rem) 1rem;
-    background: linear-gradient(150deg, rgba(24, 32, 30, 0.88), rgba(8, 12, 12, 0.9));
+    background: linear-gradient(150deg, light-dark(rgba(248, 250, 246, 0.88), rgba(24, 32, 30, 0.88)), light-dark(rgba(248, 250, 246, 0.9), rgba(8, 12, 12, 0.9)));
   }
 
   .analysis-body :global(figure.analysis-figure svg) {
@@ -432,7 +418,7 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.018);
+    background: light-dark(rgba(24, 66, 46, 0.018), rgba(255, 255, 255, 0.018));
   }
 
   .source-register li div span,

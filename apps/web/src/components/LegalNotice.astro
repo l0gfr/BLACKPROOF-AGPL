@@ -29,7 +29,7 @@ const outgoing = [
   },
   {
     title: "Courriel volontaire",
-    text: "Les liens de contact ouvrent votre client mail. Aucune donnée n’est transmise par BLACKPROOF tant que vous n’envoyez pas volontairement un message."
+    text: "Les liens de contact ouvrent votre client mail. Le message est envoyé par votre messagerie, hors de BLACKPROOF. Ne joignez aucun questionnaire, document client, secret ou preuve sensible."
   },
   {
     title: "Liens sortants",
@@ -67,10 +67,10 @@ const processing = [
 
 
 const localProcessing = [
-  ["Questionnaires", "Les fichiers importés sont lus dans le navigateur et traités comme du texte non fiable."],
-  ["Dossiers locaux", "Les dossiers créés dans l’application peuvent être conservés dans le stockage local du navigateur, sous le contrôle de l’utilisateur."],
-  ["ProofPack", "Les exports sont produits localement et ne sont pas envoyés à un serveur BLACKPROOF."],
-  ["Vérification", "La vérification d’un ProofPack repose sur des contrats publics et un calcul local."]
+  ["Questionnaires et preuves", "Les fichiers sélectionnés sont lus et traités uniquement sur votre appareil. Aucun document n’est téléversé vers BLACKPROOF."],
+  ["Dossiers locaux", "L’enregistrement conserve le dossier chiffré dans le stockage de ce navigateur. Aucune copie n’est stockée ni synchronisée sur un serveur BLACKPROOF."],
+  ["Exports et sauvegardes", "Les fichiers sont créés et téléchargés sur votre appareil. BLACKPROOF ne les envoie à personne. Une transmission éventuelle se fait par vos propres moyens, hors de l’application."],
+  ["Vérification", "Les fichiers à vérifier restent sur votre appareil. Les contrôles de structure, de cohérence et d’empreinte sont calculés localement, sans envoi du dossier."]
 ];
 
 const noGo = [
@@ -80,7 +80,7 @@ const noGo = [
   "Aucune police chargée depuis Google Fonts.",
   "Aucun CDN tiers pour les actifs applicatifs.",
   "Aucun formulaire serveur sur la surface publique.",
-  "Aucune ingestion serveur de preuves sensibles.",
+  "Aucun téléversement de questionnaires, documents de preuve ou dossiers.",
   "Aucune exécution de code provenant des fichiers importés."
 ];
 
@@ -115,9 +115,9 @@ const isRgpdAlias = Astro.url.pathname.startsWith("/rgpd");
         <p class="eyebrow">Mentions légales & RGPD</p>
         <h1>Transparence, ligne par ligne.</h1>
         <p class="lead">
-          Cette page recense ce qui peut quitter votre navigateur lorsque vous consultez
-          BLACKPROOF ou utilisez l’application locale. Version courte : la surface publique
-          est statique, sans tracker, sans cookie publicitaire et sans collecte serveur de preuves.
+          Vos questionnaires, preuves et dossiers restent sur votre appareil : BLACKPROOF
+          ne permet aucun téléversement de documents. Cette page distingue ces traitements locaux
+          des requêtes nécessaires au chargement du site, de leurs journaux techniques et des liens externes.
         </p>
         <div class="actions">
           <a class="button primary" href="/security">Lire la posture sécurité</a>
@@ -190,8 +190,8 @@ const isRgpdAlias = Astro.url.pathname.startsWith("/rgpd");
         <p class="eyebrow">Transparence RGPD</p>
         <h2>Finalités, bases légales, durées et destinataires.</h2>
         <p>
-          BLACKPROOF ne collecte pas les questionnaires ni les preuves par défaut. Les traitements
-          serveur identifiés concernent principalement la consultation du site et les journaux
+          BLACKPROOF ne reçoit ni les questionnaires, ni les preuves, ni les dossiers de travail. Les traitements
+          serveur décrits ici concernent la consultation du site et les journaux
           techniques nécessaires à l’exploitation et à la sécurité.
         </p>
       </div>
@@ -215,7 +215,7 @@ const isRgpdAlias = Astro.url.pathname.startsWith("/rgpd");
     <div class="container legal-panel">
       <div>
         <p class="eyebrow">Traitement local</p>
-        <h2>Vos preuves restent sous votre contrôle par défaut.</h2>
+        <h2>Vos documents restent sur votre appareil. Aucun téléversement.</h2>
       </div>
       <div class="legal-list">
         {localProcessing.map(([title, text]) => (

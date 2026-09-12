@@ -34,13 +34,36 @@ const situations = [
 
 const faqGroups = [
   {
+    id: "usages",
+    eyebrow: "Choisir son usage",
+    title: "Revues cyber et audits internes",
+    items: [
+      {
+        question: "Puis-je préparer un audit interne sans questionnaire client ?",
+        answer: "Oui. Importez votre grille de contrôle ou saisissez ses questions dans l’application. Documentez les réponses, les références de justificatifs, les réserves et les actions dans un dossier local. Vous pouvez le conserver pour votre revue interne, sans l’envoyer à un tiers.",
+      },
+      {
+        question: "BLACKPROOF réalise-t-il l’audit ou la revue cyber à ma place ?",
+        answer: "Non. Il structure la préparation documentaire et signale des incohérences à partir des informations saisies. Il n’inspecte pas vos systèmes, ne lit pas les documents de preuve référencés et ne valide pas la véracité des déclarations. L’appréciation des preuves, le périmètre et les conclusions d’audit restent humains.",
+      },
+      {
+        question: "Qui peut accéder à mes dossiers et à mes exports ?",
+        answer: "BLACKPROOF ne reçoit ni ne publie vos fichiers. Les dossiers enregistrés sont chiffrés dans votre profil de navigateur et se déverrouillent avec leur phrase secrète. Un poste compromis ou une session déverrouillée reste un risque. Les exports de transmission et le ZIP maître ne sont pas chiffrés : protégez-les sur votre appareil. Seule la sauvegarde locale complète est chiffrée. Tout partage est une action volontaire de votre part, hors de BLACKPROOF.",
+      },
+      {
+        question: "Puis-je confier mes preuves à un agent IA via BLACKPROOF ?",
+        answer: "Cette version ne fournit pas de serveur MCP et ne transmet aucun document à une IA. Un outil local en lecture seule ne garantit pas qu’un agent gardera ses résultats sur l’appareil : un modèle distant pourrait les recevoir. Ne transmettez pas de dossiers sensibles à un agent sans maîtriser ses accès, ses sorties réseau et le traitement de ses résultats.",
+      },
+    ],
+  },
+  {
     id: "retrouver-dossiers",
     eyebrow: "Revenir travailler",
     title: "Retrouver ses dossiers",
     items: [
       {
-        question: "Comment me reconnecter à BLACKPROOF ?",
-        answer: "Dans la version publique actuelle, il n’y a pas de connexion à effectuer. Avec le même navigateur et le même profil, ouvrez la page Dossiers locaux puis déverrouillez le dossier avec sa phrase secrète.",
+        question: "Comment reprendre mon travail dans BLACKPROOF ?",
+        answer: "Ouvrez Dossiers locaux avec le même navigateur et le même profil, puis déverrouillez le dossier avec sa phrase secrète. Aucun compte ni connexion à un service n’est nécessaire.",
       },
       {
         question: "Fermer l’onglet ou quitter le navigateur supprime-t-il mon travail ?",
@@ -59,7 +82,7 @@ const faqGroups = [
         answer: "Non. Les navigateurs mobiles ne sont pas pris en charge actuellement et les dossiers ne sont pas synchronisés. Utilisez Chrome ou Edge Desktop et restaurez une sauvegarde locale complète si vous changez d’appareil.",
       },
       {
-        question: "Pourquoi le nom complet du client n’apparaît-il pas avant déverrouillage ?",
+        question: "Pourquoi le titre complet du dossier n’apparaît-il pas avant déverrouillage ?",
         answer: "Le titre métier, les parties, les questions et les réponses restent chiffrés. Seul un repère local facultatif, choisi par vous et explicitement non sensible, peut être visible dans la liste avant saisie de la phrase secrète.",
       },
     ],
@@ -105,7 +128,7 @@ const faqGroups = [
         answer: "Oui. La sauvegarde locale complète est chiffrée et sa restauration exige une phrase secrète. Le fichier ZIP doit tout de même être protégé, sauvegardé et géré comme un actif sensible.",
       },
       {
-        question: "Puis-je utiliser la même phrase secrète pour tous mes clients ?",
+        question: "Puis-je utiliser la même phrase secrète pour tous mes dossiers ?",
         answer: "C’est techniquement possible mais déconseillé. Une phrase distincte par dossier réduit l’impact d’une divulgation. Utilisez un gestionnaire de mots de passe et une procédure interne de transmission ou de continuité adaptée.",
       },
     ],
@@ -136,8 +159,8 @@ const faqGroups = [
         answer: "Non. Il demande au navigateur de réduire le risque d’éviction automatique. Il ne protège pas contre un effacement manuel du profil, une panne, une perte de l’appareil ou une politique d’entreprise supprimant les données locales.",
       },
       {
-        question: "Que supprime Panic Wipe ?",
-        answer: "Panic Wipe supprime les contenus gérés localement par BLACKPROOF dans le profil courant. Il ne supprime pas les ZIP, JSON, CSV ou autres fichiers déjà téléchargés sur l’appareil.",
+        question: "Pourquoi effacer les données locales si rien n’est envoyé ?",
+        answer: "Les dossiers sauvegardés restent dans ce navigateur. L’action « Effacer les données locales » (Panic Wipe) permet de les supprimer, par exemple avant de céder un poste. Elle demande une confirmation explicite. Conservez une sauvegarde chiffrée pour pouvoir les restaurer. Elle ne supprime ni les fichiers téléchargés ni le presse-papiers, et ne garantit pas un effacement physique du disque.",
       },
       {
         question: "Dois-je tester mes sauvegardes ?",
@@ -152,7 +175,7 @@ const faqGroups = [
     items: [
       {
         question: "Mes questionnaires et preuves sont-ils envoyés à BLACKPROOF ?",
-        answer: "Non par défaut. La création, le chiffrement, l’édition et la sauvegarde des dossiers se font dans le navigateur. Une donnée métier ne quitte l’appareil que lorsque vous téléchargez ou transmettez volontairement un export.",
+        answer: "Non. Aucun questionnaire, document de preuve ou dossier n’est envoyé à BLACKPROOF. L’import, le traitement, le chiffrement, les sauvegardes et la vérification se font localement dans le navigateur. Télécharger un export enregistre un fichier sur votre appareil. Si vous décidez ensuite de le transmettre, vous le faites vous-même, hors de BLACKPROOF, par le canal de votre choix.",
       },
       {
         question: "Quels navigateurs sont pris en charge ?",
@@ -163,8 +186,8 @@ const faqGroups = [
         answer: "Non. Ne transmettez jamais une phrase secrète, un dossier client complet ou une preuve sensible pour obtenir de l’aide. Décrivez le problème avec des informations non sensibles et, si nécessaire, un exemple fictif.",
       },
       {
-        question: "BLACKPROOF proposera-t-il une synchronisation d’équipe ?",
-        answer: "Aucune synchronisation de dossiers n’est disponible aujourd’hui. Une éventuelle fonction d’équipe nécessiterait un modèle distinct, un chiffrement de bout en bout explicite, des droits d’accès et une procédure de récupération documentée. Elle ne fait pas partie de cette version.",
+        question: "Mes dossiers sont-ils synchronisés entre appareils ou collègues ?",
+        answer: "Non. BLACKPROOF ne synchronise et n’héberge aucun dossier. Pour changer d’appareil, transférez vous-même une sauvegarde chiffrée puis restaurez-la localement. Pour un destinataire, préparez une version client relue, téléchargez-la et transmettez-la séparément. Une version client ne remplace pas la sauvegarde de votre dossier de travail.",
       },
     ],
   },
@@ -172,18 +195,18 @@ const faqGroups = [
 ---
 
 <BaseLayout
-  title="FAQ client : compte, dossiers locaux et sauvegardes | BLACKPROOF"
-  description="FAQ détaillée pour retrouver, déverrouiller, sauvegarder et restaurer ses dossiers BLACKPROOF sans confondre compte, phrase secrète et stockage local."
+  title="FAQ : logiciel libre, dossiers locaux et sauvegardes | BLACKPROOF"
+  description="Utiliser BLACKPROOF sans compte : retrouver, déverrouiller, sauvegarder et restaurer ses dossiers chiffrés, sans envoi de documents au serveur."
   mainSchema="webpage"
 >
   <section class="hero faq-hero">
     <div class="container faq-hero-grid">
       <div>
-        <p class="eyebrow">FAQ client</p>
-        <h1>Retrouver ses dossiers sans confondre compte et stockage local.</h1>
+        <p class="eyebrow">Aide et FAQ</p>
+        <h1>Vos dossiers locaux, de la première ouverture à la sauvegarde.</h1>
         <p class="lead">
-          BLACKPROOF conserve les dossiers chiffrés dans votre navigateur. La version publique
-          actuelle n’a pas de login utilisateur et ne synchronise pas les dossiers clients sur un serveur.
+          BLACKPROOF est un logiciel libre sous AGPL-3.0-only, utilisable sans compte.
+          Vos dossiers sont chiffrés dans votre navigateur, sans envoi de documents ni synchronisation serveur.
         </p>
         <div class="actions">
           <a class="button primary" href="/app/cases">Voir mes dossiers locaux</a>
@@ -195,8 +218,8 @@ const faqGroups = [
       <aside class="faq-truth" aria-label="Résumé du fonctionnement actuel">
         <p>À retenir en 20 secondes</p>
         <dl>
-          <div><dt>Login actuel</dt><dd>aucun</dd></div>
-          <div><dt>Dossiers clients</dt><dd>dans ce navigateur</dd></div>
+          <div><dt>Accès</dt><dd>libre, sans compte</dd></div>
+          <div><dt>Vos dossiers</dt><dd>dans ce navigateur</dd></div>
           <div><dt>Clé d’ouverture</dt><dd>phrase secrète</dd></div>
           <div><dt>Changement d’appareil</dt><dd>ZIP chiffré requis</dd></div>
         </dl>
@@ -239,7 +262,7 @@ const faqGroups = [
           loading="lazy"
         />
         <figcaption>
-          <span>02</span>
+          <span>01</span>
           <div><strong>Dossiers locaux</strong><p>C’est le point de retour normal sur le même navigateur.</p></div>
         </figcaption>
       </figure>
@@ -253,7 +276,7 @@ const faqGroups = [
           loading="lazy"
         />
         <figcaption>
-          <span>03</span>
+          <span>02</span>
           <div><strong>Phrase secrète</strong><p>Elle chiffre le dossier et doit être conservée hors de BLACKPROOF.</p></div>
         </figcaption>
       </figure>
@@ -267,7 +290,7 @@ const faqGroups = [
           loading="lazy"
         />
         <figcaption>
-          <span>04</span>
+          <span>03</span>
           <div><strong>Sauvegarde complète</strong><p>Le ZIP chiffré permet la reprise sur un autre appareil.</p></div>
         </figcaption>
       </figure>
@@ -344,7 +367,7 @@ const faqGroups = [
       border: 1px solid var(--line-strong);
       border-radius: 8px;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(8, 11, 12, 0.96)));
       box-shadow: var(--shadow-tight);
     }
 
@@ -394,7 +417,7 @@ const faqGroups = [
       display: block;
       border-left: 3px solid var(--warning);
       padding: 0.75rem;
-      background: rgba(245, 182, 91, 0.07);
+      background: light-dark(rgba(118, 87, 44, 0.07), rgba(245, 182, 91, 0.07));
       color: var(--text);
       line-height: 1.4;
     }
@@ -530,7 +553,7 @@ const faqGroups = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.75rem;
-      background: rgba(255, 255, 255, 0.025);
+      background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
     }
 
     .index-note p {
@@ -563,12 +586,12 @@ const faqGroups = [
     .faq-list details {
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.025);
+      background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
     }
 
     .faq-list details[open] {
       border-color: var(--line-strong);
-      background: rgba(142, 229, 209, 0.035);
+      background: light-dark(rgba(68, 110, 100, 0.035), rgba(142, 229, 209, 0.035));
     }
 
     .faq-list summary {
@@ -617,7 +640,7 @@ const faqGroups = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.65rem;
-      background: rgba(255, 255, 255, 0.025);
+      background: light-dark(rgba(24, 66, 46, 0.025), rgba(255, 255, 255, 0.025));
     }
 
     .checklist-panel li > span {

@@ -4,7 +4,7 @@ Version: blackproof-public-api-v0.1.0-alpha
 
 BLACKPROOF exposes a public, read-only API for method, schema and evidence contracts.
 
-This API is intentionally not an upload surface for sensitive questionnaires or evidence.
+This static API does not accept any questionnaire, evidence document or working dossier.
 
 ## Public endpoints
 
@@ -26,9 +26,9 @@ This API is intentionally not an upload surface for sensitive questionnaires or 
 
 - No document upload.
 - Public endpoints are read-only.
-- The static API does not accept sensitive evidence.
+- No server-side dossier processing or document ingestion.
 - ProofPack verification is exposed as a contract and browser/local workflow.
-- A future server-side verification endpoint must be explicit, bounded and non-persistent.
+- All dossier verification runs on the user's device; these endpoints only distribute public contracts.
 
 ## Product value
 

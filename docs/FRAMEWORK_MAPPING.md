@@ -43,7 +43,7 @@ A requirement is only useful if it points to evidence and to a proof debt when e
 
 BLACKPROOF therefore maps requirements to evidence templates, not to abstract compliance claims.
 
-## Commercial language
+## Product language
 
 Say:
 

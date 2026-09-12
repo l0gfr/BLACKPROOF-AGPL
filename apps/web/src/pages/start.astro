@@ -26,7 +26,7 @@ const primaryPaths = [
     kpi: "03 / livrer",
     icon: "export",
     tone: "gold",
-    title: "Préparer la version client",
+    title: "Préparer la version à relire",
     text: "Choisissez les réponses prêtes, les réserves à afficher et les justificatifs qui peuvent être partagés.",
     href: "/demo#delivery-demo",
     cta: "Voir"
@@ -83,12 +83,12 @@ const workflow = [
     step: "Export",
     route: "/proofpack",
     input: "revue et confirmation",
-    output: "ZIP destiné au client"
+    output: "ZIP pour le destinataire choisi"
   },
   {
     step: "Vérification",
     route: "/verify",
-    input: "dossier interne ou version client",
+    input: "dossier interne ou export relu",
     output: "vérification locale des fichiers"
   }
 ].filter((item) => knowledgeVaultEnabled || item.route !== "/app/knowledge");
@@ -102,8 +102,8 @@ const recommendedPath = [
 
 const firstRunChoices = [
   {
-    title: "J’ai un questionnaire client",
-    text: "Le parcours normal : import local, création du dossier, corrections, export.",
+    title: "J’ai un questionnaire ou une grille d’audit",
+    text: "Questionnaire fournisseur, revue cyber ou audit interne : le même parcours local.",
     href: "/questionnaire-import",
     cta: "Importer maintenant",
     tone: "primary"
@@ -134,19 +134,19 @@ const proofPackPreview = [
 const operatingChecks = [
   ["Avant import", "Retirez secrets, tokens, logs bruts et données personnelles inutiles."],
   ["Avant export", "Bloquez les réponses non exportables et explicitez les réserves."],
-  ["Avant envoi", "Vérifiez la version destinée au client et gardez une copie exacte des fichiers transmis."]
+  ["Avant envoi", "Vérifiez la version destinée au tiers et gardez une copie exacte des fichiers transmis. L’envoi reste facultatif et extérieur à BLACKPROOF."]
 ];
 
 const decisionBlocks = [
   ["RSSI / DPO", "Répondre vite sans exposer plus que nécessaire.", "/use-cases"],
   ["Fournisseur B2B", "Transformer des questionnaires répétitifs en actifs réutilisables.", "/use-cases"],
-  ["Cabinet cyber", "Livrer une revue structurée, contrôlable et actionnable.", "/use-cases"]
+  ["Audit interne / Cabinet cyber", "Documenter une revue cyber ou un audit interne et ses points à corriger.", "/use-cases"]
 ];
 ---
 
 <BaseLayout
   title="Démarrer - BLACKPROOF"
-  description="Importez un questionnaire cyber client, préparez les réponses et exportez un dossier vérifiable dans BLACKPROOF."
+  description="Démarrez une revue cyber, un audit interne ou un questionnaire fournisseur : import local, réponses, justificatifs et export à relire."
 >
   <section class="hero start-hero">
     <div class="container start-hero-grid">
@@ -154,9 +154,10 @@ const decisionBlocks = [
         <p class="eyebrow">Premier dossier</p>
         <h1>Importez le questionnaire, préparez les réponses, contrôlez les fichiers.</h1>
         <p class="lead">
-          Le point de départ est simple : prenez le questionnaire client,
+          Le point de départ est simple : prenez un questionnaire ou votre grille d’audit interne,
           transformez-le en dossier enregistré dans votre navigateur, complétez les réponses
-          et les justificatifs, puis exportez la version destinée au client.
+          et les références de justificatifs. Conservez-le pour votre revue cyber ou préparez
+          une version destinée à un tiers, selon votre besoin.
         </p>
         <div class="actions">
           <a class="button primary" href="/questionnaire-import">Commencer par l’import</a>
@@ -191,7 +192,7 @@ const decisionBlocks = [
         <h2>Commencez par le questionnaire, la démonstration ou un dossier exemple.</h2>
         <p>
           BLACKPROOF part d’un questionnaire réel. Vous préparez les réponses, associez les
-          justificatifs et décidez des informations qui peuvent être transmises au client.
+          justificatifs et décidez des informations qui peuvent être transmises au destinataire choisi.
         </p>
       </div>
 
@@ -331,7 +332,7 @@ const decisionBlocks = [
       border-radius: var(--radius-lg);
       padding: 1rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(8, 11, 12, 0.96)));
       box-shadow: var(--shadow-tight);
     }
 
@@ -364,7 +365,7 @@ const decisionBlocks = [
       border: 1px solid var(--line);
       border-radius: 13px;
       padding: 0.75rem;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
     }
 
     .proofcard-grid span,
@@ -419,8 +420,8 @@ const decisionBlocks = [
       border-radius: 8px;
       padding: 1.2rem;
       background:
-        linear-gradient(135deg, rgba(121, 216, 200, 0.10), rgba(128, 200, 154, 0.055)),
-        rgba(255, 255, 255, 0.035);
+        linear-gradient(135deg, light-dark(rgba(58, 104, 96, 0.1), rgba(121, 216, 200, 0.10)), light-dark(rgba(61, 96, 74, 0.055), rgba(128, 200, 154, 0.055))),
+        light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       box-shadow: var(--shadow-tight);
     }
 
@@ -443,20 +444,20 @@ const decisionBlocks = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 1rem;
-      background: rgba(8, 11, 12, 0.52);
+      background: light-dark(rgba(248, 250, 246, 0.52), rgba(8, 11, 12, 0.52));
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
 
     .choice-card:hover {
       border-color: var(--line-strong);
-      background: rgba(255, 255, 255, 0.055);
+      background: light-dark(rgba(24, 66, 46, 0.055), rgba(255, 255, 255, 0.055));
       transform: translateY(-1px);
     }
 
     .choice-card.primary {
-      border-color: rgba(121, 216, 200, 0.48);
+      border-color: light-dark(rgba(58, 104, 96, 0.48), rgba(121, 216, 200, 0.48));
       background:
-        linear-gradient(180deg, rgba(121, 216, 200, 0.12), rgba(8, 11, 12, 0.62));
+        linear-gradient(180deg, light-dark(rgba(58, 104, 96, 0.12), rgba(121, 216, 200, 0.12)), light-dark(rgba(248, 250, 246, 0.62), rgba(8, 11, 12, 0.62)));
     }
 
     .choice-card strong,
@@ -509,7 +510,7 @@ const decisionBlocks = [
       border: 1px solid var(--line);
       border-radius: 8px;
       overflow: hidden;
-      background: rgba(8, 11, 12, 0.42);
+      background: light-dark(rgba(248, 250, 246, 0.42), rgba(8, 11, 12, 0.42));
     }
 
     .guided-step {
@@ -563,7 +564,7 @@ const decisionBlocks = [
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
     }
 
     .example-panel p {
@@ -591,7 +592,7 @@ const decisionBlocks = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
     }
 
     .guardrail-list {
@@ -604,7 +605,7 @@ const decisionBlocks = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.45);
+      background: light-dark(rgba(248, 250, 246, 0.45), rgba(8, 11, 12, 0.45));
     }
 
     .guardrail-list strong,
@@ -623,16 +624,17 @@ const decisionBlocks = [
     }
 
     .start-card {
-      display: flex;
-      min-height: 275px;
-      flex-direction: column;
-      justify-content: space-between;
+      display: grid;
+      grid-row: span 4;
+      grid-template-rows: subgrid;
+      gap: 1rem;
+      min-width: 0;
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
-      padding: 1rem;
+      padding: 1.2rem;
       background:
-        radial-gradient(circle at bottom right, rgba(121, 216, 200, 0.10), transparent 14rem),
-        linear-gradient(180deg, rgba(22, 29, 27, 0.95), rgba(13, 17, 18, 0.95));
+        radial-gradient(circle at bottom right, light-dark(rgba(58, 104, 96, 0.1), rgba(121, 216, 200, 0.10)), transparent 14rem),
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.95), rgba(22, 29, 27, 0.95)), light-dark(rgba(248, 250, 246, 0.95), rgba(13, 17, 18, 0.95)));
       box-shadow: var(--shadow-tight);
     }
 
@@ -649,17 +651,21 @@ const decisionBlocks = [
 
     .start-card h2 {
       font-size: clamp(1.15rem, 2vw, 1.55rem);
-      margin-bottom: 0.5rem;
+      margin: 0;
+      line-height: 1.25;
+      text-wrap: balance;
     }
 
     .start-card p {
+      margin: 0;
       color: var(--muted);
       line-height: 1.55;
     }
 
     .start-card .button {
       width: fit-content;
-      margin-top: 1rem;
+      align-self: end;
+      margin-top: 0.4rem;
     }
 
     .workflow-list {
@@ -676,13 +682,13 @@ const decisionBlocks = [
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
       padding: 0.8rem 0.95rem;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
 
     .workflow-item:hover {
       border-color: var(--line-strong);
-      background: rgba(255, 255, 255, 0.055);
+      background: light-dark(rgba(24, 66, 46, 0.055), rgba(255, 255, 255, 0.055));
       transform: translateY(-1px);
     }
 

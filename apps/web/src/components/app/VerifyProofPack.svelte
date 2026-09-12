@@ -735,7 +735,7 @@
 <style>
   .verify-shell {
     padding: clamp(3.8rem, 8vw, 6.5rem) 0 7rem;
-    background: radial-gradient(circle at 8% 5%, rgba(129, 218, 203, 0.075), transparent 30rem);
+    background: radial-gradient(circle at 8% 5%, light-dark(rgba(62, 105, 97, 0.075), rgba(129, 218, 203, 0.075)), transparent 30rem);
   }
 
   .verify-panel {
@@ -780,7 +780,7 @@
     border: 0;
     border-radius: 0;
     padding: 1rem;
-    background: rgba(15, 21, 19, 0.96);
+    background: light-dark(rgba(248, 250, 246, 0.96), rgba(15, 21, 19, 0.96));
   }
 
   .verification-map span {
@@ -853,7 +853,7 @@
   }
 
   .error-box {
-    border: 1px solid rgba(255, 95, 87, 0.45);
+    border: 1px solid light-dark(rgba(122, 46, 42, 0.45), rgba(255, 95, 87, 0.45));
     border-radius: 16px;
     padding: 1rem;
     margin-top: 1rem;
@@ -866,15 +866,15 @@
     border-radius: 20px;
     padding: 1.4rem;
     margin-top: 2rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .verification-status.valid {
-    border-color: rgba(110, 255, 143, 0.45);
+    border-color: light-dark(rgba(53, 122, 69, 0.45), rgba(110, 255, 143, 0.45));
   }
 
   .verification-status.invalid {
-    border-color: rgba(255, 95, 87, 0.45);
+    border-color: light-dark(rgba(122, 46, 42, 0.45), rgba(255, 95, 87, 0.45));
   }
 
   .verification-status h2,
@@ -897,7 +897,7 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .status-grid span,
@@ -935,19 +935,19 @@
     border: 1px solid var(--line);
     border-radius: 18px;
     padding: 1.15rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
   }
 
   .finding.error {
-    border-color: rgba(255, 95, 87, 0.45);
+    border-color: light-dark(rgba(122, 46, 42, 0.45), rgba(255, 95, 87, 0.45));
   }
 
   .finding.warning {
-    border-color: rgba(255, 204, 102, 0.45);
+    border-color: light-dark(rgba(122, 98, 49, 0.45), rgba(255, 204, 102, 0.45));
   }
 
   .finding.info {
-    border-color: rgba(110, 255, 143, 0.45);
+    border-color: light-dark(rgba(53, 122, 69, 0.45), rgba(110, 255, 143, 0.45));
   }
 
   .finding div {

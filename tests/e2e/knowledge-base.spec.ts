@@ -156,7 +156,7 @@ test("personal knowledge vault promotes, matches, applies as draft and exports p
   const casesPage = await page.context().newPage();
   await casesPage.goto("/app/cases");
   await expect(casesPage.locator('[data-blackproof-ready="true"]')).toBeVisible();
-  await completePromptSequence(casesPage, () => casesPage.getByRole("button", { name: "Panic Wipe", exact: true }).click(), [
+  await completePromptSequence(casesPage, () => casesPage.getByRole("button", { name: "Effacer les données locales", exact: true }).click(), [
     { message: /Tapez EFFACER/, answer: "EFFACER" },
   ]);
   await expect(page.getByText("Panic Wipe détecté : le coffre déverrouillé et la phrase secrète ont été effacés de cette page.")).toBeVisible();

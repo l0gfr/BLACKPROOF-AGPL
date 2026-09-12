@@ -4,6 +4,24 @@ import CardIcon from "../components/ui/CardIcon.astro";
 
 const personas = [
   {
+    role: "Audit interne / Contrôle interne",
+    icon: "analyze",
+    tone: "gold",
+    title: "Préparer un dossier d’audit interne documenté.",
+    pain: "La grille de contrôle, les réponses, les références et les réserves sont dispersées. Il faut distinguer les éléments documentés des points encore déclaratifs.",
+    outcome: "Un dossier local par périmètre d’audit, avec réponses relues, justificatifs attendus et actions à suivre. Les conclusions d’audit restent humaines.",
+    href: "/questionnaire-import"
+  },
+  {
+    role: "Revue cyber / Équipe sécurité",
+    icon: "verify",
+    tone: "teal",
+    title: "Organiser une revue de sécurité périodique.",
+    pain: "Accès, sauvegardes, incidents : les déclarations doivent être confrontées aux justificatifs, et les réserves conservées d’une revue à la suivante.",
+    outcome: "Une grille structurée en local, des statuts explicites et un dossier réouvrable pour préparer la prochaine revue, sans plateforme de collecte.",
+    href: "/app"
+  },
+  {
     role: "RSSI / DPO",
     icon: "shield",
     tone: "teal",
@@ -42,6 +60,8 @@ const personas = [
 ] as const;
 
 const situations = [
+  ["Audit interne", "Importer votre grille de contrôle, qualifier les références de justificatifs et consigner les réserves dans un dossier de travail local."],
+  ["Revue cyber périodique", "Reprendre les réponses d’un dossier, documenter les changements et préparer une nouvelle version à relire."],
   ["Questionnaire avant signature", "Préparer une réponse documentée avant une vente, un renouvellement ou une revue annuelle."],
   ["Preuves sensibles", "Identifier ce qui peut être partagé, expurgé, résumé ou conservé en interne."],
   ["Réponse fournisseur récurrente", "Transformer une réponse ponctuelle en base documentaire réutilisable."],
@@ -58,16 +78,17 @@ const outputs = [
 
 <BaseLayout
   title="Cas d’usage - BLACKPROOF"
-  description="Cas d’usage BLACKPROOF pour les RSSI, DPO, fournisseurs SaaS B2B, cabinets cyber et équipes achats."
+  description="Revues cyber, audits internes et questionnaires fournisseurs : préparez un dossier documenté dans votre navigateur, sans téléversement."
 >
   <section class="hero usecase-hero">
     <div class="container split">
       <div>
         <p class="eyebrow">Cas d’usage</p>
-        <h1>Préparer une réponse cyber claire pour un client, un auditeur ou un assureur.</h1>
+        <h1>Revues cyber, audits internes, questionnaires fournisseurs.</h1>
         <p class="lead">
-          BLACKPROOF rassemble les réponses, justificatifs, réserves et actions avant la transmission
-          d’un questionnaire à un client, un auditeur, un assureur, une direction ou une équipe achats.
+          BLACKPROOF structure les réponses, références de justificatifs, réserves et actions
+          pour une revue interne ou une réponse à un tiers. Importez votre grille ou créez-la
+          directement en texte. Tout le traitement reste sur votre appareil.
         </p>
         <div class="actions">
           <a class="button primary" href="/questionnaire-import">Importer un questionnaire</a>
@@ -107,7 +128,7 @@ const outputs = [
     <div class="container situation-panel">
       <div>
         <p class="eyebrow">Situations fréquentes</p>
-        <h2>BLACKPROOF intervient avant l’envoi au destinataire.</h2>
+        <h2>Un dossier utile à la revue, même sans envoi à un tiers.</h2>
       </div>
       <div class="situation-list">
         {situations.map(([title, text]) => (
@@ -141,8 +162,9 @@ const outputs = [
   <section class="section">
     <div class="container">
       <div class="notice">
-        BLACKPROOF est utile avant l’envoi : au moment où l’on peut encore retirer un secret,
-        expliciter une réserve ou renforcer une preuve faible.
+        BLACKPROOF aide à préparer et documenter une revue. Il n’inspecte pas les systèmes,
+        ne vérifie pas la véracité des documents sources et ne remplace ni le jugement d’un
+        auditeur, ni une certification, ni un outil de collaboration centralisé.
       </div>
     </div>
   </section>
@@ -163,14 +185,14 @@ const outputs = [
       border-radius: 8px;
       padding: 1rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.95), rgba(13, 17, 18, 0.95));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.95), rgba(22, 29, 27, 0.95)), light-dark(rgba(248, 250, 246, 0.95), rgba(13, 17, 18, 0.95)));
       box-shadow: var(--shadow-tight);
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
 
     .usecase-card:hover {
       border-color: var(--line-strong);
-      background: rgba(255, 255, 255, 0.055);
+      background: light-dark(rgba(24, 66, 46, 0.055), rgba(255, 255, 255, 0.055));
       transform: translateY(-1px);
     }
 
@@ -219,7 +241,7 @@ const outputs = [
       border: 1px solid var(--line-strong);
       border-radius: 8px;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
     }
 
     .output-panel p {
@@ -237,7 +259,7 @@ const outputs = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .situation-list strong,

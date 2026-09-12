@@ -131,7 +131,7 @@ const endpoints = [
     method: "GET",
     resource: "delivery-status-schema-v1",
     stability: "stable",
-    description: "JSON Schema du statut courant retourné par le registre public sans compte.",
+    description: "Schéma historique conservé pour compatibilité. Le registre public est retiré ; aucun statut courant en ligne n’est disponible.",
   },
   {
     path: "/questionnaire-import.json",
@@ -233,7 +233,7 @@ export function GET() {
       version: BLACKPROOF_PUBLIC_API_VERSION,
       baseUrl: "https://blackproof.fr",
       status: "alpha",
-      positioning: "Contrats publics en lecture seule pour registres de préparation cyber. Les questionnaires et preuves sensibles restent locaux par défaut.",
+      positioning: "Contrats publics en lecture seule pour registres de préparation cyber. Questionnaires, preuves et dossiers sont traités uniquement sur l’appareil, sans téléversement.",
       endpoints,
       humanPages,
       publicArtifacts,

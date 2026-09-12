@@ -64,7 +64,7 @@ export function GET() {
         softwareLicense: SOFTWARE_LICENSE,
         sourceCode: SOURCE_CODE_URL,
         httpsRequired: true,
-        noUploadByDefault: true,
+        noDocumentUpload: true,
         noTrackers: true,
         noCdn: true,
         noGoogleFonts: true,

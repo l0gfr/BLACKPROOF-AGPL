@@ -1,0 +1,66 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:04.767
+BLACKPROOF · logiciel libre sous AGPL
+Revues cyber, audits internes et questionnaires. Un parcours local, avec des données fictives.
+
+2
+00:00:04.767 --> 00:00:09.395
+01 · Sélectionner le questionnaire sur l’appareil
+L’import lit le fichier dans le navigateur. Aucun téléversement vers BLACKPROOF.
+
+3
+00:00:09.395 --> 00:00:13.970
+Relire les questions extraites
+Ce CSV de démonstration contient dix questions. Le document source reste local.
+
+4
+00:00:13.970 --> 00:00:18.752
+02 · Protéger le dossier par une phrase secrète
+Elle chiffre le dossier dans ce navigateur. BLACKPROOF ne peut pas la récupérer.
+
+5
+00:00:18.752 --> 00:00:25.322
+03 · Compléter les réponses, sans automatiser le jugement
+Une réponse prête ne prouve pas à elle seule la réalité des mesures déclarées.
+
+6
+00:00:25.322 --> 00:00:30.882
+Une référence, pas un document envoyé
+Le nom, le périmètre et la référence destinée au client sont saisis localement.
+
+7
+00:00:30.882 --> 00:00:37.617
+04 · Relire le contenu exact destiné au client
+Une seule réponse est sélectionnée ici. Les neuf autres restent à travailler.
+
+8
+00:00:37.617 --> 00:00:43.657
+Télécharger n’est pas transmettre
+Le ZIP est enregistré sur cet appareil. Vous choisirez vous-même comment l’envoyer, hors de BLACKPROOF.
+
+9
+00:00:43.657 --> 00:00:50.009
+05 · Conserver une sauvegarde chiffrée du travail
+La sauvegarde complète et sa phrase secrète permettent de restaurer le dossier. Le ZIP client ne les remplace pas.
+
+10
+00:00:50.009 --> 00:00:56.579
+06 · Vérifier le ZIP client qui vient d’être exporté
+La lecture du ZIP et le calcul des empreintes se font sur l’appareil, sans envoyer les fichiers.
+
+11
+00:00:56.579 --> 00:01:03.197
+Intégrité vérifiée, pas certification
+Ces contrôles ne valident ni la véracité des réponses, ni leur conformité, ni leur statut actuel en ligne.
+
+12
+00:01:03.197 --> 00:01:08.006
+Reprendre le travail dans le même navigateur
+Le dossier enregistré est local et chiffré. Aucun compte ni synchronisation serveur.
+
+13
+00:01:08.006 --> 00:01:14.009
+Vos dossiers restent sur votre appareil
+Sauvegardez régulièrement. Le code source et la licence AGPL sont accessibles depuis « Logiciel libre ».

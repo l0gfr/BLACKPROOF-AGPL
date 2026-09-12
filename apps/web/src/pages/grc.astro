@@ -18,8 +18,8 @@ const categoryRows = [
   },
   {
     category: "BLACKPROOF",
-    job: "Transformer un questionnaire cyber en dossier de travail et en version client vérifiable.",
-    buyer: "Fournisseur B2B, cabinet cyber, RSSI ou équipe achats chargée d’évaluer un fournisseur.",
+    job: "Préparer un dossier local pour une revue cyber, un audit interne ou un questionnaire fournisseur.",
+    buyer: "Équipe sécurité, audit interne, fournisseur B2B, cabinet cyber ou équipe achats.",
     output: "Réponse fournisseur, registre des justificatifs, points à corriger, plan d’actions, synthèse et empreinte vérifiable.",
     blackproof: "BLACKPROOF prépare les fichiers à transmettre sans envoyer vos documents sensibles vers un serveur."
   }
@@ -69,7 +69,7 @@ const productSteps = [
 
 <BaseLayout
   title="BLACKPROOF n'est pas un GRC"
-  description="Un GRC pilote un programme de conformité. BLACKPROOF prépare les réponses et fichiers à transmettre pour un questionnaire cyber client."
+  description="Un GRC pilote un programme de conformité. BLACKPROOF prépare les dossiers de revues cyber, d’audits internes et de questionnaires fournisseurs, en local."
 >
   <section class="hero grc-hero">
     <div class="container grc-hero-grid">
@@ -78,8 +78,9 @@ const productSteps = [
         <h1>Un GRC pilote la conformité. BLACKPROOF prépare le dossier à transmettre.</h1>
         <p class="lead">
           BLACKPROOF ne gère pas l’ensemble du programme de conformité d’une entreprise.
-          Il aide à répondre à un questionnaire, recenser les justificatifs, protéger les informations
-          sensibles et produire les fichiers destinés au client.
+          Il aide à documenter une revue cyber, un audit interne ou une réponse fournisseur :
+          réponses, références de justificatifs, réserves et actions. Le dossier reste local,
+          sans collaboration centralisée ni validation automatique des conclusions.
         </p>
         <div class="actions">
           <a class="button primary" href="/proofpack-example">Voir un dossier livré</a>
@@ -222,14 +223,14 @@ const productSteps = [
     .pilot-flow {
       border: 1px solid var(--line-strong);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       box-shadow: var(--shadow-tight);
     }
 
     .position-card {
       padding: 1rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(8, 11, 12, 0.96)));
     }
 
     .position-card span,
@@ -289,11 +290,11 @@ const productSteps = [
       font-family: var(--font-display);
       font-size: 0.68rem;
       text-transform: uppercase;
-      background: rgba(121, 216, 200, 0.065);
+      background: light-dark(rgba(58, 104, 96, 0.065), rgba(121, 216, 200, 0.065));
     }
 
     .category-row.highlight {
-      background: rgba(121, 216, 200, 0.055);
+      background: light-dark(rgba(58, 104, 96, 0.055), rgba(121, 216, 200, 0.055));
     }
 
     .category-row strong {
@@ -330,7 +331,7 @@ const productSteps = [
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .proof-dossier-grid strong,

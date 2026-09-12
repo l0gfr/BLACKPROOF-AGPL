@@ -13,7 +13,7 @@
 
   export let onCaseCreated: ((caseId: string, passphrase: string) => void) | undefined = undefined;
 
-  let caseTitle = "Questionnaire cyber fournisseur";
+  let caseTitle = "Revue cyber";
   let companyName = "";
   let clientName = "";
   let localLabel = "";
@@ -181,7 +181,7 @@
         <span>2</span>
         <div>
           <h2 id="case-context-title">Nommer le dossier</h2>
-          <p>Le nom sert à le retrouver. L’entreprise et le client restent optionnels.</p>
+          <p>Le nom sert à le retrouver. L’entreprise et le destinataire restent optionnels, y compris pour un audit interne.</p>
         </div>
       </div>
       <div class="form-grid">
@@ -202,7 +202,7 @@
         </label>
 
         <label>
-          <span>Client demandeur</span>
+          <span>Destinataire ou équipe interne</span>
           <input bind:value={clientName} maxlength={SECURITY_LIMITS.MAX_METADATA_FIELD_CHARS} placeholder="Optionnel" disabled={!isHydrated || isCreatingCase} />
         </label>
       </div>
@@ -259,8 +259,8 @@
     overflow: hidden;
     padding: clamp(3.8rem, 8vw, 6.8rem) 0 7rem;
     background:
-      radial-gradient(circle at 9% 3%, rgba(129, 218, 203, 0.08), transparent 30rem),
-      radial-gradient(circle at 96% 28%, rgba(136, 205, 160, 0.045), transparent 26rem);
+      radial-gradient(circle at 9% 3%, light-dark(rgba(62, 105, 97, 0.08), rgba(129, 218, 203, 0.08)), transparent 30rem),
+      radial-gradient(circle at 96% 28%, light-dark(rgba(65, 98, 77, 0.045), rgba(136, 205, 160, 0.045)), transparent 26rem);
   }
 
   .app-panel {
@@ -294,7 +294,7 @@
   .intro-copy .lead {
     max-width: 700px;
     margin: 0;
-    color: #b1bbb4;
+    color: light-dark(var(--muted), #b1bbb4);
     line-height: 1.72;
   }
 
@@ -360,7 +360,7 @@
     padding: 0.95rem 1.1rem;
     margin: 1.3rem 0 2rem;
     color: var(--muted);
-    background: linear-gradient(90deg, rgba(129, 218, 203, 0.07), rgba(129, 218, 203, 0.018));
+    background: linear-gradient(90deg, light-dark(rgba(62, 105, 97, 0.07), rgba(129, 218, 203, 0.07)), light-dark(rgba(62, 105, 97, 0.018), rgba(129, 218, 203, 0.018)));
   }
 
   .security-note strong {
@@ -386,10 +386,10 @@
     overflow: hidden;
     margin-top: 1.15rem;
     scroll-margin-top: 10rem;
-    border: 1px solid rgba(196, 218, 207, 0.11);
+    border: 1px solid light-dark(rgba(24, 66, 46, 0.11), rgba(196, 218, 207, 0.11));
     border-radius: 22px;
     padding: clamp(1.25rem, 3vw, 1.75rem);
-    background: linear-gradient(145deg, rgba(21, 28, 26, 0.82), rgba(12, 17, 16, 0.76));
+    background: linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.82), rgba(21, 28, 26, 0.82)), light-dark(rgba(248, 250, 246, 0.76), rgba(12, 17, 16, 0.76)));
     box-shadow: 0 18px 55px rgba(0, 0, 0, 0.12);
   }
 
@@ -466,7 +466,7 @@
     min-height: 3.25rem;
     border-radius: 12px;
     padding: 0.9rem 1rem;
-    background: rgba(7, 11, 11, 0.72);
+    background: light-dark(rgba(248, 250, 246, 0.72), rgba(7, 11, 11, 0.72));
     color: var(--text);
     font: inherit;
   }

@@ -1,25 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CardIcon from "../components/ui/CardIcon.astro";
-import ShareLinks from "../components/ShareLinks.astro";
 import homeVideoScriptUrl from "../scripts/home-video.js?url";
 
-const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
 ---
 
 <BaseLayout
-  title="BLACKPROOF - Répondre aux questionnaires cyber clients"
-  description="Importez un questionnaire cyber client, préparez les réponses et exportez un dossier prêt à transmettre. Vos contenus restent dans votre navigateur."
+  title="BLACKPROOF - Revues cyber et audits internes, en local"
+  description="Préparez vos revues cyber, audits internes et questionnaires fournisseurs : réponses, justificatifs, réserves et actions. Logiciel libre AGPL, sans téléversement."
 >
   <section class="hero home-hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">Questionnaires cyber clients</p>
-        <h1>Préparez des réponses solides sans envoyer <span class="proof-word">vos preuves sensibles.</span></h1>
+        <p class="eyebrow">Logiciel libre · traitement local</p>
+        <h1>Vos revues cyber et audits internes, <span class="proof-word">preuves à l’appui.</span></h1>
         <p class="lead">
-          Importez le questionnaire, rédigez les réponses, rattachez les justificatifs et signalez
-          les informations à ne pas partager. BLACKPROOF conserve le dossier dans votre navigateur
-          et exporte une version relue pour votre client.
+          Préparez une revue de sécurité, un audit interne ou une réponse à un questionnaire fournisseur.
+          Structurez les réponses, les références de justificatifs, les réserves et les actions
+          dans votre navigateur. Aucun document n’est téléversé vers BLACKPROOF.
         </p>
         <div class="actions">
           <a class="button primary" href="/demo">Voir la démonstration</a>
@@ -41,7 +39,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
 
       <aside class="proof-visual" aria-label="Aperçu d’un dossier questionnaire dans BLACKPROOF">
         <div class="visual-topline">
-          <span>Questionnaire client</span>
+          <span>Revue cyber · exemple fictif</span>
           <strong>BP-2026-0710</strong>
         </div>
 
@@ -111,24 +109,29 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
     </div>
   </section>
 
-  <div class="container home-share">
-    <ShareLinks
-      url={homeUrl}
-      title="BLACKPROOF — Répondre aux questionnaires cyber clients"
-      heading="Partager BLACKPROOF"
-    />
-  </div>
-
   <section class="section demo-video-section" aria-labelledby="demo-video-title">
     <div class="container video-showcase">
       <div class="video-copy">
         <p class="eyebrow">Démonstration guidée</p>
         <h2 id="demo-video-title">Voir le parcours BLACKPROOF en situation.</h2>
         <p class="lead">
-          De l'import du questionnaire à son analyse locale, cette démonstration sous-titrée
-          montre le produit en action sans masquer les étapes de contrôle.
+          Cet exemple fictif de questionnaire fournisseur montre le parcours local également
+          utilisable pour vos revues cyber et audits internes : préparer, relire, exporter et
+          vérifier. Aucun document n’est envoyé à BLACKPROOF.
         </p>
-        <p class="video-note">Cliquez sur l'aperçu pour lancer la vidéo en plein écran.</p>
+        <p class="video-note">Vidéo muette et légendée. Cliquez sur l’aperçu pour la regarder en grand.</p>
+        <details class="video-transcript">
+          <summary>Lire le parcours sans vidéo</summary>
+          <ol>
+            <li>Ouvrir le logiciel libre sans compte et sélectionner le CSV fictif sur son appareil.</li>
+            <li>Relire les dix questions, puis créer le dossier chiffré avec une phrase secrète.</li>
+            <li>Rédiger une réponse et documenter une référence de preuve, sans envoyer le document.</li>
+            <li>Relire le contenu exact sélectionné et télécharger une version client partielle : une réponse, les neuf autres restant à travailler.</li>
+            <li>Télécharger aussi une sauvegarde chiffrée du dossier de travail. Le ZIP client ne remplace pas cette sauvegarde.</li>
+            <li>Vérifier localement le ZIP client qui vient d’être exporté, puis rouvrir le dossier avec sa phrase secrète.</li>
+          </ol>
+          <p>Les contrôles d’intégrité ne constituent ni une certification, ni une validation de la véracité des déclarations. Vous transmettez les exports vous-même, hors de BLACKPROOF.</p>
+        </details>
       </div>
 
       <button
@@ -141,15 +144,15 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       >
         <span class="video-frame">
           <img
-            src="/media/blackproof-parcours-utilisateur-poster.jpg"
+            src="/media/blackproof-parcours-local-poster.jpg"
             width="1400"
-            height="787"
+            height="900"
             loading="lazy"
             decoding="async"
-            alt="Aperçu de l'analyse locale d'un questionnaire dans BLACKPROOF"
+            alt="Démonstration de BLACKPROOF sous AGPL : dossiers locaux, sans compte, données fictives"
           />
           <span class="video-scrim" aria-hidden="true"></span>
-          <span class="video-badge" aria-hidden="true">Vidéo sous-titrée</span>
+          <span class="video-badge" aria-hidden="true">Parcours local · AGPL</span>
           <span class="video-play" aria-hidden="true"><span></span></span>
         </span>
         <span class="video-launch-copy">
@@ -174,13 +177,14 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       <video
         controls
         preload="none"
-        poster="/media/blackproof-parcours-utilisateur-poster.jpg"
+        poster="/media/blackproof-parcours-local-poster.jpg"
         data-video-player
       >
-        <source src="/media/blackproof-parcours-utilisateur.mp4" type="video/mp4" />
+        <source src="/media/blackproof-parcours-local.webm" type="video/webm" />
+        <track kind="captions" src="/media/blackproof-parcours-local.fr.vtt" srclang="fr" label="Français" />
         <p>
           Votre navigateur ne peut pas lire cette vidéo.
-          <a href="/media/blackproof-parcours-utilisateur.mp4">Télécharger la démonstration</a>.
+          <a href="/media/blackproof-parcours-local.webm">Télécharger la démonstration</a>.
         </p>
       </video>
     </div>
@@ -189,31 +193,31 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
   <section class="section home-section">
     <div class="container section-header">
       <p class="eyebrow">Quand l’utiliser</p>
-        <h2>Quand une réponse client engage votre crédibilité et vos données sensibles.</h2>
+      <h2>Trois usages, une même exigence de preuve.</h2>
       <p class="lead">
         BLACKPROOF prépare une sortie concrète : des réponses relues, les justificatifs associés,
-        les réserves visibles et les actions restantes avant transmission au client.
+        les réserves visibles et les actions restantes avant votre revue humaine.
       </p>
     </div>
 
     <div class="container evidence-grid">
       <article class="evidence-card">
         <CardIcon name="repeat" tone="blue" />
-        <p class="kpi">01 / situation</p>
-        <h3>Questionnaires répétitifs</h3>
-        <p>Les réponses reviennent, les preuves changent, les réserves se perdent et la revue devient un risque commercial.</p>
+        <p class="kpi">01 / répondre</p>
+        <h3>Questionnaires fournisseurs</h3>
+        <p>Répondez à un client, un assureur ou une équipe achats avec des déclarations relues et des références de justificatifs sélectionnées.</p>
       </article>
       <article class="evidence-card highlighted">
         <CardIcon name="package" tone="teal" />
-        <p class="kpi">02 / résultat</p>
-        <h3>Dossier exportable</h3>
-        <p>Un questionnaire réel, un dossier enregistré dans votre navigateur et des fichiers prêts à relire avant envoi.</p>
+        <p class="kpi">02 / examiner</p>
+        <h3>Revues cyber</h3>
+        <p>Faites le point sur les accès, les sauvegardes ou la gestion des incidents. Distinguez les déclarations, les preuves attendues et les points à corriger.</p>
       </article>
       <article class="evidence-card">
         <CardIcon name="route" tone="gold" />
-        <p class="kpi">03 / suite</p>
-        <h3>Travail réutilisable</h3>
-        <p>Le dossier peut être rouvert et servir de base au prochain questionnaire client.</p>
+        <p class="kpi">03 / documenter</p>
+        <h3>Audits internes</h3>
+        <p>Partez de votre grille de contrôle, documentez les réponses et les réserves, puis préparez un dossier à relire par l’équipe d’audit.</p>
       </article>
     </div>
   </section>
@@ -230,8 +234,8 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
           <CardIcon name="shield" tone="teal" />
           <span class="persona-label">RSSI / DPO</span>
         </div>
-        <h3>Répondre sans exposer plus que nécessaire.</h3>
-        <p>Structurer une réponse client, identifier les preuves sensibles et documenter les réserves avant envoi.</p>
+        <h3>Préparer une revue sans centraliser les preuves.</h3>
+        <p>Structurer les réponses cyber, repérer les justificatifs manquants et conserver les informations sensibles sur son appareil.</p>
       </article>
       <article class="persona-card">
         <div class="persona-card-head">
@@ -244,10 +248,10 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       <article class="persona-card">
         <div class="persona-card-head">
           <CardIcon name="briefcase" tone="gold" />
-          <span class="persona-label">Cabinet cyber</span>
+          <span class="persona-label">Audit interne / Cabinet cyber</span>
         </div>
         <h3>Passer de la revue déclarative au livrable.</h3>
-        <p>Transformer une collecte de réponses en dossier lisible, vérifiable et directement exploitable.</p>
+        <p>Documenter un périmètre de contrôle et les actions à suivre. L’appréciation des preuves et les conclusions restent du ressort de la personne qui mène la revue.</p>
       </article>
     </div>
   </section>
@@ -256,18 +260,18 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
     <div class="container workflow-layout">
       <div>
         <p class="eyebrow">Fonctionnement</p>
-        <h2>Du questionnaire reçu au dossier prêt à transmettre.</h2>
+        <h2>Du questionnaire ou de la grille d’audit au dossier de revue.</h2>
         <p class="lead">
-          Quand un grand compte, un assureur ou un donneur d'ordre demande des réponses cyber,
-          BLACKPROOF distingue les réponses prêtes, les justificatifs disponibles, les réserves
-          et les informations qui ne doivent pas être exportées.
+          Votre grille interne et un questionnaire reçu suivent le même parcours local.
+          BLACKPROOF distingue les réponses prêtes, les justificatifs déclarés disponibles,
+          les réserves et les informations qui ne doivent pas être exportées.
         </p>
       </div>
 
       <div class="flow-board" role="list" aria-label="Flux BLACKPROOF">
         <div class="flow-step" role="listitem">
           <span>Répondre</span>
-          <p>Formuler une réponse fournisseur prudente.</p>
+          <p>Formuler une réponse factuelle pour chaque question ou contrôle.</p>
         </div>
         <div class="flow-step" role="listitem">
           <span>Justifier</span>
@@ -279,7 +283,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
         </div>
         <div class="flow-step" role="listitem">
           <span>Partager</span>
-          <p>Conserver le dossier complet et générer uniquement la version destinée au client.</p>
+          <p>Conserver le dossier complet et sélectionner une version pour un destinataire interne ou externe, si nécessaire.</p>
         </div>
         <div class="flow-step" role="listitem">
           <span>Vérifier</span>
@@ -327,11 +331,29 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
   </section>
 
   <style>
-    .home-share {
-      position: relative;
-      z-index: 2;
-      margin-top: -1.2rem;
+    .video-frame,
+    .video-dialog {
+      color-scheme: dark;
+      --text: #f3f6f2;
+      --muted: #a8b2ab;
+      --accent: #8ee5d1;
     }
+
+    .video-transcript {
+      margin-top: 1.25rem;
+      border-top: 1px solid var(--line);
+      padding-top: 1rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .video-transcript summary {
+      color: var(--accent);
+      cursor: pointer;
+      font-weight: 650;
+    }
+
+    .video-transcript li + li { margin-top: 0.5rem; }
 
     .home-hero {
       position: relative;
@@ -344,8 +366,8 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(90deg, transparent 0 11%, rgba(142, 229, 209, 0.07) 11% calc(11% + 1px), transparent calc(11% + 1px) 37%, rgba(142, 229, 209, 0.045) 37% calc(37% + 1px), transparent calc(37% + 1px) 72%, rgba(224, 182, 111, 0.045) 72% calc(72% + 1px), transparent calc(72% + 1px)),
-        repeating-linear-gradient(180deg, transparent 0 63px, rgba(142, 229, 209, 0.04) 63px 64px);
+        linear-gradient(90deg, transparent 0 11%, light-dark(rgba(68, 110, 100, 0.07), rgba(142, 229, 209, 0.07)) 11% calc(11% + 1px), transparent calc(11% + 1px) 37%, light-dark(rgba(68, 110, 100, 0.045), rgba(142, 229, 209, 0.045)) 37% calc(37% + 1px), transparent calc(37% + 1px) 72%, light-dark(rgba(108, 87, 53, 0.045), rgba(224, 182, 111, 0.045)) 72% calc(72% + 1px), transparent calc(72% + 1px)),
+        repeating-linear-gradient(180deg, transparent 0 63px, light-dark(rgba(68, 110, 100, 0.04), rgba(142, 229, 209, 0.04)) 63px 64px);
       mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.62), transparent 78%);
       pointer-events: none;
     }
@@ -357,7 +379,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       width: 60rem;
       height: 60rem;
       border-radius: 50%;
-      background: repeating-radial-gradient(circle, transparent 0 37px, rgba(142, 229, 209, 0.045) 38px 39px, transparent 40px 62px);
+      background: repeating-radial-gradient(circle, transparent 0 37px, light-dark(rgba(68, 110, 100, 0.045), rgba(142, 229, 209, 0.045)) 38px 39px, transparent 40px 62px);
       content: "";
       opacity: 0.9;
       pointer-events: none;
@@ -380,7 +402,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
     .proof-word {
       position: relative;
       display: inline-block;
-      color: #f8fbf7;
+      color: light-dark(var(--muted), #f8fbf7);
       white-space: nowrap;
     }
 
@@ -474,16 +496,16 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border-radius: 20px 20px 20px 5px;
       padding: 0;
       background:
-        radial-gradient(circle at top right, rgba(142, 229, 209, 0.15), transparent 38%),
-        linear-gradient(145deg, rgba(25, 35, 31, 0.97), rgba(7, 11, 10, 0.99));
-      box-shadow: -1px 0 0 rgba(142, 229, 209, 0.22), 0 34px 100px rgba(0, 0, 0, 0.42);
+        radial-gradient(circle at top right, light-dark(rgba(68, 110, 100, 0.15), rgba(142, 229, 209, 0.15)), transparent 38%),
+        linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.97), rgba(25, 35, 31, 0.97)), light-dark(rgba(248, 250, 246, 0.99), rgba(7, 11, 10, 0.99)));
+      box-shadow: -1px 0 0 var(--line-strong), 0 34px 100px light-dark(rgba(27, 57, 38, 0.09), rgba(0, 0, 0, 0.42));
     }
 
     .proof-visual::after {
       content: "";
       position: absolute;
       inset: 0;
-      border: 1px solid rgba(255, 255, 255, 0.035);
+      border: 1px solid light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       border-radius: inherit;
       pointer-events: none;
     }
@@ -497,8 +519,8 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border: 0;
       padding: 0.9rem 1rem;
       background:
-        repeating-linear-gradient(90deg, rgba(142, 229, 209, 0.025) 0 1px, transparent 1px 8px),
-        rgba(255, 255, 255, 0.024);
+        repeating-linear-gradient(90deg, light-dark(rgba(68, 110, 100, 0.025), rgba(142, 229, 209, 0.025)) 0 1px, transparent 1px 8px),
+        light-dark(rgba(24, 66, 46, 0.024), rgba(255, 255, 255, 0.024));
       font-family: var(--font-mono);
       font-size: 0.72rem;
     }
@@ -529,7 +551,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border: 0;
       border-right: 1px solid var(--line);
       padding: 0.8rem;
-      background: rgba(10, 13, 14, 0.38);
+      background: light-dark(rgba(248, 250, 246, 0.38), rgba(10, 13, 14, 0.38));
     }
 
     .pipeline-node:last-child {
@@ -566,15 +588,15 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
     }
 
     .pipeline-node.active {
-      background: linear-gradient(180deg, rgba(121, 216, 200, 0.105), rgba(121, 216, 200, 0.035));
+      background: linear-gradient(180deg, light-dark(rgba(58, 104, 96, 0.105), rgba(121, 216, 200, 0.105)), light-dark(rgba(58, 104, 96, 0.035), rgba(121, 216, 200, 0.035)));
     }
 
     .pipeline-node.warning {
-      background: linear-gradient(180deg, rgba(214, 181, 111, 0.09), rgba(214, 181, 111, 0.025));
+      background: linear-gradient(180deg, light-dark(rgba(103, 87, 53, 0.09), rgba(214, 181, 111, 0.09)), light-dark(rgba(103, 87, 53, 0.025), rgba(214, 181, 111, 0.025)));
     }
 
     .pipeline-node.ok {
-      background: linear-gradient(180deg, rgba(128, 200, 154, 0.09), rgba(128, 200, 154, 0.025));
+      background: linear-gradient(180deg, light-dark(rgba(61, 96, 74, 0.09), rgba(128, 200, 154, 0.09)), light-dark(rgba(61, 96, 74, 0.025), rgba(128, 200, 154, 0.025)));
     }
 
     .proof-dashboard {
@@ -587,7 +609,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
     .score-ring,
     .evidence-stack {
       border: 0;
-      background: rgba(255, 255, 255, 0.018);
+      background: light-dark(rgba(24, 66, 46, 0.018), rgba(255, 255, 255, 0.018));
     }
 
     .score-ring {
@@ -728,9 +750,9 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border-radius: 20px 20px 20px 5px;
       padding: 1.25rem;
       background:
-        radial-gradient(circle at 78% 18%, rgba(121, 216, 200, 0.12), transparent 34%),
-        linear-gradient(145deg, rgba(23, 30, 28, 0.96), rgba(8, 11, 12, 0.98));
-      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
+        radial-gradient(circle at 78% 18%, light-dark(rgba(58, 104, 96, 0.12), rgba(121, 216, 200, 0.12)), transparent 34%),
+        linear-gradient(145deg, light-dark(rgba(248, 250, 246, 0.96), rgba(23, 30, 28, 0.96)), light-dark(rgba(248, 250, 246, 0.98), rgba(8, 11, 12, 0.98)));
+      box-shadow: 0 28px 90px light-dark(rgba(27, 57, 38, 0.07), rgba(0, 0, 0, 0.24));
     }
 
     .video-copy .lead {
@@ -749,21 +771,21 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       display: grid;
       width: 100%;
       overflow: hidden;
-      border: 1px solid rgba(121, 216, 200, 0.34);
+      border: 1px solid light-dark(rgba(58, 104, 96, 0.34), rgba(121, 216, 200, 0.34));
       border-radius: 16px;
       padding: 0;
-      background: #080b0c;
+      background: light-dark(rgba(248, 250, 246, 1), #080b0c);
       color: var(--text);
       cursor: pointer;
       text-align: left;
-      box-shadow: 0 20px 52px rgba(0, 0, 0, 0.32);
+      box-shadow: 0 20px 52px light-dark(rgba(27, 57, 38, 0.09), rgba(0, 0, 0, 0.32));
       transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
     }
 
     .video-launch:hover {
-      border-color: rgba(121, 216, 200, 0.72);
+      border-color: light-dark(rgba(58, 104, 96, 0.72), rgba(121, 216, 200, 0.72));
       transform: translateY(-2px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 24px 60px light-dark(rgba(27, 57, 38, 0.12), rgba(0, 0, 0, 0.4));
     }
 
     .video-launch:focus-visible {
@@ -776,7 +798,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       display: block;
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      background: #070a0b;
+      background: light-dark(rgba(248, 250, 246, 1), #070a0b);
     }
 
     .video-frame img {
@@ -795,8 +817,8 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(5, 8, 9, 0.08), rgba(5, 8, 9, 0.48)),
-        radial-gradient(circle at center, transparent 0 12%, rgba(4, 7, 8, 0.18) 54%, rgba(4, 7, 8, 0.48));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.08), rgba(5, 8, 9, 0.08)), light-dark(rgba(248, 250, 246, 0.48), rgba(5, 8, 9, 0.48))),
+        radial-gradient(circle at center, transparent 0 12%, light-dark(rgba(248, 250, 246, 0.18), rgba(4, 7, 8, 0.18)) 54%, light-dark(rgba(248, 250, 246, 0.48), rgba(4, 7, 8, 0.48)));
     }
 
     .video-badge {
@@ -804,11 +826,11 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       top: 0;
       right: 0;
       border: 0;
-      border-bottom: 1px solid rgba(121, 216, 200, 0.35);
-      border-left: 1px solid rgba(121, 216, 200, 0.35);
+      border-bottom: 1px solid light-dark(rgba(58, 104, 96, 0.35), rgba(121, 216, 200, 0.35));
+      border-left: 1px solid light-dark(rgba(58, 104, 96, 0.35), rgba(121, 216, 200, 0.35));
       border-radius: 0 0 0 12px;
       padding: 0.55rem 0.72rem;
-      background: #070a0b;
+      background: light-dark(rgba(248, 250, 246, 1), #070a0b);
       color: var(--accent);
       font-family: var(--font-display);
       font-size: 0.65rem;
@@ -825,7 +847,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       place-items: center;
       width: 4.6rem;
       height: 4.6rem;
-      border: 1px solid rgba(255, 255, 255, 0.48);
+      border: 1px solid light-dark(rgba(24, 66, 46, 0.48), rgba(255, 255, 255, 0.48));
       border-radius: 999px;
       background: rgba(121, 216, 200, 0.92);
       box-shadow: 0 0 0 12px rgba(121, 216, 200, 0.11), 0 16px 40px rgba(0, 0, 0, 0.42);
@@ -868,12 +890,12 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       margin: 0;
       border: 0;
       padding: 0;
-      background: #030506;
+      background: light-dark(rgba(248, 250, 246, 1), #030506);
       color: var(--text);
     }
 
     .video-dialog::backdrop {
-      background: rgba(0, 0, 0, 0.94);
+      background: light-dark(rgba(248, 250, 246, 0.94), rgba(0, 0, 0, 0.94));
     }
 
     .video-dialog-shell {
@@ -881,7 +903,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       grid-template-rows: auto minmax(0, 1fr);
       width: 100%;
       height: 100%;
-      background: #030506;
+      background: light-dark(rgba(248, 250, 246, 1), #030506);
     }
 
     .video-dialog-header {
@@ -891,7 +913,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       gap: 1rem;
       padding: 0.7rem 1rem;
       border-bottom: 1px solid var(--line);
-      background: rgba(8, 11, 12, 0.98);
+      background: light-dark(rgba(248, 250, 246, 0.98), rgba(8, 11, 12, 0.98));
     }
 
     .video-dialog-header p {
@@ -906,7 +928,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border: 1px solid var(--line-strong);
       border-radius: 999px;
       padding: 0.48rem 0.72rem;
-      background: rgba(255, 255, 255, 0.055);
+      background: light-dark(rgba(24, 66, 46, 0.055), rgba(255, 255, 255, 0.055));
       color: var(--text);
       cursor: pointer;
       font-family: var(--font-display);
@@ -919,7 +941,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       height: 100%;
       min-height: 0;
       object-fit: contain;
-      background: #000;
+      background: light-dark(rgba(248, 250, 246, 1), #000);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -948,7 +970,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border-radius: 16px 16px 16px 5px;
       padding: 1.15rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.92), rgba(13, 17, 18, 0.92));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.92), rgba(22, 29, 27, 0.92)), light-dark(rgba(248, 250, 246, 0.92), rgba(13, 17, 18, 0.92)));
       box-shadow: var(--shadow-panel);
     }
 
@@ -975,9 +997,9 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
     }
 
     .evidence-card.highlighted {
-      border-color: rgba(121, 216, 200, 0.36);
+      border-color: light-dark(rgba(58, 104, 96, 0.36), rgba(121, 216, 200, 0.36));
       background:
-        linear-gradient(180deg, rgba(121, 216, 200, 0.12), rgba(13, 17, 18, 0.94));
+        linear-gradient(180deg, light-dark(rgba(58, 104, 96, 0.12), rgba(121, 216, 200, 0.12)), light-dark(rgba(248, 250, 246, 0.94), rgba(13, 17, 18, 0.94)));
     }
 
     .evidence-card p {
@@ -1005,7 +1027,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border-radius: 16px 16px 16px 5px;
       padding: 1.15rem;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.94), rgba(9, 12, 13, 0.94));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.94), rgba(22, 29, 27, 0.94)), light-dark(rgba(248, 250, 246, 0.94), rgba(9, 12, 13, 0.94)));
       box-shadow: var(--shadow-panel);
     }
 
@@ -1019,7 +1041,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       display: inline-flex;
       align-items: center;
       min-height: 1.6rem;
-      border: 1px solid rgba(121, 216, 200, 0.26);
+      border: 1px solid light-dark(rgba(58, 104, 96, 0.26), rgba(121, 216, 200, 0.26));
       border-radius: 999px;
       padding: 0.26rem 0.52rem;
       color: var(--accent);
@@ -1050,7 +1072,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border: 1px solid var(--line-strong);
       border-radius: 16px 16px 16px 5px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
     }
 
     .flow-step {
@@ -1074,7 +1096,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       height: 0.7rem;
       border-top: 1px solid var(--line-strong);
       border-right: 1px solid var(--line-strong);
-      background: #121716;
+      background: light-dark(rgba(248, 250, 246, 1), #121716);
       transform: rotate(45deg);
     }
 
@@ -1106,8 +1128,8 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border-radius: 18px 18px 18px 5px;
       padding: 1.2rem;
       background:
-        linear-gradient(135deg, rgba(121, 216, 200, 0.1), rgba(128, 200, 154, 0.06)),
-        rgba(255, 255, 255, 0.035);
+        linear-gradient(135deg, light-dark(rgba(58, 104, 96, 0.1), rgba(121, 216, 200, 0.1)), light-dark(rgba(61, 96, 74, 0.06), rgba(128, 200, 154, 0.06))),
+        light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
     }
 
     .security-proof {
@@ -1119,8 +1141,8 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border-radius: 18px 18px 18px 5px;
       padding: 1.2rem;
       background:
-        linear-gradient(135deg, rgba(128, 200, 154, 0.08), rgba(121, 216, 200, 0.065)),
-        rgba(255, 255, 255, 0.03);
+        linear-gradient(135deg, light-dark(rgba(61, 96, 74, 0.08), rgba(128, 200, 154, 0.08)), light-dark(rgba(58, 104, 96, 0.065), rgba(121, 216, 200, 0.065))),
+        light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
       box-shadow: var(--shadow-tight);
     }
 
@@ -1142,7 +1164,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 0.55rem 0.68rem;
-      background: rgba(8, 11, 12, 0.55);
+      background: light-dark(rgba(248, 250, 246, 0.55), rgba(8, 11, 12, 0.55));
       color: var(--text);
       font-family: var(--font-display);
       font-size: 0.74rem;
@@ -1160,7 +1182,7 @@ const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 0.6rem 0.7rem;
-      background: rgba(8, 11, 12, 0.55);
+      background: light-dark(rgba(248, 250, 246, 0.55), rgba(8, 11, 12, 0.55));
       color: var(--text);
       font-family: var(--font-display);
       font-size: 0.75rem;

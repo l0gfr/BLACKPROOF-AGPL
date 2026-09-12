@@ -84,10 +84,11 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       <aside class="example-scorecard" aria-label="Résumé du dossier Northstar SaaS">
         <span>Northstar SaaS</span>
         <strong>Revue cyber client</strong>
-        <div class="score-ring-lite">
-          <div class="score-ring-label">
-            <b>3</b>
-            <small>questions analysées</small>
+        <div class="example-question-count">
+          <b class="score-ring-lite">3</b>
+          <div>
+            <p>questions analysées</p>
+            <small>Exemple fictif, pas un score de conformité.</small>
           </div>
         </div>
         <code>{fingerprint}</code>
@@ -238,7 +239,7 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       border: 1px solid var(--line-strong);
       border-radius: 8px;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
       box-shadow: var(--shadow-tight);
     }
 
@@ -266,12 +267,12 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .comparison-grid article.is-blackproof {
-      border-color: rgba(121, 216, 200, 0.42);
-      background: rgba(121, 216, 200, 0.075);
+      border-color: light-dark(rgba(58, 104, 96, 0.42), rgba(121, 216, 200, 0.42));
+      background: light-dark(rgba(58, 104, 96, 0.075), rgba(121, 216, 200, 0.075));
     }
 
     .comparison-grid strong,
@@ -293,13 +294,15 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
 
     .example-scorecard {
       display: grid;
-      gap: 0.75rem;
+      gap: 1.4rem;
+      align-self: start;
+      min-width: 0;
       border: 1px solid var(--line-strong);
       border-radius: var(--radius-lg);
       padding: 1rem;
       background:
-        radial-gradient(circle at top right, rgba(121, 216, 200, 0.16), transparent 12rem),
-        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+        radial-gradient(circle at top right, light-dark(rgba(58, 104, 96, 0.16), rgba(121, 216, 200, 0.16)), transparent 12rem),
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(8, 11, 12, 0.96)));
       box-shadow: var(--shadow-tight);
     }
 
@@ -320,57 +323,51 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
     }
 
     .example-scorecard code {
-      overflow: hidden;
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.65rem;
       color: var(--muted);
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow-wrap: anywhere;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      line-height: 1.65;
+    }
+
+    .example-question-count {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+    }
+
+    .example-question-count > div {
+      flex: 1 1 10rem;
+      min-width: 0;
+    }
+
+    .example-question-count p {
+      margin: 0 0 0.4rem;
+      font-weight: 700;
+    }
+
+    .example-question-count small {
+      display: block;
+      color: var(--muted);
+      line-height: 1.5;
     }
 
     .score-ring-lite {
-      position: relative;
       display: grid;
       place-items: center;
-      width: 9rem;
-      height: 9rem;
-      border: 1px solid rgba(121, 216, 200, 0.36);
+      flex: 0 0 5rem;
+      width: 5rem;
+      height: 5rem;
+      border: 2px solid var(--accent);
       border-radius: 999px;
-      background:
-        conic-gradient(from 220deg, var(--accent) 0 74%, rgba(255, 255, 255, 0.08) 74% 100%);
+      background: light-dark(rgba(58, 104, 96, 0.04), rgba(121, 216, 200, 0.04));
       color: var(--text);
-    }
-
-    .score-ring-lite::before {
-      content: "";
-      position: absolute;
-      inset: 0.9rem;
-      border: 1px solid var(--line);
-      border-radius: inherit;
-      background: #080b0c;
-    }
-
-    .score-ring-label {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.45rem;
-      place-items: center;
-      text-align: center;
-    }
-
-    .score-ring-lite b {
-      display: block;
       font-size: 2.4rem;
       line-height: 1;
-    }
-
-    .score-ring-lite small {
-      display: block;
-      color: var(--muted);
-      font-weight: 800;
-      line-height: 1.2;
     }
 
     .example-summary-grid {
@@ -383,7 +380,7 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.9rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
     }
 
     .example-summary-grid span,
@@ -422,7 +419,7 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.85rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .pipeline-strip span,
@@ -457,7 +454,7 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       border: 1px solid var(--line-strong);
       border-radius: 8px;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: light-dark(rgba(24, 66, 46, 0.03), rgba(255, 255, 255, 0.03));
     }
 
     .proofpack-visual p,
@@ -480,7 +477,7 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 0.9rem;
-      background: rgba(8, 11, 12, 0.48);
+      background: light-dark(rgba(248, 250, 246, 0.48), rgba(8, 11, 12, 0.48));
     }
 
     .file-list a {
@@ -490,13 +487,14 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
     }
 
     .file-list a:hover {
-      border-color: rgba(121, 216, 200, 0.42);
-      background: rgba(121, 216, 200, 0.065);
+      border-color: light-dark(rgba(58, 104, 96, 0.42), rgba(121, 216, 200, 0.42));
+      background: light-dark(rgba(58, 104, 96, 0.065), rgba(121, 216, 200, 0.065));
       transform: translateY(-1px);
     }
 
     .question-stack article div {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       gap: 1rem;
       align-items: flex-start;
@@ -572,7 +570,7 @@ const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb
       .proofpack-visual,
       .example-two-col,
       .verify-strip {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .verify-strip .actions {

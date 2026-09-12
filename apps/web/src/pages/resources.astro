@@ -8,13 +8,13 @@ const resourceGroups = [
     icon: "book",
     tone: "violet",
     title: "Comprendre le produit",
-    text: "Les pages qui présentent le produit, ses limites et les situations dans lesquelles il aide à traiter un questionnaire cyber.",
+    text: "Les pages qui présentent les revues cyber, les audits internes et les questionnaires fournisseurs, avec les limites du produit.",
     links: [
       ["Analyses cyber", "/analyses", "Faits, hypothèses, inconnues et sources"],
       ["À propos", "/about", "Rôle du produit et limites"],
-      ["Cas d'usage", "/use-cases", "RSSI, fournisseur B2B, cabinet cyber"],
+      ["Cas d'usage", "/use-cases", "Revues cyber, audits internes, questionnaires fournisseurs"],
       ["Pas un GRC", "/grc", "Page catégorie et différenciation"],
-      ["FAQ client", "/faq", "Compte, dossiers locaux et sauvegardes"],
+      ["Aide et FAQ", "/faq", "Logiciel libre, dossiers locaux et sauvegardes"],
       ["Logiciel libre", "/open-source", "Licence AGPL et code source"],
       ["Disponibilité", "/status", "Versions publiées et limites"]
     ]
@@ -74,7 +74,7 @@ const machineReadable = [
         <p class="eyebrow">Ressources</p>
         <h1>Découvrez le produit, testez le parcours et ouvrez les fichiers livrés.</h1>
         <p class="lead">
-          Retrouvez la démonstration, un dossier exemple, les offres, la sécurité des données
+          Retrouvez la démonstration, un dossier exemple, le code source, la sécurité des données
           et la documentation technique au même endroit.
         </p>
         <div class="actions">
@@ -155,7 +155,7 @@ const machineReadable = [
       border: 1px solid var(--line-strong);
       border-radius: 8px;
       background:
-        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+        linear-gradient(180deg, light-dark(rgba(248, 250, 246, 0.96), rgba(22, 29, 27, 0.96)), light-dark(rgba(248, 250, 246, 0.96), rgba(8, 11, 12, 0.96)));
       box-shadow: var(--shadow-tight);
     }
 
@@ -220,7 +220,7 @@ const machineReadable = [
     .machine-grid a {
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.035);
+      background: light-dark(rgba(24, 66, 46, 0.035), rgba(255, 255, 255, 0.035));
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
 
@@ -232,7 +232,7 @@ const machineReadable = [
     .resource-links a:hover,
     .machine-grid a:hover {
       border-color: var(--line-strong);
-      background: rgba(255, 255, 255, 0.055);
+      background: light-dark(rgba(24, 66, 46, 0.055), rgba(255, 255, 255, 0.055));
       transform: translateY(-1px);
     }
 
