@@ -1,5 +1,17 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test("served HTML stays dark without JavaScript, even on a light OS", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: "light" });
+  try {
+    const page = await context.newPage();
+    for (const path of ["/", "/start", "/faq", "/api", "/app/cases", "/verify"]) {
+      await page.goto(path);
+      expect(await page.locator("html").evaluate(el => getComputedStyle(el).colorScheme)).toBe("dark");
+      expect(await page.locator("html").evaluate(el => getComputedStyle(el).backgroundColor)).toBe("rgb(6, 10, 9)");
+    }
+  } finally { await context.close(); }
+});
+
 async function storedTheme(page: Page, value?: unknown) {
   return page.evaluate((value) => new Promise((resolve, reject) => {
     const request = indexedDB.open("blackproof-ui-preferences", 1);

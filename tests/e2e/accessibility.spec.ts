@@ -31,6 +31,8 @@ test("homepage demonstration opens in a full-viewport accessible player", async 
   const video = page.locator("video[data-video-player]");
 
   await expect(launchVideo).toBeVisible();
+  await expect(launchVideo.locator(".video-badge")).toHaveText("Parcours local");
+  await expect(video).toHaveJSProperty("paused", true);
   await expect(video).toHaveAttribute("preload", "none");
   await expect(video.locator("source")).toHaveAttribute(
     "src",
@@ -41,7 +43,8 @@ test("homepage demonstration opens in a full-viewport accessible player", async 
   await expect(videoDialog).toBeVisible();
   await expect.poll(() => video.evaluate((el: HTMLVideoElement) => Number.isFinite(el.duration) && el.duration > 60 && el.duration < 120)).toBe(true);
   await expect(video.locator('track[kind="captions"]')).toHaveAttribute("src", "/media/blackproof-parcours-local.fr.vtt");
-  await video.evaluate((el: HTMLVideoElement) => { el.textTracks[0].mode = "hidden"; });
+  await expect(video.locator('track[kind="captions"]')).toHaveAttribute("default", "");
+  await expect.poll(() => video.evaluate((el: HTMLVideoElement) => el.textTracks[0].mode)).toBe("showing");
   await expect.poll(() => video.evaluate((el: HTMLVideoElement) => el.textTracks[0].cues?.length)).toBe(13);
 
   const viewport = page.viewportSize();

@@ -21,6 +21,8 @@ const ROOTS = [
   "apps/web/public",
   "packages/core/src",
   "packages/verifier/src",
+  "packages/mcp/src",
+  "packages/mcp/bin",
 ];
 
 const API_PAGES_ROOT = "apps/web/src/pages/api";

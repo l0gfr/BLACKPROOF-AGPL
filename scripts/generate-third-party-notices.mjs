@@ -4,7 +4,7 @@ import { existsSync, readFileSync, readdirSync, realpathSync, writeFileSync } fr
 import { dirname, join, resolve } from "node:path";
 
 const workspaceRoot = resolve(".");
-const roots = ["apps/web/package.json", "packages/core/package.json"].map((path) => resolve(path));
+const roots = ["apps/web/package.json", "packages/core/package.json", "packages/verifier/package.json", "packages/mcp/package.json"].map((path) => resolve(path));
 const packages = new Map();
 
 function resolvePackageJson(name, parentPackageJson) {

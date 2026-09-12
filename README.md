@@ -19,6 +19,7 @@ questionnaire ou grille d'audit → réponses et références → preuves attend
 - `apps/web/src/content/analyses` (sourced Markdown analyses and publication drafts)
 - `packages/core` — ProofGraph, ProofDebt, ProofPack logic
 - `packages/verifier` — standalone Delivery verifier CLI/SDK
+- `packages/mcp` — local, read-only MCP server for minimized verification and comparison
 - `tests/e2e` — Chromium tests for the local-first editor and verification flows
 - `scripts` — schema generation, security checks and deployment tooling
 - `docs` — project context and technical documentation
@@ -50,6 +51,18 @@ or permitted for import, creation, editing, backup or verification. Downloading 
 export saves a local file; users transmit it separately, outside BLACKPROOF.
 See `docs/LOCAL_FIRST_STORAGE.md` and `docs/SECURITY_MODEL.md` before changing a
 storage, export or destructive operation.
+
+## Local MCP for enterprise agents
+
+Use the local MCP server to check a selected ProofPack before transmission,
+compare two review snapshots through aggregate changes, and obtain public
+preparation checklists for cyber reviews, internal audits and questionnaires.
+It does not expose answers, evidence references or files to the agent.
+It runs over stdio on the user's device, not on the public website.
+
+See [installation, tools, fictional walkthrough and security limits](docs/MCP_LOCAL.md).
+Private mode requires an end-to-end local client/model. A local transport alone
+cannot stop a host from forwarding results to a remote model.
 
 ## Editorial analyses
 

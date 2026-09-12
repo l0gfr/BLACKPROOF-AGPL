@@ -14,10 +14,10 @@ Security invariants:
 - CSV formula injection defense;
 - strict input limits.
 
-## Required boundary for future MCP support
+## Required boundary for local MCP support
 
-MCP support is not implemented or security-qualified in this release.
-Any future integration must:
+The local stdio MCP implementation is alpha, not security-certified.
+Every integration must:
 - expose read-only tools only, with no creation, modification, export,
   signing, deletion, shell execution or network-fetch capability;
 - keep proof files on the producing user's device, with access limited

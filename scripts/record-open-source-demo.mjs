@@ -1,7 +1,9 @@
 // Re-record the real local UI using synthetic fixtures only. No server mutation.
-// Start a built preview first, then: node scripts/record-open-source-demo.mjs http://127.0.0.1:4353
+// Start a built preview first, then: node scripts/record-open-source-demo.mjs http://127.0.0.1:4353 /absolute/path/to/ffmpeg
 import assert from "node:assert/strict";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile, copyFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { soundtrack } from "./create-demo-soundtrack.mjs";
 import { join } from "node:path";
 import { chromium, expect } from "@playwright/test";
 
@@ -11,6 +13,8 @@ assert.equal(baseURL.pathname, "/");
 assert.equal(baseURL.search + baseURL.hash + baseURL.username + baseURL.password, "");
 const output = "apps/web/public/media";
 const scratch = "artifacts/demo-recording";
+const ffmpeg = process.argv[3];
+assert.ok(ffmpeg, "Provide the local ffmpeg executable as the third argument");
 await mkdir(scratch, { recursive: true });
 const browser = await chromium.launch();
 const context = await browser.newContext({
@@ -33,34 +37,14 @@ const hold = (ms = 4500) => new Promise((resolve) => setTimeout(resolve, ms));
 async function caption(title, detail) {
   cues.push({ at: Date.now() - started, title, detail });
   console.log(title);
-  await page.evaluate(({ title, detail }) => {
-    let band = document.getElementById("recording-caption");
-    if (!band) {
-      band = document.createElement("aside");
-      band.id = "recording-caption";
-      Object.assign(band.style, { position: "fixed", inset: "auto 0 0", zIndex: "2147483647",
-        background: "#080f10", borderTop: "1px solid #67cdb6", padding: "18px 48px 54px",
-        minHeight: "140px", boxSizing: "border-box", color: "#e8f4ef", textAlign: "center",
-        fontFamily: "system-ui, sans-serif", pointerEvents: "none" });
-      document.body.append(band);
-      document.body.style.paddingBottom = "160px";
-      document.documentElement.style.scrollPaddingBottom = "180px";
-      document.documentElement.style.scrollPaddingTop = "130px";
-    }
-    const heading = document.createElement("strong");
-    heading.textContent = title;
-    Object.assign(heading.style, { display: "block", fontSize: "24px", lineHeight: "1.35" });
-    const text = document.createElement("span");
-    text.textContent = detail;
-    Object.assign(text.style, { display: "block", fontSize: "19px", lineHeight: "1.5", color: "#a9beb6" });
-    band.replaceChildren(heading, text);
-  }, { title, detail });
+  // Captions are selectable, enabled-by-default VTT, not a duplicated band
+  // burned into the image. Native controls can hide them or change their size.
 }
 
 try {
-  await page.goto("/open-source");
+  await page.goto("/start");
   await page.evaluate(() => document.fonts.ready);
-  await caption("BLACKPROOF · logiciel libre sous AGPL", "Revues cyber, audits internes et questionnaires. Un parcours local, avec des données fictives.");
+  await caption("Parcours local", "Revues cyber, audits internes et questionnaires. Démonstration avec des données fictives.");
   await hold();
   await page.screenshot({ path: join(output, "blackproof-parcours-local-poster.jpg"), type: "jpeg", quality: 86 });
 
@@ -149,12 +133,21 @@ try {
   await page.getByLabel("Phrase secrète du dossier", { exact: true }).fill(passphrase);
   await page.getByRole("button", { name: "Déverrouiller le dossier", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Compléter et préparer le dossier." })).toBeVisible();
-  await caption("Vos dossiers restent sur votre appareil", "Sauvegardez régulièrement. Le code source et la licence AGPL sont accessibles depuis « Logiciel libre ».");
+  await caption("Vos dossiers restent sur votre appareil", "Sauvegardez régulièrement. Vous gardez le contrôle de vos dossiers et de leur partage.");
   await hold(6000);
 
   const ended = Date.now() - started;
   await context.close();
-  await page.video().saveAs(join(output, "blackproof-parcours-local.webm"));
+  const silent = join(scratch, "parcours-silent.webm");
+  const music = join(scratch, "parcours-original.wav");
+  const mixed = join(scratch, "parcours-mixed.webm");
+  await page.video().saveAs(silent);
+  await writeFile(music, soundtrack(ended / 1000));
+  const mux = spawnSync(ffmpeg, ["-y", "-hide_banner", "-loglevel", "error", "-i", silent, "-i", music,
+    "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "libopus", "-b:a", "80k", "-shortest", mixed], { stdio: "inherit" });
+  assert.equal(mux.status, 0, "Local soundtrack mux failed");
+  await copyFile(mixed, join(output, "blackproof-parcours-local.webm"));
+  cues[0].at = 0;
   const timestamp = (ms) => new Date(ms).toISOString().slice(11, 23);
   const vtt = "WEBVTT\n\n" + cues.map((cue, i) => `${i + 1}\n${timestamp(cue.at)} --> ${timestamp(cues[i + 1]?.at ?? ended)}\n${cue.title}\n${cue.detail}\n`).join("\n");
   await writeFile(join(output, "blackproof-parcours-local.fr.vtt"), vtt);
