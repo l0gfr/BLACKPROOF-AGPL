@@ -7,12 +7,31 @@ BLACKPROOF follows a high-security local-first model.
 The project is in alpha.
 
 Security invariants:
-- no upload by default;
+- no document upload for any operation;
 - no hidden telemetry;
 - no untrusted HTML rendering;
 - cryptographic ProofPack fingerprints;
 - CSV formula injection defense;
 - strict input limits.
+
+## Required boundary for future MCP support
+
+MCP support is not implemented or security-qualified in this release.
+Any future integration must:
+- expose read-only tools only, with no creation, modification, export,
+  signing, deletion, shell execution or network-fetch capability;
+- keep proof files on the producing user's device, with access limited
+  to that user's explicitly authorized local session;
+- expose no proof files, contents, paths, identifiers or listings through
+  public endpoints, shared resources, logs or telemetry;
+- refuse cross-user access and reads outside explicitly selected inputs;
+- treat tool results as sensitive: a local server does not prevent an
+  agent from forwarding results to a remote model;
+- require an end-to-end local client/model boundary for strict local use.
+
+Read-only annotations are not access controls. Browser encryption does
+not protect an unlocked session or plaintext downloaded exports from a
+compromised device. These limitations must not be described as zero risk.
 
 ## Supported versions
 
