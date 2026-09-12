@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">BLACKPROOF</title>
+  <desc id="description">Questionnaires cyber clients, données locales par défaut</desc>
+  <defs>
+    <linearGradient id="background" x1="80" y1="40" x2="1110" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#14221d" />
+      <stop offset=".45" stop-color="#0a100e" />
+      <stop offset="1" stop-color="#050807" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(920 115) rotate(139) scale(570 420)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8ee5d1" stop-opacity=".18" />
+      <stop offset="1" stop-color="#8ee5d1" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#8ee5d1" stroke-opacity=".055" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#background)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+  <rect x="0" width="8" height="630" fill="#8ee5d1" />
+  <rect x="0" y="382" width="8" height="74" fill="#e0b66f" />
+
+  <g transform="translate(82 82)">
+    <path d="M0 0h118l42 42v118H0Z" fill="#0c1411" stroke="#8ee5d1" stroke-opacity=".72" stroke-width="3" />
+    <path d="M118 0v42h42M28 128h28m14 0h18m15 0h30" fill="none" stroke="#8ee5d1" stroke-width="3" />
+    <text x="27" y="91" fill="#8ee5d1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="46" font-weight="700" letter-spacing="4">BP</text>
+    <circle cx="139" cy="21" r="9" fill="#e0b66f" stroke="#07100d" stroke-width="4" />
+  </g>
+
+  <g transform="translate(292 96)">
+    <text fill="#8ee5d1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" letter-spacing="4">QUESTIONNAIRES CYBER CLIENTS</text>
+    <text y="91" fill="#f3f6f2" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="74" font-weight="650" letter-spacing="2">BLACKPROOF</text>
+    <path d="M2 118h676" stroke="#8ee5d1" stroke-opacity=".52" stroke-width="2" />
+    <path d="M682 118h62" stroke="#e0b66f" stroke-width="2" />
+  </g>
+
+  <g transform="translate(84 335)">
+    <text fill="#f3f6f2" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="38" font-weight="500">Répondre. Justifier. Partager. Vérifier.</text>
+    <text y="61" fill="#a8b2ab" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="26">Préparez un dossier client sans envoyer vos preuves sensibles.</text>
+  </g>
+
+  <g transform="translate(84 518)">
+    <rect width="410" height="56" rx="12" fill="#8ee5d1" fill-opacity=".08" stroke="#8ee5d1" stroke-opacity=".34" />
+    <circle cx="29" cy="28" r="6" fill="#8ee5d1" />
+    <text x="50" y="36" fill="#8ee5d1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="700" letter-spacing="1.4">DONNÉES LOCALES PAR DÉFAUT</text>
+  </g>
+
+  <text x="1116" y="554" text-anchor="end" fill="#747f78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" letter-spacing="2">BLACKPROOF.FR</text>
+  <path d="M1028 574h88" stroke="#8ee5d1" stroke-opacity=".4" stroke-width="2" />
+</svg>

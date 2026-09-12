@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": [
+    "./.oxlintrc.json"
+  ],
+  "ignorePatterns": [
+    "**/generated/**"
+  ],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "typescript/no-unnecessary-condition": "error"
+  }
+}

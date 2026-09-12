@@ -1,0 +1,332 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  PUBLIC_CHANGELOG,
+  PUBLIC_PRODUCT_BOUNDARIES,
+} from "../lib/public-product-truth";
+
+
+const publicContracts = [
+  ["/api/index.json", "Index technique", "Liste des fichiers et formats publics BLACKPROOF."],
+  ["/api/status.json", "État du service", "Version, disponibilité et limites publiques."],
+  ["/api/methodology.json", "Méthode", "Règles de classement des questions et des justificatifs."],
+  ["/api/evidence-library.json", "Justificatifs attendus", "Types de documents et catégories publiques."],
+  ["/api/frameworks.json", "Référentiels", "Cartographies et exigences publiées."],
+  ["/api/proofdebt.json", "Indicateur de préparation", "Repères de lecture de l’indicateur affiché dans le dossier."],
+  ["/api/proofpack/schema.json", "Schéma du dossier interne", "Description JSON du fichier proofpack.json."],
+  ["/schemas/proofpack/v1.schema.json", "Dossier interne V1", "Description technique de la première version historique."],
+  ["/schemas/proofpack/v2.schema.json", "Dossier interne V2", "Description technique de la deuxième version historique."],
+  ["/schemas/proofpack/v3.schema.json", "Dossier interne V3", "Description technique de la version actuelle."],
+  ["/schemas/source-import/v1.schema.json", "Import XLSX V1", "Description du fichier qui relie les questions au classeur source."],
+  ["/schemas/proofpack-delivery/v4.schema.json", "Version client V4", "Description technique de la version client historique."],
+  ["/schemas/proofpack-delivery/v5.schema.json", "Version client V5", "Description technique de la version client actuelle."],
+  ["/schemas/delivery-protocol/change-report-v1.schema.json", "Comparaison de versions V1", "Description du rapport entre deux versions client."],
+  ["/schemas/delivery-protocol/signature-v1.schema.json", "Signature V1", "Description de la signature optionnelle de l’émetteur."],
+  ["/schemas/delivery-protocol/revocation-v1.schema.json", "Révocation V1", "Description du fichier qui annule une version client."],
+  ["/schemas/delivery-protocol/status-v1.schema.json", "Statut public V1", "Description de la réponse consultable sans compte."],
+  ["/canonicalization-vectors.json", "Vecteurs de canonicalisation", "Octets UTF-8 et SHA-256 de référence V1/V2."],
+  ["/api/verify.json", "Vérification", "Contrat de vérification locale."]
+];
+
+const publicArtifacts = [
+  ["/demo/proofpack-demo.json", "Dossier interne JSON", "Dossier lisible par logiciel avec empreinte SHA-256."],
+  ["/demo/reponse-fournisseur-demo.md", "Réponse fournisseur", "Réponses relisibles avec réserves."],
+  ["/demo/registre-preuves-demo.csv", "Registre de preuves", "Statuts, sensibilités et formats."],
+  ["/demo/plan-remediation-demo.csv", "Plan d’actions", "Actions prévues pour compléter le dossier."],
+  ["/demo/note-synthese-demo.md", "Note de synthèse", "Lecture humaine avant transmission."],
+  ["/demo/proofpack-bundle-manifest.json", "Manifeste", "Liste versionnée des fichiers publics."],
+  ["/demo/proofpack-delivery-demo.json", "Version client JSON", "Version fictive contenant uniquement les éléments sélectionnés."],
+  ["/demo/proofpack-delivery-demo.zip", "Version client ZIP", "Fichiers fictifs regroupés avec leur liste et leurs empreintes."]
+];
+
+const statusChecks = [
+  ["Surface publique", "En ligne", "Site statique, HTTPS, sans compte requis pour consulter la méthode."],
+  ["Formats publics", "Versionnés", "Fichiers JSON en lecture seule, utilisables par des scripts et des intégrations."],
+  ["Accès produit", "Libre et gratuit", "Logiciel libre sous AGPL-3.0-only, utilisable directement dans le navigateur."],
+  ["Données sensibles", "Dans votre navigateur", "Aucun envoi de questionnaire, réponse ou justificatif vers BLACKPROOF."],
+  ["Sécurité", "Surface réduite", "Pas de tracker, pas de CDN tiers ni de Google Fonts."],
+  ["Navigateurs", "Chrome / Edge Desktop", "Le parcours produit est pris en charge sur les navigateurs Chromium de bureau. Firefox, Safari et les usages mobiles ne sont pas pris en charge actuellement."],
+  ["Export vers un nouveau classeur XLSX", "Indisponible", "Cette génération n’est pas proposée actuellement."],
+];
+---
+
+<BaseLayout
+  title="Statut public - BLACKPROOF"
+  description="Disponibilité, versions, formats publics et limites actuelles de BLACKPROOF."
+>
+  <section class="hero status-hero">
+    <div class="container status-hero-grid">
+      <div>
+        <p class="eyebrow">Statut public</p>
+        <h1>Disponibilité, versions et limites actuelles de BLACKPROOF.</h1>
+        <p class="lead">
+          Cette page indique si le service est disponible, quels formats sont pris en charge,
+          quelles limites s’appliquent et quelles versions ont été publiées.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/api/status.json">Lire le statut JSON</a>
+          <a class="button" href="/grc">Comparer avec un GRC</a>
+          <a class="button" href="/api">Documentation technique</a>
+          <a class="button" href="/demo">Voir la démo guidée</a>
+        </div>
+      </div>
+
+      <aside class="status-note" aria-label="Résumé du statut BLACKPROOF">
+        <span>Version publique</span>
+        <strong>Version publique 0.1.0</strong>
+        <p>
+          Site statique et documentation en lecture seule. Les justificatifs sensibles
+          restent dans votre navigateur.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container status-grid">
+      {statusChecks.map(([title, state, text]) => (
+        <article>
+          <span>{state}</span>
+          <strong>{title}</strong>
+          <p>{text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contract-panel">
+      <div>
+        <p class="eyebrow">Documentation publique</p>
+        <h2>Formats et contrôles disponibles sans compte.</h2>
+        <p>
+          BLACKPROOF publie les formats de dossier, les règles de vérification et les fichiers
+          de démonstration nécessaires à une intégration technique.
+        </p>
+      </div>
+      <div class="contract-grid">
+        {publicContracts.map(([href, title, text]) => (
+          <a href={href}>
+            <strong>{title}</strong>
+            <code>{href}</code>
+            <span>{text}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contract-panel">
+      <div>
+        <p class="eyebrow">Fichiers d’exemple</p>
+        <h2>Téléchargez les fichiers remis à la fin du parcours.</h2>
+        <p>
+          Le dossier de démonstration contient une réponse fournisseur, un registre de preuves,
+          un plan d’actions, une note de synthèse et une version client fictive.
+        </p>
+      </div>
+      <div class="contract-grid">
+        {publicArtifacts.map(([href, title, text]) => (
+          <a href={href} download>
+            <strong>{title}</strong>
+            <code>{href}</code>
+            <span>{text}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container changelog-panel">
+      <div>
+        <p class="eyebrow">Historique des versions</p>
+        <h2>Modifications publiées.</h2>
+      </div>
+      <div class="changelog-list">
+        {PUBLIC_CHANGELOG.map(({ date, title, change }) => (
+          <article>
+            <span>{date}</span>
+            <strong>{title}</strong>
+            <p>{change}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container boundary-panel">
+      <div>
+        <p class="eyebrow">Limites actuelles</p>
+        <h2>BLACKPROOF ne remplace ni un audit ni une certification.</h2>
+      </div>
+      <div class="boundary-list" role="list" aria-label="Limites BLACKPROOF">
+        {PUBLIC_PRODUCT_BOUNDARIES.map((item) => <span role="listitem">{item}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .status-hero {
+      padding-bottom: 1.5rem;
+    }
+
+    .status-hero-grid,
+    .contract-panel,
+    .changelog-panel,
+    .boundary-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.7fr);
+      gap: 1.2rem;
+      align-items: start;
+    }
+
+    .status-note,
+    .contract-panel,
+    .changelog-panel,
+    .boundary-panel {
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow: var(--shadow-tight);
+    }
+
+    .status-note,
+    .contract-panel,
+    .changelog-panel,
+    .boundary-panel {
+      padding: 1rem;
+    }
+
+    .status-note {
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+    }
+
+    .status-note span,
+    .status-note strong,
+    .status-grid span,
+    .status-grid strong,
+    .contract-grid strong,
+    .contract-grid code,
+    .contract-grid span,
+    .changelog-list span,
+    .changelog-list strong,
+    .boundary-list span {
+      display: block;
+    }
+
+    .status-note span,
+    .status-grid span,
+    .changelog-list span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.74rem;
+    }
+
+    .status-note strong {
+      margin-top: 1rem;
+      font-family: var(--font-display);
+      overflow-wrap: anywhere;
+    }
+
+    .status-note p,
+    .contract-panel p,
+    .changelog-list p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .status-grid article,
+    .contract-grid a,
+    .changelog-list article,
+    .boundary-list span {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.92), rgba(10, 13, 14, 0.92));
+    }
+
+    .status-grid p {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .contract-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .contract-grid a {
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .contract-grid a:hover {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.055);
+      transform: translateY(-1px);
+    }
+
+    .contract-grid code {
+      margin-top: 0.45rem;
+      color: var(--accent);
+      font-size: 0.74rem;
+      overflow-wrap: anywhere;
+    }
+
+    .contract-grid span {
+      margin-top: 0.45rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .changelog-list,
+    .boundary-list {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .changelog-list article {
+      display: grid;
+      grid-template-columns: minmax(110px, 0.2fr) minmax(150px, 0.25fr) minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: start;
+    }
+
+    .changelog-list p {
+      margin: 0;
+    }
+
+    .boundary-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .boundary-list span {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 980px) {
+      .status-hero-grid,
+      .contract-panel,
+      .changelog-panel,
+      .boundary-panel,
+      .status-grid,
+      .contract-grid,
+      .changelog-list article,
+      .boundary-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,114 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  methodology,
+  proofDebtScoreBands,
+  proofGraphSteps,
+  evidenceStatusDefinitions,
+  blackproofSecurityInvariants,
+} from "@blackproof/core";
+---
+
+<BaseLayout
+  title="Méthode ProofGraph : BLACKPROOF"
+  description="La méthode BlackProof : source, exigence, preuve, test, dette, action."
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Méthode versionnée</p>
+      <h1>La preuve avant la conformité.</h1>
+      <p class="lead">
+        BLACKPROOF ne promet pas que vous êtes conforme. BLACKPROOF structure ce que vous déclarez pouvoir étayer,
+        ce qui manque, ce qui est sensible et ce qu'il faut revoir avant une décision humaine de transmission.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="/app">Créer un ProofPack</a>
+        <a class="button" href="/methodology.json">Voir la méthode JSON</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">{methodology.version}</p>
+      <h2>ProofGraph</h2>
+      <p class="lead">
+        Chaque réponse cyber doit être reliée à une chaîne explicite :
+        source, exigence, preuve, test, dette, action.
+      </p>
+
+      <div class="grid three">
+        {proofGraphSteps.map((step) => (
+          <article class="card">
+            <p class="kpi">{step.id}</p>
+            <h3>{step.label}</h3>
+            <p>{step.definition}</p>
+            <p><strong>Sortie :</strong> {step.output}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Statuts de preuve</h2>
+      <p class="lead">
+        BLACKPROOF distingue une preuve attendue, disponible, manquante, périmée,
+        déclarative ou sensible non exportable. Ce détail est central : une réponse
+        cyber sans preuve reste une dette.
+      </p>
+
+      <div class="grid three">
+        {evidenceStatusDefinitions.map((item) => (
+          <article class="card">
+            <p class="kpi">{item.status}</p>
+            <h3>{item.label}</h3>
+            <p>{item.meaning}</p>
+            <p><strong>Impact :</strong> {item.proofDebtImpact}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Indicateur ProofDebt</h2>
+      <p class="lead">
+        Le score n'est pas une note de conformité. C'est un indicateur heuristique calculé sur les réponses, statuts et références saisis ; il ne valide pas les documents sources.
+      </p>
+
+      <div class="grid three">
+        {proofDebtScoreBands.map((band) => (
+          <article class="card">
+            <p class="kpi">{band.min} à {band.max}</p>
+            <h3>{band.label}</h3>
+            <p>{band.meaning}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Invariants de sécurité</h2>
+      <div class="flow">
+        {blackproofSecurityInvariants.map((item) => (
+          <div class="flow-item"><strong>{item}</strong></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="notice">
+        BLACKPROOF est un outil d'aide à la structuration de preuves cyber.
+        Il ne fournit pas de certification NIS2, ReCyF ou ISO 27001, ne remplace pas un audit qualifié
+        et ne constitue pas un avis juridique.
+      </div>
+    </div>
+  </section>
+</BaseLayout>

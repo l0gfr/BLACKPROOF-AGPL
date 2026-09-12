@@ -1,0 +1,11 @@
+ID;Question;Owner;Comment
+Q1;Avez-vous activé le MFA pour les comptes administrateurs ?;IT;Contrôle critique demandé par le client
+Q2;Disposez-vous d'une procédure de sauvegarde documentée ?;IT;Fournir une synthèse, pas les chemins internes
+Q3;Testez-vous régulièrement la restauration des sauvegardes ?;IT;Preuve datée attendue
+Q4;Avez-vous une procédure de réponse à incident ?;Security;Procédure et chaîne d'escalade
+Q5;Disposez-vous d'un registre des fournisseurs critiques ?;Procurement;Extrait contrôlé recommandé
+Q6;Réalisez-vous des scans de vulnérabilités ou un suivi des correctifs ?;Security;Rapport expurgé ou backlog synthétique
+Q7;Collectez-vous et conservez-vous les journaux de sécurité ?;Security;Éviter l'export de logs bruts
+Q8;Disposez-vous d'un PRA ou PCA documenté ?;Operations;Résumé du périmètre et date de mise à jour
+Q9;Chiffrez-vous les données sensibles au repos et en transit ?;Engineering;Ne pas exposer de secrets ou clés
+Q10;Une politique de sécurité du système d'information est-elle formalisée ?;Management;Politique SSI ou extrait contrôlé

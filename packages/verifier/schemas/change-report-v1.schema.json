@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blackproof.fr/schemas/delivery-protocol/change-report-v1.schema.json",
+  "title": "BLACKPROOF Delivery Change Report V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["product", "formatVersion", "previous", "current", "case", "generatedAt", "summary", "changes", "fingerprint"],
+  "properties": {
+    "product": { "const": "BLACKPROOF" },
+    "formatVersion": { "const": "blackproof-delivery-change-report-v1" },
+    "previous": { "$ref": "#/$defs/deliveryReference" },
+    "current": { "$ref": "#/$defs/deliveryReference" },
+    "case": {
+      "type": "object", "additionalProperties": false, "required": ["title", "framework"],
+      "properties": { "title": { "type": "string", "minLength": 1, "maxLength": 160 }, "framework": { "type": "string", "minLength": 1, "maxLength": 240 } }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object", "additionalProperties": false, "required": ["added", "removed", "changed", "unchanged"],
+      "properties": { "added": { "type": "integer", "minimum": 0 }, "removed": { "type": "integer", "minimum": 0 }, "changed": { "type": "integer", "minimum": 0 }, "unchanged": { "type": "integer", "minimum": 0 } }
+    },
+    "changes": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/change" } },
+    "fingerprint": { "$ref": "#/$defs/fingerprint" }
+  },
+  "$defs": {
+    "fingerprint": { "type": "string", "pattern": "^bp_sha256_[a-f0-9]{64}$" },
+    "deliveryReference": {
+      "type": "object", "additionalProperties": false, "required": ["deliveryId", "fingerprint", "generatedAt"],
+      "properties": { "deliveryId": { "type": "string", "pattern": "^delivery_[a-f0-9]{32}$" }, "fingerprint": { "$ref": "#/$defs/fingerprint" }, "generatedAt": { "type": "string", "format": "date-time" } }
+    },
+    "change": {
+      "type": "object", "additionalProperties": false, "required": ["question", "kind"],
+      "properties": {
+        "question": { "type": "string", "minLength": 1, "maxLength": 10000 },
+        "kind": { "enum": ["added", "removed", "answer-changed", "reservation-changed", "evidence-changed"] },
+        "previousAnswer": { "type": "string", "maxLength": 10000 }, "currentAnswer": { "type": "string", "maxLength": 10000 },
+        "previousReservation": { "type": "string", "maxLength": 5000 }, "currentReservation": { "type": "string", "maxLength": 5000 },
+        "previousEvidence": { "type": "array", "maxItems": 250, "items": { "type": "string", "minLength": 1, "maxLength": 240 } }, "currentEvidence": { "type": "array", "maxItems": 250, "items": { "type": "string", "minLength": 1, "maxLength": 240 } }
+      },
+      "oneOf": [
+        { "properties": { "kind": { "const": "added" }, "previousAnswer": false, "currentAnswer": {}, "previousReservation": false, "currentReservation": {}, "previousEvidence": false, "currentEvidence": {} }, "required": ["currentAnswer", "currentEvidence"] },
+        { "properties": { "kind": { "const": "removed" }, "previousAnswer": {}, "currentAnswer": false, "previousReservation": {}, "currentReservation": false, "previousEvidence": {}, "currentEvidence": false }, "required": ["previousAnswer", "previousEvidence"] },
+        { "properties": { "kind": { "const": "answer-changed" }, "previousAnswer": {}, "currentAnswer": {}, "previousReservation": false, "currentReservation": false, "previousEvidence": false, "currentEvidence": false }, "required": ["previousAnswer", "currentAnswer"] },
+        { "properties": { "kind": { "const": "reservation-changed" }, "previousAnswer": false, "currentAnswer": false, "previousReservation": {}, "currentReservation": {}, "previousEvidence": false, "currentEvidence": false }, "anyOf": [{ "properties": { "previousReservation": {} }, "required": ["previousReservation"] }, { "properties": { "currentReservation": {} }, "required": ["currentReservation"] }] },
+        { "properties": { "kind": { "const": "evidence-changed" }, "previousAnswer": false, "currentAnswer": false, "previousReservation": false, "currentReservation": false, "previousEvidence": {}, "currentEvidence": {} }, "required": ["previousEvidence", "currentEvidence"] }
+      ]
+    }
+  }
+}

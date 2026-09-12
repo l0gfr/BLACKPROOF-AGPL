@@ -1,0 +1,295 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardIcon from "../components/ui/CardIcon.astro";
+
+const resourceGroups = [
+  {
+    eyebrow: "Découvrir",
+    icon: "book",
+    tone: "violet",
+    title: "Comprendre le produit",
+    text: "Les pages qui présentent le produit, ses limites et les situations dans lesquelles il aide à traiter un questionnaire cyber.",
+    links: [
+      ["Analyses cyber", "/analyses", "Faits, hypothèses, inconnues et sources"],
+      ["À propos", "/about", "Rôle du produit et limites"],
+      ["Cas d'usage", "/use-cases", "RSSI, fournisseur B2B, cabinet cyber"],
+      ["Pas un GRC", "/grc", "Page catégorie et différenciation"],
+      ["FAQ client", "/faq", "Compte, dossiers locaux et sauvegardes"],
+      ["Logiciel libre", "/open-source", "Licence AGPL et code source"],
+      ["Disponibilité", "/status", "Versions publiées et limites"]
+    ]
+  },
+  {
+    eyebrow: "Essayer",
+    icon: "play",
+    tone: "teal",
+    title: "Tester le parcours",
+    text: "Un chemin court pour partir d'un questionnaire, produire un dossier local et vérifier un livrable sans envoyer de secrets.",
+    links: [
+      ["Démarrer", "/start", "Parcours guidé"],
+      ["Retrouver mes dossiers", "/faq#retrouver-dossiers", "Même navigateur ou nouvel appareil"],
+      ["Démo", "/demo", "Scénario fictif prêt à tester"],
+      ["Importer", "/questionnaire-import", "CSV, TSV, texte ou XLSX"],
+      ["Dossier exemple", "/proofpack-example", "Aperçu concret des fichiers livrés"]
+    ]
+  },
+  {
+    eyebrow: "Vérifier",
+    icon: "verify",
+    tone: "gold",
+    title: "Documentation et sécurité",
+    text: "Les formats JSON, les règles de vérification, les justificatifs attendus et les mesures de sécurité du produit.",
+    links: [
+      ["Documentation technique", "/api", "Formats accessibles sans compte"],
+      ["Statut JSON", "/api/status.json", "Version et disponibilité"],
+      ["Schéma du dossier", "/api/proofpack/schema.json", "Format JSON versionné"],
+      ["Sécurité des données", "/security", "Données locales et absence de collecte"],
+      ["Mentions RGPD", "/rgpd", "Données, cookies, droits et contact"]
+    ]
+  }
+] as const;
+
+const machineReadable = [
+  ["Catalogue API", "/api/index.json"],
+  ["Statut public", "/api/status.json"],
+  ["Méthodologie", "/api/methodology.json"],
+  ["Bibliothèque de preuves", "/api/evidence-library.json"],
+  ["Référentiels", "/api/frameworks.json"],
+  ["Contrat d’import", "/api/questionnaire-import.json"],
+  ["Vérification", "/api/verify.json"],
+  ["Sitemap", "/sitemap.xml"],
+  ["Flux RSS des analyses", "/analyses/feed.xml"],
+  ["Robots", "/robots.txt"],
+  ["LLMs", "/llms.txt"]
+];
+---
+
+<BaseLayout
+  title="Ressources - BLACKPROOF"
+  description="Ressources BLACKPROOF pour découvrir le produit, tester le parcours, voir les fichiers livrés et consulter la documentation technique."
+>
+  <section class="hero resources-hero">
+    <div class="container resources-hero-grid">
+      <div>
+        <p class="eyebrow">Ressources</p>
+        <h1>Découvrez le produit, testez le parcours et ouvrez les fichiers livrés.</h1>
+        <p class="lead">
+          Retrouvez la démonstration, un dossier exemple, les offres, la sécurité des données
+          et la documentation technique au même endroit.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/start">Tester le parcours</a>
+          <a class="button" href="/grc">Comparer avec un GRC</a>
+          <a class="button" href="/proofpack-example">Voir le livrable</a>
+          <a class="button" href="/api">Documentation technique</a>
+        </div>
+      </div>
+
+      <aside class="resources-note" aria-label="Synthèse des ressources BLACKPROOF">
+        <span>Surface publique</span>
+        <strong>Des explications pour les utilisateurs. Des formats pour les équipes techniques.</strong>
+        <p>
+          BLACKPROOF publie ses pages clés, ses formats JSON et ses fichiers de démonstration
+          sans traceur, sans CDN et sans collecte cachée.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section resources-section">
+    <div class="container resources-grid">
+      {resourceGroups.map((group) => (
+        <article class="resource-panel">
+          <div class="resource-panel-head">
+            <CardIcon name={group.icon} tone={group.tone} />
+            <p class="eyebrow">{group.eyebrow}</p>
+          </div>
+          <h2>{group.title}</h2>
+          <p>{group.text}</p>
+          <div class="resource-links">
+            {group.links.map(([label, href, note]) => (
+              <a href={href}>
+                <strong>{label}</strong>
+                <span>{note}</span>
+              </a>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container machine-panel">
+      <div>
+        <p class="eyebrow">Pour les équipes techniques</p>
+        <h2>Les formats et fichiers publics restent accessibles directement.</h2>
+        <p>
+          Ces ressources facilitent l'audit, l'intégration et l'indexation sans créer
+          de dépendance à un service tiers.
+        </p>
+      </div>
+      <div class="machine-grid">
+        {machineReadable.map(([label, href]) => (
+          <a href={href}>{label}</a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .resources-hero {
+      padding-bottom: 1.5rem;
+    }
+
+    .resources-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.58fr);
+      gap: 1.4rem;
+      align-items: center;
+    }
+
+    .resources-note,
+    .resource-panel,
+    .machine-panel {
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+      box-shadow: var(--shadow-tight);
+    }
+
+    .resources-note {
+      padding: 1rem;
+    }
+
+    .resources-note span,
+    .resources-note strong {
+      display: block;
+      font-family: var(--font-display);
+    }
+
+    .resources-note span {
+      color: var(--accent);
+      font-size: 0.72rem;
+    }
+
+    .resources-note strong {
+      margin-top: 1rem;
+      color: var(--text);
+      font-size: 1.16rem;
+      line-height: 1.25;
+    }
+
+    .resources-note p,
+    .resource-panel p,
+    .machine-panel p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .resource-panel {
+      padding: 1rem;
+    }
+
+    .resource-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .resource-panel-head .eyebrow {
+      margin: 0;
+    }
+
+    .resource-links {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    .resource-links a,
+    .machine-grid a {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.035);
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .resource-links a {
+      display: block;
+      padding: 0.8rem;
+    }
+
+    .resource-links a:hover,
+    .machine-grid a:hover {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.055);
+      transform: translateY(-1px);
+    }
+
+    .resource-links strong,
+    .resource-links span {
+      display: block;
+    }
+
+    .resource-links span {
+      margin-top: 0.28rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.42;
+    }
+
+    .machine-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem;
+    }
+
+    .machine-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+
+    .machine-grid a {
+      min-height: 3.2rem;
+      display: grid;
+      place-items: center;
+      padding: 0.7rem;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.76rem;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 820px) {
+      .resources-hero-grid,
+      .resources-grid,
+      .machine-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .machine-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .machine-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

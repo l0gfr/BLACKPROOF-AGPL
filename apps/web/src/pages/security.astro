@@ -1,0 +1,461 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardIcon from "../components/ui/CardIcon.astro";
+
+const guarantees = [
+  {
+    kpi: "01",
+    icon: "shield",
+    tone: "teal",
+    title: "Traitement local",
+    text: "Les questionnaires, dossiers et ProofPacks sont manipulés dans le navigateur. Aucun envoi serveur n’est nécessaire pour créer ou vérifier un dossier."
+  },
+  {
+    kpi: "02",
+    icon: "key",
+    tone: "blue",
+    title: "Chiffrement local obligatoire",
+    text: "Tout nouveau dossier est stocké sous forme d’enveloppe AES-256-GCM dérivée d’une phrase secrète par PBKDF2-SHA-256. La phrase n’est ni stockée ni récupérable par BLACKPROOF."
+  },
+  {
+    kpi: "03",
+    icon: "eye-off",
+    tone: "violet",
+    title: "Aucun traceur",
+    text: "Pas de traceur navigateur, de pixel publicitaire, de télémétrie applicative ni de script tiers. La fréquentation est agrégée côté serveur dans un rapport privé, avec IP anonymisées et paramètres d’URL supprimés."
+  },
+  {
+    kpi: "04",
+    icon: "server-off",
+    tone: "gold",
+    title: "Actifs maîtrisés",
+    text: "Scripts, styles, polices et fichiers de démonstration sont servis par BLACKPROOF. Pas de CDN, pas de police distante."
+  },
+  {
+    kpi: "05",
+    icon: "braces",
+    tone: "blue",
+    title: "API lecture seule",
+    text: "Les routes publiques exposent des contrats, méthodes et schémas. Elles ne reçoivent pas de questionnaires ni de preuves sensibles."
+  },
+  {
+    kpi: "06",
+    icon: "toggle",
+    tone: "violet",
+    title: "Périmètre public borné",
+    text: "La base personnelle de formulations réutilisables n’est pas disponible dans la version publique actuelle."
+  }
+] as const;
+
+const controls = [
+  ["Dossiers chiffrés", "AES-256-GCM authentifié, sel et nonce aléatoires par sauvegarde, PBKDF2-SHA-256 avec 600 000 itérations pour toute nouvelle enveloppe ; lecture rétrocompatible des enveloppes historiques à 310 000."],
+  ["Base personnelle", "Indisponible dans la version publique actuelle ; aucune promesse de réutilisation inter-dossiers."],
+  ["HTTPS", "Redirection HTTP vers HTTPS sur la surface publique."],
+  ["CSP", "Politique stricte avec sources locales, hashes de scripts, frame-ancestors none et script-src-attr none."],
+  ["Connexion sortante", "Connexions réseau bloquées par connect-src 'none' ; les fichiers sont traités dans le navigateur."],
+  ["Cadres", "Interdiction d’intégration en frame pour réduire le risque de détournement d’interface."],
+  ["MIME", "nosniff actif sur les réponses publiques."],
+  ["Référent", "Politique de référent restrictive pour éviter les fuites inutiles."],
+  ["Navigateurs pris en charge", "Chrome et Edge Desktop. Firefox, Safari et les navigateurs mobiles ne sont pas pris en charge actuellement."]
+];
+
+const importRules = [
+  ["Formats", "TXT, MD, CSV, TSV et XLSX standard en import local."],
+  ["Refus XLSX", "XLS, macros VBA, objets OLE, ActiveX, packages intégrés et custom UI sont refusés."],
+  ["Limites", "Taille compressée et décompressée, ratio, entrées ZIP, feuilles, lignes, cellules et questions sont bornés."],
+  ["Formules", "Aucune formule n’est exécutée. Les valeurs mémorisées sont signalées question par question et les formules sans valeur sont ignorées."],
+  ["Contenu", "Le questionnaire est traité comme texte non fiable, jamais comme code."],
+  ["Données sensibles", "Les secrets, clés, tokens, journaux bruts et données personnelles inutiles doivent être retirés avant import."]
+];
+
+const boundaries = [
+  "Les anciens dossiers créés en clair doivent être migrés depuis leur éditeur. Toute nouvelle création, restauration ou sauvegarde complète impose désormais le chiffrement.",
+  "Une phrase secrète perdue ne peut pas être récupérée par BLACKPROOF.",
+  "Le parcours produit est actuellement supporté sur Chrome et Edge Desktop seulement.",
+  "Une approbation locale n’authentifie ni l’identité de l’approbateur ni l’applicabilité de la réponse à un nouveau client.",
+  "BLACKPROOF ne certifie pas une conformité réglementaire.",
+  "BLACKPROOF ne remplace pas un audit de sécurité qualifié.",
+  "BLACKPROOF ne doit pas recevoir de secrets inutiles dans les questionnaires importés.",
+  "BLACKPROOF aide à structurer un dossier de préparation, avec réserves explicites."
+];
+---
+
+<BaseLayout
+  title="Sécurité et confidentialité - BLACKPROOF"
+  description="Posture sécurité BLACKPROOF : traitement local, sans traceur, sans CDN, CSP stricte, import borné et API publique en lecture seule."
+>
+  <section class="hero security-hero">
+    <div class="container security-hero-grid">
+      <div>
+        <p class="eyebrow">Sécurité et confidentialité</p>
+        <h1>Une surface conçue pour ne pas collecter vos preuves.</h1>
+        <p class="lead">
+          BLACKPROOF suit une logique simple : traiter localement, limiter les dépendances,
+          borner les imports et rendre les livrables contrôlables.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/questionnaire-import">Importer localement</a>
+          <a class="button" href="/api">Voir les contrats API</a>
+          <a class="button" href="/verify">Vérifier un ProofPack</a>
+        </div>
+      </div>
+
+      <aside class="security-status" aria-label="Statut de sécurité BLACKPROOF">
+        <div class="status-head">
+          <span>Posture publique</span>
+          <strong>réduite par conception</strong>
+        </div>
+        <div class="status-grid">
+          <div><span>Traceurs</span><strong>0</strong></div>
+          <div><span>CDN</span><strong>0</strong></div>
+          <div><span>Import</span><strong>borné</strong></div>
+          <div><span>API</span><strong>lecture seule</strong></div>
+        </div>
+        <code>local → exporter → vérifier</code>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section security-section">
+    <div class="container section-header">
+      <p class="eyebrow">Garanties produit</p>
+      <h2>Garanties actives par défaut.</h2>
+    </div>
+
+    <div class="container guarantee-grid">
+      {guarantees.map((item) => (
+        <article class="guarantee-card">
+          <div class="guarantee-card-head">
+            <CardIcon name={item.icon} tone={item.tone} />
+            <span class="guarantee-kpi">{item.kpi}</span>
+          </div>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section controls-section">
+    <div class="container controls-panel">
+      <div>
+        <p class="eyebrow">Contrôles techniques</p>
+        <h2>Les promesses doivent se traduire en contraintes.</h2>
+        <p>
+          La surface publique est statique, servie avec des en-têtes restrictifs,
+          et les routes machine ne sont pas des points d’ingestion.
+        </p>
+      </div>
+
+      <div class="control-list">
+        {controls.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section import-section">
+    <div class="container import-panel">
+      <div>
+        <p class="eyebrow">Procédure d’import</p>
+        <h2>Un fichier fournisseur reste une entrée non fiable.</h2>
+        <p>
+          BLACKPROOF extrait des questions. Il ne doit jamais transformer un questionnaire,
+          une cellule CSV ou un texte collé en code exécutable.
+        </p>
+      </div>
+
+      <div class="import-rules">
+        {importRules.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section export-section">
+    <div class="container export-panel">
+      <div>
+        <p class="eyebrow">Exports contrôlés</p>
+        <h2>Le dossier partageable est une décision, pas un effet de bord.</h2>
+        <p>
+          L’utilisateur choisit les fichiers exportés : réponse fournisseur, registre des justificatifs,
+          plan d’actions, note de synthèse et dossier JSON avec empreinte de contrôle.
+        </p>
+      </div>
+      <div class="artifact-grid" role="list" aria-label="Livrables BLACKPROOF">
+        <span role="listitem">proofpack.json</span>
+        <span role="listitem">reponse-fournisseur.md</span>
+        <span role="listitem">registre-preuves.csv</span>
+        <span role="listitem">plan-remediation.csv</span>
+        <span role="listitem">note-synthese.md</span>
+        <span role="listitem">methodology.json</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section boundary-section">
+    <div class="container boundary-panel">
+      <div>
+        <p class="eyebrow">Limites assumées</p>
+        <h2>Précisément parce que le sujet est sensible.</h2>
+      </div>
+      <ul>
+        {boundaries.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <style>
+    .security-hero {
+      padding-bottom: 1.5rem;
+    }
+
+    .security-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(330px, 0.65fr);
+      gap: 1.4rem;
+      align-items: center;
+    }
+
+    .security-hero-grid > * {
+      min-width: 0;
+    }
+
+    .security-status {
+      min-width: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+      box-shadow: var(--shadow-tight);
+    }
+
+    .status-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.75rem;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+    }
+
+    .status-head strong {
+      color: var(--accent);
+      text-align: right;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin: 0.8rem 0;
+    }
+
+    .status-grid div {
+      min-height: 108px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .status-grid span,
+    .status-grid strong {
+      display: block;
+    }
+
+    .status-grid span {
+      color: var(--muted-2);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+    }
+
+    .status-grid strong {
+      margin-top: 1.2rem;
+      color: var(--text);
+      font-size: 1.25rem;
+    }
+
+    .security-status code {
+      display: block;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.6rem 0.7rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .section-header {
+      margin-bottom: 1rem;
+    }
+
+    .guarantee-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .guarantee-card {
+      position: relative;
+      min-height: 250px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.95), rgba(13, 17, 18, 0.95));
+      box-shadow: var(--shadow-tight);
+    }
+
+    .guarantee-card::after {
+      position: absolute;
+      inset: 0.8rem 0.8rem auto auto;
+      width: 1.65rem;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, transparent, currentColor);
+      color: var(--line-strong);
+    }
+
+    .guarantee-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .guarantee-card .guarantee-kpi {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+    }
+
+    .guarantee-card h3 {
+      margin-top: 1.1rem;
+      font-size: 1.2rem;
+    }
+
+    .guarantee-card p,
+    .controls-panel p,
+    .import-panel p,
+    .export-panel p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .controls-panel,
+    .import-panel,
+    .export-panel,
+    .boundary-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+      gap: 1.1rem;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .control-list,
+    .import-rules,
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .control-list article,
+    .import-rules article {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background: rgba(8, 11, 12, 0.45);
+    }
+
+    .control-list strong,
+    .control-list span,
+    .import-rules strong,
+    .import-rules span {
+      display: block;
+    }
+
+    .control-list strong,
+    .import-rules strong {
+      color: var(--text);
+    }
+
+    .control-list span,
+    .import-rules span {
+      margin-top: 0.55rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .artifact-grid span {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      background: rgba(8, 11, 12, 0.45);
+      overflow-wrap: anywhere;
+    }
+
+    .boundary-panel ul {
+      display: grid;
+      gap: 0.7rem;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .boundary-panel li {
+      border-left: 3px solid var(--accent);
+      padding: 0.65rem 0 0.65rem 0.8rem;
+      color: var(--muted);
+      line-height: 1.45;
+      background: rgba(121, 216, 200, 0.035);
+    }
+
+    @media (max-width: 1000px) {
+      .security-hero-grid,
+      .controls-panel,
+      .import-panel,
+      .export-panel,
+      .boundary-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .guarantee-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .guarantee-grid,
+      .status-grid,
+      .control-list,
+      .import-rules,
+      .artifact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .guarantee-card {
+        min-height: auto;
+      }
+    }
+  </style>
+</BaseLayout>

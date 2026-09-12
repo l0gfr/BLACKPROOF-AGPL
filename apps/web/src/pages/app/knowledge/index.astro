@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import AppSurface from "../../../components/app/AppSurface.svelte";
+---
+
+<BaseLayout
+  title="Base personnelle de réponses | BLACKPROOF"
+  description="Coffre local chiffré de formulations approuvées et réutilisables entre dossiers BLACKPROOF."
+>
+  <AppSurface surface="knowledge" client:load />
+</BaseLayout>

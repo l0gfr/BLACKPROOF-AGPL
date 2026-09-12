@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AppSurface from "../components/app/AppSurface.svelte";
+---
+
+<BaseLayout
+  title="Ajouter un questionnaire | BLACKPROOF"
+  description="Ajouter un questionnaire fournisseur dans BLACKPROOF, le vérifier localement puis ouvrir un dossier chiffré."
+>
+  <AppSurface surface="import" client:load />
+</BaseLayout>

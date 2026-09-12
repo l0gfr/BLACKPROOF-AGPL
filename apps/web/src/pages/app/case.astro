@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AppSurface from "../../components/app/AppSurface.svelte";
+---
+
+<BaseLayout
+  title="Rouvrir un dossier local | BLACKPROOF"
+  description="Rouvrir, éditer et réexporter un dossier BLACKPROOF sauvegardé localement."
+>
+  <AppSurface surface="case" client:load />
+</BaseLayout>

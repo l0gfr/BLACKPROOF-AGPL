@@ -1,0 +1,650 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blackproof.fr/schemas/proofpack/v1.schema.json",
+  "title": "BLACKPROOF ProofPack v1",
+  "description": "Dossier de preuve cyber lisible par machine, généré par BLACKPROOF.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "case",
+    "sourceQuestionnaire",
+    "questions",
+    "evidence",
+    "debts",
+    "summary",
+    "methodVersion",
+    "generatedAt",
+    "fingerprint"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revisionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "framework",
+        "createdAt",
+        "updatedAt",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "clientName": {
+          "type": "string"
+        },
+        "framework": {
+          "type": "string",
+          "minLength": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "ready",
+            "exported"
+          ]
+        }
+      }
+    },
+    "sourceQuestionnaire": {
+      "$ref": "#/$defs/sourceQuestionnaire"
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/question"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    },
+    "debts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/debt"
+      }
+    },
+    "deliveryHistory": {
+      "type": "array",
+      "maxItems": 250,
+      "items": {
+        "$ref": "#/$defs/deliveryHistoryEntry"
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "questionCount",
+        "evidenceCount",
+        "proofDebtCount",
+        "criticalDebtCount",
+        "highDebtCount",
+        "responseCompletenessScore",
+        "evidenceCoverageScore",
+        "evidenceQualityFreshnessScore",
+        "exportReadinessScore",
+        "proofDebtScore"
+      ],
+      "properties": {
+        "questionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidenceCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "proofDebtCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "criticalDebtCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "highDebtCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "responseCompletenessScore": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "evidenceCoverageScore": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "evidenceQualityFreshnessScore": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "exportReadinessScore": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "proofDebtScore": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "methodVersion": {
+      "type": "string",
+      "const": "blackproof-method-v0.1.0-alpha"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^bp_sha256_[a-f0-9]{64}$"
+    }
+  },
+  "$defs": {
+    "sourceQuestionnaire": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fileName",
+        "format",
+        "importedAt",
+        "sha256",
+        "size"
+      ],
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "enum": [
+            "text",
+            "csv",
+            "tsv",
+            "unknown"
+          ]
+        },
+        "importedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "normalizedQuestionnaireSha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "originalFileSha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "canonicalizationVersion": {
+          "enum": [
+            "blackproof-questionnaire-canonicalization-v1",
+            "blackproof-questionnaire-canonicalization-v2"
+          ],
+          "description": "Absent only on historical ProofPacks, where canonicalization v1 is implied."
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "caseId",
+        "text",
+        "category",
+        "criticality",
+        "mappedRequirements",
+        "suggestedAnswer",
+        "evidenceIds",
+        "confidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "caseId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "$ref": "#/$defs/proofCategory"
+        },
+        "criticality": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "mappedRequirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "suggestedAnswer": {
+          "type": "string"
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "answerText": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "answerReservation": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "answerConfidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "answerExportStatus": {
+          "enum": [
+            "draft",
+            "ready",
+            "reserved",
+            "do-not-export"
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "caseId",
+        "questionId",
+        "templateId",
+        "title",
+        "category",
+        "description",
+        "sensitivity",
+        "status",
+        "strength",
+        "recommendedFormat",
+        "linkedRequirements"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "caseId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "questionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "templateId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "$ref": "#/$defs/proofCategory"
+        },
+        "description": {
+          "type": "string"
+        },
+        "sensitivity": {
+          "enum": [
+            "public",
+            "internal",
+            "confidential",
+            "secret"
+          ]
+        },
+        "status": {
+          "enum": [
+            "expected",
+            "available",
+            "missing",
+            "expired",
+            "declared",
+            "not-exportable"
+          ]
+        },
+        "strength": {
+          "enum": [
+            "weak",
+            "medium",
+            "strong"
+          ]
+        },
+        "recommendedFormat": {
+          "type": "string"
+        },
+        "linkedRequirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "referenceType": {
+          "enum": [
+            "file",
+            "uri",
+            "source-record",
+            "document-hash"
+          ]
+        },
+        "referenceId": {
+          "type": "string"
+        },
+        "publicReference": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "exportMode": {
+          "enum": [
+            "internal-only",
+            "reference-only"
+          ]
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "fileUri": {
+          "type": "string"
+        },
+        "documentHash": {
+          "type": "string"
+        },
+        "sourceSystem": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "coveredScope": {
+          "type": "string"
+        },
+        "validator": {
+          "type": "string"
+        },
+        "validatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "controlResult": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "debt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "caseId",
+        "questionId",
+        "severity",
+        "reason",
+        "recommendedAction"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "ready-without-answer",
+            "incomplete-reservation",
+            "no-evidence",
+            "available-without-source",
+            "missing",
+            "expired-status",
+            "expired-by-date",
+            "incomplete-validation",
+            "declared",
+            "not-exportable"
+          ]
+        },
+        "caseId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "questionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceId": {
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recommendedAction": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "deliveryHistoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deliveryId",
+        "fingerprint",
+        "generatedAt",
+        "selectedQuestionIds",
+        "selectedEvidenceIds",
+        "filename",
+        "status"
+      ],
+      "properties": {
+        "deliveryId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^bp_sha256_[a-f0-9]{64}$"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "recipientLabel": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "confirmedBy": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "selectedQuestionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "selectedEvidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "questionMappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "masterQuestionId",
+              "deliveryQuestionId"
+            ],
+            "properties": {
+              "masterQuestionId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "deliveryQuestionId": {
+                "type": "string",
+                "pattern": "^question_[a-f0-9]{32}$"
+              }
+            }
+          }
+        },
+        "evidenceMappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "masterEvidenceId",
+              "deliveryEvidenceId"
+            ],
+            "properties": {
+              "masterEvidenceId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "deliveryEvidenceId": {
+                "type": "string",
+                "pattern": "^evidence_[a-f0-9]{32}$"
+              }
+            }
+          }
+        },
+        "snapshotSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "deliveryJson": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000000
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "status": {
+          "enum": [
+            "generated",
+            "sent",
+            "revoked"
+          ]
+        }
+      }
+    },
+    "proofCategory": {
+      "enum": [
+        "access-control",
+        "backup",
+        "incident-response",
+        "business-continuity",
+        "supplier-security",
+        "governance",
+        "logging-monitoring",
+        "vulnerability-management",
+        "data-protection",
+        "unknown"
+      ]
+    }
+  }
+}

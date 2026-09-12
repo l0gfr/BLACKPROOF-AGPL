@@ -1,0 +1,117 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  evidenceCategoryDefinitions,
+  getEvidenceLibraryItems,
+  getEvidenceLibrarySummary,
+} from "@blackproof/core";
+
+const items = getEvidenceLibraryItems();
+const summary = getEvidenceLibrarySummary();
+const categories = Object.entries(evidenceCategoryDefinitions);
+
+const sensitivityLabels: Record<string, string> = {
+  public: "publique",
+  internal: "interne",
+  confidential: "confidentielle",
+  secret: "secrète"
+};
+
+const strengthLabels: Record<string, string> = {
+  weak: "faible",
+  medium: "moyenne",
+  strong: "forte"
+};
+
+const categoryLabels: Record<string, string> = {
+  unknown: "À revoir"
+};
+
+const labelFor = (labels: Record<string, string>, value: string) => labels[value] ?? value;
+const labelOverride = (labels: Record<string, string>, value: string, fallback: string) => labels[value] ?? fallback;
+---
+
+<BaseLayout
+  title="Bibliothèque de preuves - BLACKPROOF"
+  description="Bibliothèque de preuves cyber attendues : MFA, sauvegardes, incidents, fournisseurs, logs, vulnérabilités et gouvernance."
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">{summary.version}</p>
+      <h1>La bibliothèque de preuves cyber.</h1>
+      <p class="lead">
+        BLACKPROOF transforme les réponses déclaratives en preuves attendues :
+        documents, procédures, registres, captures expurgées, rapports, tickets ou attestations.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="/app">Créer un ProofPack</a>
+        <a class="button" href="/evidence-library.json">Voir le JSON</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid three">
+      <h2 class="sr-only">Synthèse de la bibliothèque de preuves</h2>
+      <article class="card">
+        <p class="kpi">preuves</p>
+        <h3>{summary.itemCount}</h3>
+        <p>Preuves attendues versionnées dans la bibliothèque BLACKPROOF v0.1.</p>
+      </article>
+      <article class="card">
+        <p class="kpi">catégories</p>
+        <h3>{summary.categoryCount}</h3>
+        <p>Domaines cyber couverts : accès, sauvegardes, incidents, fournisseurs, logs, vulnérabilités, gouvernance.</p>
+      </article>
+      <article class="card">
+        <p class="kpi">principe</p>
+        <h3>traitement local</h3>
+        <p>La preuve peut être référencée ou résumée sans être envoyée côté serveur.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Catégories</h2>
+      <p class="lead">
+        Chaque catégorie indique quand la preuve est utile et quelles limites documenter avant export.
+      </p>
+
+      <div class="grid two">
+        {categories.map(([category, definition]) => (
+          <article class="card">
+            <p class="kpi">{category}</p>
+            <h3>{labelOverride(categoryLabels, category, definition.label)}</h3>
+            <p>{definition.useWhen}</p>
+            <p><strong>Limite :</strong> {definition.limitations}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Preuves attendues</h2>
+      <p class="lead">
+        Une preuve attendue n'est pas forcément exportable telle quelle. BLACKPROOF doit aider à produire
+        le bon niveau d'extrait, d'attestation ou de réserve.
+      </p>
+
+      <div class="grid three">
+        {items.map((item) => (
+          <article class="card">
+            <p class="kpi">{item.category}</p>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+            <p><strong>Sensibilité :</strong> {labelFor(sensitivityLabels, item.sensitivity)}</p>
+            <p><strong>Force :</strong> {labelFor(strengthLabels, item.strength)}</p>
+            <p><strong>Format :</strong> {item.recommendedFormat}</p>
+            <p><strong>Mapping :</strong> {item.mappedRequirements.join(", ")}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

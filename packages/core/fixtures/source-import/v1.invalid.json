@@ -1,0 +1,26 @@
+{
+  "formatVersion": "blackproof-source-import-v1",
+  "caseId": "case_fixture",
+  "sourceQuestionnaire": {
+    "fileName": "security.csv",
+    "format": "csv",
+    "importedAt": "not-a-date",
+    "sha256": "invalid",
+    "originalFileSha256": "invalid",
+    "size": -1
+  },
+  "profile": "blackproof-xlsx-import-v1",
+  "sourceFormat": "xlsx",
+  "selectedSheet": "",
+  "selectedColumn": 0,
+  "formulaCount": 0,
+  "formulaWithoutCachedValueCount": 1,
+  "hiddenSheetCount": 0,
+  "externalLinkPartCount": 0,
+  "externalRelationshipCount": 0,
+  "connectionPartCount": 0,
+  "queryTablePartCount": 0,
+  "warnings": [],
+  "questionSources": [],
+  "ignoredFormulaCells": []
+}

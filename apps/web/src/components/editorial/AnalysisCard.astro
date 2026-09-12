@@ -1,0 +1,125 @@
+---
+import type { AnalysisEntry } from "../../lib/analyses";
+import { formatAnalysisDate, getAnalysisPath } from "../../lib/analyses";
+
+interface Props {
+  entry: AnalysisEntry;
+  featured?: boolean;
+}
+
+const { entry, featured = false } = Astro.props;
+const { data } = entry;
+---
+
+<article class:list={["analysis-card", { "analysis-card-featured": featured }]}>
+  <div class="analysis-card-meta">
+    <span>{data.category}</span>
+    <span>{data.format}</span>
+  </div>
+  <h2><a href={getAnalysisPath(entry)}>{data.title}</a></h2>
+  <p>{data.description}</p>
+  <div class="analysis-card-footer">
+    <time datetime={data.publishedAt.toISOString()}>{formatAnalysisDate(data.publishedAt)}</time>
+    <span>{data.readingMinutes} min de lecture</span>
+    <a class="analysis-card-link" href={getAnalysisPath(entry)} aria-label={`Lire l’analyse : ${data.title}`}>
+      Lire l’analyse
+    </a>
+  </div>
+</article>
+
+<style>
+  .analysis-card {
+    position: relative;
+    display: grid;
+    gap: 0.9rem;
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.25rem, 2.5vw, 1.8rem);
+    background:
+      linear-gradient(145deg, rgba(25, 34, 31, 0.9), rgba(10, 14, 14, 0.92));
+    box-shadow: var(--shadow-tight);
+  }
+
+  .analysis-card::before {
+    position: absolute;
+    top: -1px;
+    left: 1.5rem;
+    width: 4.2rem;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    content: "";
+  }
+
+  .analysis-card-featured {
+    grid-column: 1 / -1;
+    padding: clamp(1.45rem, 3vw, 2.2rem);
+    background:
+      radial-gradient(circle at 92% 8%, rgba(129, 218, 203, 0.09), transparent 22rem),
+      linear-gradient(145deg, rgba(25, 34, 31, 0.94), rgba(10, 14, 14, 0.94));
+  }
+
+  .analysis-card-meta,
+  .analysis-card-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.9rem;
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .analysis-card-meta span:first-child {
+    color: var(--accent);
+  }
+
+  h2 {
+    max-width: 840px;
+    margin: 0;
+    font-size: clamp(1.4rem, 2.35vw, 2rem);
+  }
+
+  h2 a {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.16em;
+    transition: color 160ms ease, text-decoration-color 160ms ease;
+  }
+
+  h2 a:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
+  p {
+    max-width: 780px;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .analysis-card-footer {
+    padding-top: 0.25rem;
+  }
+
+  .analysis-card-link {
+    margin-left: auto;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-weight: 650;
+  }
+
+  .analysis-card-link::after {
+    content: "  ›";
+    color: var(--accent);
+  }
+
+  @media (max-width: 620px) {
+    .analysis-card-link {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+</style>

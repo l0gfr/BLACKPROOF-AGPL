@@ -1,0 +1,403 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const categoryRows = [
+  {
+    category: "GRC",
+    job: "Piloter un programme de conformité, des contrôles, des responsables et des plans d'audit.",
+    buyer: "RSSI, conformité, audit interne, risk manager.",
+    output: "Tableaux de bord, workflows, contrôles, politiques, attestations de suivi.",
+    blackproof: "BLACKPROOF ne remplace pas ce pilotage. Il produit le dossier exportable qui peut alimenter ou compléter ce programme."
+  },
+  {
+    category: "Automatisation des questionnaires",
+    job: "Répondre plus vite à des portails et fichiers en réutilisant une base de réponses.",
+    buyer: "Sales engineering, security operations, équipes trust.",
+    output: "Réponses suggérées, knowledge base, collaboration, suivi des questionnaires.",
+    blackproof: "BLACKPROOF ajoute les justificatifs attendus, les réserves, les informations sensibles et les points encore incomplets."
+  },
+  {
+    category: "BLACKPROOF",
+    job: "Transformer un questionnaire cyber en dossier de travail et en version client vérifiable.",
+    buyer: "Fournisseur B2B, cabinet cyber, RSSI ou équipe achats chargée d’évaluer un fournisseur.",
+    output: "Réponse fournisseur, registre des justificatifs, points à corriger, plan d’actions, synthèse et empreinte vérifiable.",
+    blackproof: "BLACKPROOF prépare les fichiers à transmettre sans envoyer vos documents sensibles vers un serveur."
+  }
+];
+
+const proofDossier = [
+  ["Explicite", "Les réserves et limites sont visibles avant transmission."],
+  ["Portable", "Le livrable reste lisible hors plateforme : Markdown, CSV, JSON, manifeste."],
+  ["Empreinte", "Le fichier proofpack.json embarque une empreinte contrôlable localement."],
+  ["Données locales", "Les documents sensibles restent dans votre navigateur."],
+  ["Réutilisable", "Le premier dossier devient une base de revue pour les demandes suivantes."],
+  ["Borné", "BLACKPROOF ne promet pas certification, conformité automatique ou audit officiel."]
+];
+
+const whenToChoose = [
+  {
+    title: "Choisir un GRC",
+    signal: "Vous devez gérer un programme complet, des owners, des politiques, des contrôles récurrents et des audits internes.",
+    outcome: "Vous structurez la gouvernance et les opérations de conformité sur la durée."
+  },
+  {
+    title: "Choisir une automation questionnaire",
+    signal: "Vous avez surtout besoin de répondre plus vite aux mêmes questions et de maintenir une base de réponses.",
+    outcome: "Vous réduisez le temps de remplissage des portails et fichiers client."
+  },
+  {
+    title: "Choisir BLACKPROOF",
+    signal: "Une revue réelle bloque une vente, un audit, une assurance ou un renouvellement, et les preuves sont sensibles ou dispersées.",
+    outcome: "Vous produisez un dossier transmissible avec réserves, points à corriger et empreinte vérifiable."
+  }
+];
+
+const antiPatterns = [
+  ["Vous cherchez une certification automatique", "BLACKPROOF n'est pas une autorité de certification."],
+  ["Vous voulez tout centraliser dans un coffre serveur", "BLACKPROOF traite les documents exclusivement sur votre appareil."],
+  ["Vous avez besoin d'un workflow GRC généraliste", "BLACKPROOF peut compléter ce workflow, pas le remplacer."],
+  ["Vous voulez masquer les limites du dossier", "BLACKPROOF rend les réserves explicites pour éviter la fausse assurance."]
+];
+
+const productSteps = [
+  ["01", "Partir d'un questionnaire réel", "Une demande client, un audit, une assurance ou une évaluation fournisseur."],
+  ["02", "Recenser les justificatifs", "Disponibles, déclaratifs, manquants, périmés, sensibles ou non partageables."],
+  ["03", "Produire le dossier", "Réponse fournisseur, registre, points à corriger, plan d’actions, synthèse et JSON."],
+  ["04", "Vérifier", "Contrôler localement la cohérence et l’empreinte avant transmission."]
+];
+---
+
+<BaseLayout
+  title="BLACKPROOF n'est pas un GRC"
+  description="Un GRC pilote un programme de conformité. BLACKPROOF prépare les réponses et fichiers à transmettre pour un questionnaire cyber client."
+>
+  <section class="hero grc-hero">
+    <div class="container grc-hero-grid">
+      <div>
+        <p class="eyebrow">Comparaison avec un GRC</p>
+        <h1>Un GRC pilote la conformité. BLACKPROOF prépare le dossier à transmettre.</h1>
+        <p class="lead">
+          BLACKPROOF ne gère pas l’ensemble du programme de conformité d’une entreprise.
+          Il aide à répondre à un questionnaire, recenser les justificatifs, protéger les informations
+          sensibles et produire les fichiers destinés au client.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/proofpack-example">Voir un dossier livré</a>
+          <a class="button" href="/app">Créer un dossier local</a>
+          <a class="button" href="/open-source">Découvrir le logiciel libre</a>
+        </div>
+      </div>
+
+      <aside class="position-card" aria-label="Différence entre un GRC et BLACKPROOF">
+        <span>La différence</span>
+        <strong>Programme vs dossier</strong>
+        <p>
+          Le GRC organise la gouvernance. BLACKPROOF prépare le dossier qui doit tenir
+          devant un client, un auditeur, un assureur ou une équipe achats.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container category-table" role="table" aria-label="Comparaison GRC, questionnaire automation et BLACKPROOF">
+      <div class="category-row head">
+        <span>Catégorie</span>
+        <span>Travail principal</span>
+        <span>Acheteur naturel</span>
+        <span>Sortie typique</span>
+        <span>Rôle BLACKPROOF</span>
+      </div>
+      {categoryRows.map((row) => (
+        <article class:list={["category-row", { highlight: row.category === "BLACKPROOF" }]}>
+          <strong>{row.category}</strong>
+          <p>{row.job}</p>
+          <p>{row.buyer}</p>
+          <p>{row.output}</p>
+          <p>{row.blackproof}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container proof-dossier-panel">
+      <div>
+        <p class="eyebrow">Le produit réel</p>
+        <h2>BLACKPROOF produit des fichiers, pas un tableau de bord de gouvernance.</h2>
+        <p>
+          Le livrable doit pouvoir être ouvert, relu, transmis, expurgé et contrôlé.
+          C'est cette contrainte qui distingue BLACKPROOF d'une plateforme de gouvernance.
+        </p>
+      </div>
+      <div class="proof-dossier-grid">
+        {proofDossier.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container choice-panel">
+      <div>
+        <p class="eyebrow">Choisir le bon outil</p>
+        <h2>Le choix dépend du travail à accomplir.</h2>
+      </div>
+      <div class="choice-grid">
+        {whenToChoose.map((item) => (
+          <article>
+            <strong>{item.title}</strong>
+            <p>{item.signal}</p>
+            <span>{item.outcome}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container anti-pattern-panel">
+      <div>
+        <p class="eyebrow">Limites assumées</p>
+        <h2>Les limites du produit sont explicites.</h2>
+        <p>
+          BLACKPROOF est plus fort quand il ne se présente pas comme un GRC complet,
+          une certification automatique ou un coffre central de preuves sensibles.
+        </p>
+      </div>
+      <div class="anti-pattern-list">
+        {antiPatterns.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container pilot-flow">
+      <div>
+        <p class="eyebrow">Parcours BLACKPROOF</p>
+        <h2>Traitez un questionnaire client réel dans votre navigateur.</h2>
+      </div>
+      <div class="pilot-flow-grid">
+        {productSteps.map(([id, title, text]) => (
+          <article>
+            <span>{id}</span>
+            <strong>{title}</strong>
+            <small>{text}</small>
+          </article>
+        ))}
+      </div>
+      <div class="pilot-cta">
+        <a class="button primary" href="/open-source">Découvrir le code source</a>
+        <a class="button" href="/demo">Voir la démo guidée</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .grc-hero {
+      padding-bottom: 1.4rem;
+    }
+
+    .grc-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.58fr);
+      gap: 1.3rem;
+      align-items: center;
+    }
+
+    .position-card,
+    .category-table,
+    .proof-dossier-panel,
+    .choice-panel,
+    .anti-pattern-panel,
+    .pilot-flow {
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow: var(--shadow-tight);
+    }
+
+    .position-card {
+      padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+    }
+
+    .position-card span,
+    .position-card strong,
+    .proof-dossier-grid strong,
+    .proof-dossier-grid span,
+    .anti-pattern-list strong,
+    .anti-pattern-list span,
+    .pilot-flow-grid span,
+    .pilot-flow-grid strong,
+    .pilot-flow-grid small {
+      display: block;
+    }
+
+    .position-card span,
+    .pilot-flow-grid span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    .position-card strong {
+      margin-top: 1rem;
+      color: var(--text);
+      font-size: 1.3rem;
+      line-height: 1.2;
+    }
+
+    .position-card p,
+    .proof-dossier-panel p,
+    .choice-grid p,
+    .anti-pattern-panel p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .category-table {
+      overflow: hidden;
+    }
+
+    .category-row {
+      display: grid;
+      grid-template-columns: 0.72fr 1.2fr 1fr 1.15fr 1.25fr;
+      gap: 0.85rem;
+      align-items: stretch;
+      border-top: 1px solid var(--line);
+      padding: 0.9rem;
+    }
+
+    .category-row:first-child {
+      border-top: 0;
+    }
+
+    .category-row.head {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      background: rgba(121, 216, 200, 0.065);
+    }
+
+    .category-row.highlight {
+      background: rgba(121, 216, 200, 0.055);
+    }
+
+    .category-row strong {
+      color: var(--text);
+      font-family: var(--font-display);
+    }
+
+    .category-row p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .proof-dossier-panel,
+    .anti-pattern-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.64fr) minmax(0, 1.36fr);
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem;
+    }
+
+    .proof-dossier-grid,
+    .anti-pattern-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .proof-dossier-grid article,
+    .choice-grid article,
+    .anti-pattern-list article,
+    .pilot-flow-grid article {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background: rgba(8, 11, 12, 0.48);
+    }
+
+    .proof-dossier-grid strong,
+    .choice-grid strong,
+    .anti-pattern-list strong,
+    .pilot-flow-grid strong {
+      color: var(--text);
+    }
+
+    .proof-dossier-grid span,
+    .choice-grid span,
+    .anti-pattern-list span,
+    .pilot-flow-grid small {
+      margin-top: 0.48rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .choice-panel,
+    .pilot-flow {
+      display: grid;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .pilot-flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .pilot-flow-grid strong {
+      margin-top: 0.55rem;
+    }
+
+    .pilot-cta {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .category-table {
+        overflow-x: auto;
+      }
+
+      .category-row {
+        min-width: 920px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .grc-hero-grid,
+      .proof-dossier-panel,
+      .choice-grid,
+      .anti-pattern-panel,
+      .proof-dossier-grid,
+      .anti-pattern-list,
+      .pilot-flow-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

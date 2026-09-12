@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import AppSurface from "../../../components/app/AppSurface.svelte";
+---
+
+<BaseLayout
+  title="Dossiers locaux | BLACKPROOF"
+  description="Dossiers BLACKPROOF sauvegardés localement dans le navigateur."
+>
+  <AppSurface surface="cases" client:load />
+</BaseLayout>

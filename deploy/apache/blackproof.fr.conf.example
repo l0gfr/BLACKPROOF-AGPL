@@ -1,0 +1,192 @@
+# BLACKPROOF Apache 2 VirtualHost example
+#
+# Install as:
+#   /etc/apache2/sites-available/blackproof.fr.conf
+#
+# Enable modules:
+#   sudo a2enmod ssl headers rewrite expires deflate auth_basic authn_file alias
+#
+# Enable site:
+#   sudo a2ensite blackproof.fr.conf
+#   sudo apache2ctl configtest
+#   sudo systemctl reload apache2
+
+<VirtualHost *:80>
+    ServerName blackproof.fr
+    ServerAlias www.blackproof.fr
+
+    RewriteEngine On
+
+    RewriteRule ^ https://blackproof.fr%{REQUEST_URI} [R=308,END,NE]
+
+    ErrorLog ${APACHE_LOG_DIR}/blackproof-http-error.log
+    CustomLog ${APACHE_LOG_DIR}/blackproof-http-access.log combined
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName blackproof.fr
+    ServerAlias www.blackproof.fr
+
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} !^blackproof\.fr$ [NC]
+    RewriteRule ^ https://blackproof.fr%{REQUEST_URI} [R=308,END,NE]
+
+    DocumentRoot /var/www/html/blackproof
+    DirectoryIndex index.html
+
+    SSLEngine on
+    SSLProtocol -all +TLSv1.2 +TLSv1.3
+    SSLCertificateFile /etc/letsencrypt/live/blackproof.fr/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/blackproof.fr/privkey.pem
+
+    # Retired dynamic namespace: never proxy it or treat absence as an active status.
+    RewriteRule ^/api/license(?:/|$) - [R=410,END]
+
+    # Private GoAccess report generated from Apache logs. This directory is
+    # outside the public Astro artifact and is never written by Apache.
+    Alias "/stats/" "/var/www/html/blackproof-stats/"
+    <Directory /var/www/html/blackproof-stats>
+        Options -Indexes -ExecCGI -FollowSymLinks
+        AllowOverride None
+        AuthType Basic
+        AuthName "BLACKPROOF private statistics"
+        AuthBasicProvider file
+        AuthUserFile /etc/apache2/blackproof-stats.htpasswd
+        Require valid-user
+    </Directory>
+    <Location "/stats/">
+        Header onsuccess unset Cache-Control
+        Header always unset Cache-Control
+        Header always set Cache-Control "private, no-store, max-age=0"
+        Header onsuccess unset X-Robots-Tag
+        Header always unset X-Robots-Tag
+        Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+
+        # GoAccess externalizes its main assets but still requires inline style
+        # and script execution. Keep this exception scoped to the authenticated
+        # report; the public application retains its hash-only CSP below.
+        Header onsuccess unset Content-Security-Policy
+        Header always unset Content-Security-Policy
+        Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; font-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+    </Location>
+
+    <Directory /var/www/html/blackproof>
+        Options -Indexes -FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    # Never let accidental source, secret, backup or editor files reach the
+    # existing-file fast path or SPA fallback.
+    RewriteCond %{REQUEST_URI} (^|/)\.
+    RewriteRule ^ - [R=404,END]
+
+    # Compressed bundles can hide documents and credentials from plaintext
+    # artifact scanning. The generated, inventory-checked public Delivery demo
+    # is the only archive allowed through this static origin.
+    RewriteCond %{REQUEST_URI} !^/demo/proofpack-delivery-demo\.zip$ [NC]
+    RewriteCond %{REQUEST_URI} \.(?:zip|7z|rar|tar|tgz|gz|bz2|xz|zst|br|jar|war|dmg|iso)$ [NC]
+    RewriteRule ^ - [R=404,END]
+
+    RewriteCond %{REQUEST_URI} \.(?:map|pem|key|env|log|sqlite|db|bak|old|orig|tmp|swp|ts|tsx|mjs|cjs|svelte|astro)$ [NC]
+    RewriteRule ^ - [R=404,END]
+
+    # This origin has no writable application endpoint or document receiver.
+    RewriteCond %{REQUEST_METHOD} !^(GET|HEAD|OPTIONS)$
+    RewriteRule ^ - [R=405,END]
+
+    # Operational build artifacts must never reach the public origin. Keep this
+    # rule before existing-file handling and the static app fallback.
+    RewriteCond %{REQUEST_URI} ^/deploy(?:/|$)
+    RewriteRule ^ - [R=404,END]
+
+    # Redirect retired access pages before existing files and the SPA fallback.
+    RewriteRule ^/(?:pilot|pricing)/?$ /open-source/ [R=308,END,NE]
+    RewriteRule ^/legal/(?:pilot-order|conditions-solo)/?$ /open-source/ [R=308,END,NE]
+    RewriteRule ^/legal/conditions-solo\.txt$ /LICENSE.txt [R=308,END,NE]
+    RewriteRule ^/access/?$ /app/ [R=308,END,NE]
+    RewriteRule ^/account/?$ /app/cases/ [R=308,END,NE]
+
+    # Keep the authenticated Alias out of the Astro SPA fallback. Hidden files
+    # and forbidden suffixes above remain blocked before this bypass.
+    RewriteRule ^/stats$ /stats/ [R=308,END,NE]
+    RewriteCond %{REQUEST_URI} ^/stats/
+    RewriteRule ^ - [END]
+
+    # Hard stop unknown API paths before the SPA fallback. Keep the static API
+    # contract routes and the human /api page reachable.
+    RedirectMatch 404 "^/api/(?!index\.html$|index\.json$|status\.json$|methodology\.json$|evidence-library\.json$|frameworks\.json$|proofdebt\.json$|questionnaire-import\.json$|verify\.json$|proofpack/schema\.json$).+"
+
+    # Serve existing files and directories directly.
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+    RewriteRule ^ - [END]
+
+    # The old non-fingerprinted navigation script must not be served by the SPA fallback.
+    RewriteCond %{REQUEST_URI} ^/blackproof-nav\.js$
+    RewriteRule ^ - [R=404,END]
+
+    # API routes must never fall back to HTML. Unknown /api/* paths return a real 404.
+    RewriteCond %{REQUEST_URI} ^/api(?:/|$)
+    RewriteRule ^ - [R=404,END]
+
+    # Schema registry routes must never fall back to HTML. Unknown versions are 404.
+    RewriteCond %{REQUEST_URI} ^/schemas(?:/|$)
+    RewriteRule ^ - [R=404,END]
+
+    # Static app fallback.
+    RewriteRule ^ /index.html [END]
+
+    # Security headers.
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set X-Frame-Options "DENY"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), clipboard-read=(), clipboard-write=(self)"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Cross-Origin-Resource-Policy "same-origin"
+
+    # Browser interoperability is opt-in only for public, non-sensitive format
+    # contracts. Wildcard origins are safe here because credentials are absent.
+    <LocationMatch "^/(?:schemas/proofpack/v[0-9]+\.schema\.json|schemas/proofpack-delivery/v[0-9]+\.schema\.json|schemas/delivery-protocol/[a-z0-9-]+\.schema\.json|schemas/source-import/v[0-9]+\.schema\.json|canonicalization-vectors\.json|proofpack-delivery-schema\.json|questionnaire-import\.json|api/questionnaire-import\.json|api/proofpack/schema\.json)$">
+        Header always set Access-Control-Allow-Origin "*"
+        Header always set Cross-Origin-Resource-Policy "cross-origin"
+        Header always unset Access-Control-Allow-Credentials
+    </LocationMatch>
+
+    # Enable only after HTTPS is confirmed stable.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    # Enforced CSP.
+    # Do not copy this file directly after a build. Render it from the published artifact with:
+    #   pnpm csp:render-apache-conf
+    Header always set Content-Security-Policy "__BLACKPROOF_CSP__" "expr=%{REQUEST_URI} !~ m#^/stats/#"
+
+    # Keep non-fingerprinted scripts and styles revalidatable.
+    <FilesMatch "\.(?:js|css)$">
+        Header set Cache-Control "public, max-age=300, must-revalidate"
+    </FilesMatch>
+
+    # Long cache only for Astro/Vite fingerprinted assets.
+    <LocationMatch "^/_astro/.*\.(?:js|css|png|jpg|jpeg|gif|svg|ico|webp|woff2?)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </LocationMatch>
+
+    # Public static media can be cached but must remain revalidatable unless fingerprinted.
+    <FilesMatch "\.(?:png|jpg|jpeg|gif|svg|ico|webp|woff2?)$">
+        Header set Cache-Control "public, max-age=86400, must-revalidate"
+    </FilesMatch>
+
+    # Keep HTML and JSON fresh.
+    <FilesMatch "\.(?:html|json)$">
+        Header set Cache-Control "no-store"
+    </FilesMatch>
+
+    # Advertise versioned and Delivery JSON Schema documents with their registered media type.
+    <FilesMatch "(?:\.schema\.json|^proofpack-delivery-schema\.json)$">
+        ForceType application/schema+json
+        Header set Cache-Control "no-store"
+    </FilesMatch>
+
+    ErrorLog ${APACHE_LOG_DIR}/blackproof-error.log
+    CustomLog ${APACHE_LOG_DIR}/blackproof-access.log combined
+</VirtualHost>

@@ -1,0 +1,54 @@
+{
+  "id": "proofpack_bundle_demo_northstar_saas_20260710",
+  "title": "ProofPack public demo - Northstar SaaS",
+  "caseId": "case_demo_northstar_saas",
+  "generatedAt": "2026-07-10T00:00:00.000Z",
+  "files": [
+    {
+      "path": "/demo/proofpack-demo.json",
+      "role": "machine_contract",
+      "description": "ProofPack machine-readable avec schema, liens, resume et empreinte.",
+      "size": 7730,
+      "sha256": "05d0482adadd94cbd72bdfecfad40d8bc219453f1de070df6ba5f829124a1cfe"
+    },
+    {
+      "path": "/demo/reponse-fournisseur-demo.md",
+      "role": "supplier_answer",
+      "description": "Reponse fournisseur relisible, avec reserves explicites.",
+      "size": 1488,
+      "sha256": "5fbb3b4757f3f6ffff479364e117cf846276b705735e82f7c48f25face49481b"
+    },
+    {
+      "path": "/demo/registre-preuves-demo.csv",
+      "role": "evidence_register",
+      "description": "Registre de preparation des preuves, sensibilites, statuts et formats recommandes.",
+      "size": 1383,
+      "sha256": "119d94c95d1178e3a2a037fd68bde964518b3ee6e508e72f19db766ca48a495b"
+    },
+    {
+      "path": "/demo/plan-remediation-demo.csv",
+      "role": "proofdebt_plan",
+      "description": "Plan de reduction de dette de preuve.",
+      "size": 569,
+      "sha256": "87963c084780ced2da85eb344bc892fc994f4f29215d18d6409a5d7b874c1730"
+    },
+    {
+      "path": "/demo/note-synthese-demo.md",
+      "role": "executive_summary",
+      "description": "Synthese humaine avant transmission.",
+      "size": 1088,
+      "sha256": "f5e4ab064618fe64e9ffdd4faab49d85d64e6172e5a5dabf19e0fa6f35d649f9"
+    }
+  ],
+  "verification": {
+    "page": "/verify",
+    "schema": "/schemas/proofpack/v3.schema.json",
+    "fingerprint": "bp_sha256_a17d26a938c11c33fa985280ff14b9192af54ed5f2e3e4aab44a084bab57cfa9"
+  },
+  "limits": [
+    "Demo fictive",
+    "Pas une certification",
+    "Pas un audit officiel",
+    "Pas une preuve d'identite de l'emetteur"
+  ]
+}

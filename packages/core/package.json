@@ -1,0 +1,23 @@
+{
+  "name": "@blackproof/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.2 <23"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./migrations": "./src/migrations.ts"
+  },
+  "types": "./src/index.ts",
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  },
+  "license": "AGPL-3.0-only"
+}

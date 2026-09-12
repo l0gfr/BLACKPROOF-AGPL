@@ -1,0 +1,52 @@
+{
+  "name": "blackproof",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.2 <23"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @blackproof/web dev",
+    "build": "pnpm schema:check && pnpm vectors:check && pnpm --filter @blackproof/web build && node scripts/prepare-deploy-dist.mjs",
+    "preview": "pnpm --filter @blackproof/web preview",
+    "check": "pnpm quality:lint && pnpm schema:check && pnpm vectors:check && pnpm -r --if-present check",
+    "test": "pnpm -r --if-present test && node --test scripts/astro-security-regression.test.mjs scripts/secret-scan.test.mjs scripts/public-wording.test.mjs scripts/stats-deployment.test.mjs scripts/check-production-workflow-config.test.mjs scripts/classify-release-scope.test.mjs scripts/check-editorial-content.test.mjs scripts/production-promotion.test.mjs scripts/release-component-snapshot.test.mjs",
+    "test:e2e": "pnpm build && playwright test",
+    "verify:all": "pnpm check && pnpm test && pnpm build && pnpm open-source:check && pnpm artifact:security-test && pnpm audit && pnpm security:audit && pnpm exec playwright test --workers=1",
+    "quality:lint": "oxlint --deny-warnings . && oxlint -c .oxlintrc.type-aware.json --tsconfig packages/core/tsconfig.json --deny-warnings packages/core/src",
+    "csp:build-header": "node scripts/extract-build-csp.mjs",
+    "csp:render-apache-conf": "node scripts/render-apache-conf.mjs",
+    "artifact:manifest": "node scripts/create-deploy-manifest.mjs",
+    "artifact:sbom": "node scripts/create-sbom.mjs",
+    "artifact:bundle": "node scripts/create-production-bundle.mjs",
+    "artifact:bundle-verify": "node scripts/verify-production-bundle.mjs",
+    "artifact:security-test": "node --test scripts/release-artifact-security.test.mjs",
+    "security:audit": "node scripts/check-secrets.mjs && node scripts/security-audit.mjs",
+    "editorial:source-check": "node scripts/check-editorial-content.mjs --source",
+    "editorial:dist-check": "node scripts/check-editorial-content.mjs --dist",
+    "editorial:gate": "pnpm editorial:source-check && pnpm build && pnpm editorial:dist-check && pnpm security:audit",
+    "editorial:e2e": "playwright test tests/e2e/editorial-generic.spec.ts --project=chromium --workers=1",
+    "contract:smoke": "node scripts/check-public-proofpack-contract.mjs",
+    "notices:generate": "node scripts/generate-third-party-notices.mjs",
+    "schema:generate": "node scripts/generate-proofpack-validator.mjs",
+    "schema:check": "node scripts/generate-proofpack-validator.mjs --check",
+    "vectors:generate": "node scripts/generate-canonicalization-vectors.mjs",
+    "vectors:check": "node scripts/generate-canonicalization-vectors.mjs --check",
+    "open-source:check": "node scripts/check-open-source-build.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "esbuild": "0.28.1",
+    "jszip": "3.10.1",
+    "oxlint": "1.77.0",
+    "oxlint-tsgolint": "7.0.2001",
+    "typescript": "^6.0.3",
+    "vite": "8.2.1",
+    "vitest": "4.1.11"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "license": "AGPL-3.0-only"
+}

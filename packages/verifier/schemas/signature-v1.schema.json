@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blackproof.fr/schemas/delivery-protocol/signature-v1.schema.json",
+  "title": "BLACKPROOF Delivery Detached Signature V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["product", "formatVersion", "subjectType", "subjectFingerprint", "algorithm", "issuer", "publicKeyJwk", "signedAt", "signature"],
+  "properties": {
+    "product": { "const": "BLACKPROOF" }, "formatVersion": { "const": "blackproof-delivery-signature-v1" },
+    "subjectType": { "enum": ["delivery", "revocation"] }, "subjectFingerprint": { "type": "string", "pattern": "^bp_sha256_[a-f0-9]{64}$" },
+    "algorithm": { "const": "ECDSA-P256-SHA256" }, "issuer": { "type": "string", "minLength": 1, "maxLength": 240, "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F\\u061C\\u200E\\u200F\\u2028-\\u202E\\u2066-\\u2069]+$" },
+    "publicKeyJwk": {
+      "type": "object", "additionalProperties": false, "required": ["kty", "crv", "x", "y"],
+      "properties": {
+        "kty": { "const": "EC" }, "crv": { "const": "P-256" },
+        "x": { "type": "string", "pattern": "^[A-Za-z0-9_-]{43}$" },
+        "y": { "type": "string", "pattern": "^[A-Za-z0-9_-]{43}$" },
+        "key_ops": { "const": ["verify"] }, "ext": { "const": true }, "use": { "const": "sig" },
+        "kid": { "type": "string", "pattern": "^[A-Za-z0-9._-]{1,64}$" }
+      }
+    },
+    "signedAt": { "type": "string", "format": "date-time" }, "signature": { "type": "string", "pattern": "^[A-Za-z0-9_-]{86}$" }
+  }
+}

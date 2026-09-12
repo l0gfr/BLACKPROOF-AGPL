@@ -1,0 +1,36 @@
+{
+  "product": "BLACKPROOF",
+  "formatVersion": "blackproof-proofpack-delivery-v4",
+  "methodVersion": "blackproof-method-v0.1.0-alpha",
+  "schemaVersion": "blackproof-proofpack-delivery-schema-v4",
+  "schemaUrl": "https://blackproof.fr/proofpack-delivery-schema.json",
+  "deliveryId": "delivery_11111111111111111111111111111111",
+  "verificationProfile": {
+    "id": "blackproof-local-integrity-v1",
+    "verifies": ["schema", "fingerprint", "links", "invariants"],
+    "doesNotVerify": ["issuer-identity", "declaration-truth", "legal-validity", "trusted-timestamp"]
+  },
+  "case": {
+    "id": "case_22222222222222222222222222222222",
+    "title": "Northstar SaaS — Delivery démo historique",
+    "framework": "NIS2/ReCyF V1"
+  },
+  "questions": [
+    {
+      "id": "question_33333333333333333333333333333333",
+      "text": "Le MFA est-il activé pour les administrateurs ?",
+      "answer": "Le MFA est activé pour les comptes administrateurs.",
+      "evidence": [
+        {
+          "id": "evidence_44444444444444444444444444444444",
+          "title": "Attestation MFA expurgée",
+          "category": "access-control",
+          "disclosure": "reference-only",
+          "publicReference": "Attestation MFA 2026 — consultable sous NDA"
+        }
+      ]
+    }
+  ],
+  "generatedAt": "2026-07-11T10:00:00.000Z",
+  "fingerprint": "bp_sha256_bcfca535e1ca3a6a7839de7f99f9fd617da86b22b1294c2e2d994d5ca667da53"
+}

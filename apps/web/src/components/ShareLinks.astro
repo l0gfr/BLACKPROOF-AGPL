@@ -1,0 +1,297 @@
+---
+import shareLinksScriptUrl from "../scripts/share-links.js?url";
+
+interface Props {
+  url: string;
+  title: string;
+  heading?: string;
+}
+
+const {
+  url,
+  title,
+  heading = "Partager",
+} = Astro.props;
+
+const defaultSiteUrl = "https:" + "//blackproof.fr";
+const siteUrl = Astro.site ?? defaultSiteUrl;
+const canonicalUrl = new URL(url, siteUrl).toString();
+const shareText = `${title}\n${canonicalUrl}`;
+
+const socialLinks = [
+  {
+    name: "X",
+    label: "Partager sur X",
+    href: `https://x.com/intent/post?text=${encodeURIComponent(shareText)}`,
+    icon: "x",
+  },
+  {
+    name: "Bluesky",
+    label: "Partager sur Bluesky",
+    href: `https://bsky.app/intent/compose?text=${encodeURIComponent(shareText)}`,
+    icon: "bluesky",
+  },
+  {
+    name: "LinkedIn",
+    label: "Partager sur LinkedIn",
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`,
+    icon: "linkedin",
+  },
+  {
+    name: "Facebook",
+    label: "Partager sur Facebook",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`,
+    icon: "facebook",
+  },
+] as const;
+
+const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${title}\n\n${canonicalUrl}`)}`;
+---
+
+<section class="share-panel" aria-labelledby="share-heading" data-share-panel>
+  <div class="share-intro">
+    <p class="share-kicker">Diffusion maîtrisée</p>
+    <h2 id="share-heading">{heading}</h2>
+    <p>Aucun réseau n’est contacté avant votre clic.</p>
+  </div>
+
+  <div class="share-actions" role="group" aria-label={heading}>
+    {socialLinks.map((link) => (
+      <a
+        class="share-action"
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        aria-label={link.label}
+        data-share-destination={link.icon}
+      >
+        <span class:list={["share-icon", `share-icon--${link.icon}`]} aria-hidden="true">
+          {link.icon === "bluesky" ? (
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M5.1 5.2c2.8 2.1 5.8 6.2 6.9 8.5 1.1-2.3 4.1-6.4 6.9-8.5 2-1.5 5.1-2.7 5.1 1.1 0 .8-.5 6.5-.8 7.4-1.1 3.8-4.9 4.8-8.3 4.2 5.9 1 7.4 4.4 4.2 7.8-6.1 6.3-8.8-1.6-9.5-3.7-.1-.4-.2-.6-.3-.8 0 .2-.1.4-.3.8-.8 2.1-3.5 10-9.5 3.7-3.2-3.4-1.7-6.8 4.2-7.8-3.4.6-7.2-.4-8.3-4.2-.3-.9-.8-6.6-.8-7.4 0-3.8 3.1-2.6 5.1-1.1Z" transform="scale(.64) translate(6.75 2.4)" />
+            </svg>
+          ) : link.icon === "linkedin" ? (
+            <span>in</span>
+          ) : link.icon === "facebook" ? (
+            <span>f</span>
+          ) : (
+            <span>𝕏</span>
+          )}
+        </span>
+        <span>{link.name}</span>
+      </a>
+    ))}
+
+    <button
+      class="share-action"
+      type="button"
+      data-share-copy
+      data-share-url={canonicalUrl}
+      aria-label="Copier le lien"
+    >
+      <span class="share-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+          <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+        </svg>
+      </span>
+      <span data-share-copy-label>Copier le lien</span>
+      <span class="sr-only" aria-live="polite" data-share-copy-status></span>
+    </button>
+
+    <a
+      class="share-action"
+      href={emailUrl}
+      rel="nofollow"
+      aria-label="Partager par e-mail"
+      data-share-destination="email"
+    >
+      <span class="share-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+          <path d="m4 7 8 6 8-6"></path>
+        </svg>
+      </span>
+      <span>E-mail</span>
+    </a>
+  </div>
+  <textarea
+    class="share-copy-fallback"
+    data-share-copy-fallback
+    aria-hidden="true"
+    tabindex="-1"
+    readonly
+  ></textarea>
+</section>
+
+<script src={shareLinksScriptUrl} defer></script>
+
+<style>
+  .share-panel {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.32fr) minmax(0, 0.68fr);
+    gap: clamp(1rem, 3vw, 2.4rem);
+    align-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    padding: clamp(1rem, 2.2vw, 1.45rem);
+    background:
+      linear-gradient(90deg, rgba(142, 229, 209, 0.055), transparent 38%),
+      rgba(12, 19, 16, 0.82);
+    box-shadow: var(--shadow-tight);
+  }
+
+  .share-intro {
+    min-width: 0;
+  }
+
+  .share-kicker {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .share-intro h2 {
+    margin: 0;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+  }
+
+  .share-intro > p:last-child {
+    margin: 0.4rem 0 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    justify-content: flex-end;
+  }
+
+  .share-action {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.55rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.72rem;
+    background: rgba(5, 10, 8, 0.72);
+    color: var(--muted);
+    font: inherit;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 680;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      color 160ms ease,
+      background 160ms ease,
+      transform 160ms ease;
+  }
+
+  .share-action:hover {
+    transform: translateY(-1px);
+    border-color: rgba(142, 229, 209, 0.5);
+    background: rgba(142, 229, 209, 0.07);
+    color: var(--text);
+  }
+
+  .share-action:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .share-action[data-copy-state="copied"] {
+    border-color: rgba(128, 200, 154, 0.55);
+    color: var(--ok);
+  }
+
+  .share-action[data-copy-state="error"] {
+    border-color: rgba(224, 120, 111, 0.55);
+    color: var(--danger);
+  }
+
+  .share-icon {
+    display: inline-grid;
+    width: 1.3rem;
+    height: 1.3rem;
+    flex: 0 0 auto;
+    place-items: center;
+    color: var(--accent);
+  }
+
+  .share-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  .share-icon--bluesky svg {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .share-icon--x,
+  .share-icon--linkedin,
+  .share-icon--facebook {
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 780;
+  }
+
+  .share-copy-fallback {
+    position: fixed;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .share-icon--linkedin {
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    line-height: 1;
+  }
+
+  .share-icon--facebook {
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 860px) {
+    .share-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .share-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .share-panel {
+      padding: 0.95rem;
+    }
+
+    .share-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .share-action {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+</style>

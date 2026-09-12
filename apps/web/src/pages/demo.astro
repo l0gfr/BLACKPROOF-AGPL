@@ -1,0 +1,438 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const demoSteps = [
+  {
+    id: "01",
+    title: "Questionnaire",
+    route: "/questionnaire-import",
+    cta: "Importer le CSV",
+    input: "Questionnaire fournisseur",
+    output: "Questions normalisées",
+    text: "Le point de départ est un fichier client, souvent urgent, incomplet ou répétitif.",
+    proof: "Le fichier reste dans votre navigateur."
+  },
+  {
+    id: "02",
+    title: "Analyse",
+    route: "/questionnaire-crusher",
+    cta: "Voir le diagnostic",
+    input: "Questions extraites",
+    output: "Exigences, catégories, alertes",
+    text: "BLACKPROOF organise les questions par thème et signale les justificatifs attendus, les réponses fragiles et les points sensibles.",
+    proof: "Les priorités sont visibles avant la rédaction."
+  },
+  {
+    id: "03",
+    title: "Points à corriger",
+    route: "/proofdebt",
+    cta: "Voir les points à corriger",
+    input: "Réponses et justificatifs",
+    output: "Réserves et actions",
+    text: "La démo montre les réponses incomplètes, les documents manquants et les informations à ne pas partager.",
+    proof: "Réserves et plan d’actions avant envoi."
+  },
+  {
+    id: "04",
+    title: "Dossier interne → version client",
+    route: "/proofpack-example",
+    cta: "Comparer les livrables",
+    input: "Dossier de travail relu",
+    output: "Version prête à transmettre",
+    text: "Le dossier interne conserve tout le travail. La version client reprend uniquement les réponses, réserves et justificatifs autorisés.",
+    proof: "Deux fichiers distincts pour éviter un partage excessif."
+  },
+  {
+    id: "05",
+    title: "Vérification",
+    route: "/verify",
+    cta: "Vérifier le ZIP",
+    input: "Dossier interne ou version client",
+    output: "Vérification des fichiers",
+    text: "Votre équipe ou le destinataire peut vérifier la présence des fichiers, leur structure et leur empreinte sans compte BLACKPROOF.",
+    proof: "Vérification dans le navigateur, sans compte."
+  }
+];
+
+const businessSignals = [
+  ["Cycle de vente", "Le questionnaire cyber cesse d’être un fichier bloquant et devient un dossier pilotable."],
+  ["Risque", "Les preuves sensibles, réserves et éléments non exportables sont visibles avant envoi."],
+  ["Réutilisation", "Le premier dossier devient une base de réponse pour les revues suivantes."],
+  ["Intégration", "La documentation technique permet de lire et vérifier les fichiers dans vos propres outils."]
+];
+
+const demoArtifacts = [
+  ["/demo/supplier-questionnaire-demo.csv", "Questionnaire exemple", "Fichier fictif à importer pour rejouer le parcours."],
+  ["/demo/proofpack-demo.json", "Dossier interne exemple", "Dossier JSON à ouvrir dans la page de vérification."],
+  ["/demo/reponse-fournisseur-demo.md", "Réponse fournisseur", "Réponses prêtes à relire, avec réserves explicites."],
+  ["/demo/registre-preuves-demo.csv", "Registre des justificatifs", "Documents attendus, statuts et niveaux de sensibilité."],
+  ["/demo/plan-remediation-demo.csv", "Plan d’actions", "Actions prévues pour compléter les réponses et justificatifs."],
+  ["/demo/proofpack-bundle-manifest.json", "Liste des fichiers", "Inventaire des fichiers inclus dans le dossier."],
+  ["/demo/proofpack-delivery-demo.json", "Version client JSON", "Réponses et références sélectionnées pour le destinataire."],
+  ["/demo/proofpack-delivery-demo.zip", "Version client ZIP", "Fichiers lisibles regroupés avec leurs empreintes."],
+  ["/schemas/proofpack-delivery/v5.schema.json", "Schéma de la version client", "Description technique du fichier JSON actuel."],
+  ["/schemas/delivery-protocol/change-report-v1.schema.json", "Schéma de comparaison", "Description technique du rapport entre deux versions."],
+  ["/api/proofpack/schema.json", "Schéma du dossier interne", "Description technique du fichier JSON de travail."],
+  ["/api/verify.json", "Règles de vérification", "Description technique des contrôles disponibles."]
+];
+---
+
+<BaseLayout
+  title="Démo guidée - BLACKPROOF"
+  description="Démonstration BLACKPROOF : importez un questionnaire cyber, préparez les réponses et exportez une version client vérifiable."
+>
+  <section class="hero demo-hero">
+    <div class="container demo-hero-grid">
+      <div>
+        <p class="eyebrow">Démo guidée</p>
+        <h1>Voyez BLACKPROOF transformer un questionnaire en dossier prêt à transmettre.</h1>
+        <p class="lead">
+          Suivez les cinq étapes du produit : importer le questionnaire, organiser les questions,
+          corriger les réponses fragiles, préparer la version client et vérifier les fichiers.
+          Toutes les données de cette démonstration sont fictives.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/demo/supplier-questionnaire-demo.csv" download>Télécharger le questionnaire</a>
+          <a class="button" href="/questionnaire-import">Lancer l’import</a>
+          <a class="button" href="/app">Créer un dossier local</a>
+        </div>
+      </div>
+
+      <aside class="demo-case" aria-label="Cas de démonstration BLACKPROOF">
+        <span>Cas fictif</span>
+        <strong>Northstar SaaS répond à Omega Industrial Group.</strong>
+        <p>
+          Une revue cyber avant renouvellement. Des preuves sensibles. Un livrable à transmettre
+          sans inventer une conformité automatique.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container demo-pipeline" role="list" aria-label="Pipeline de démonstration BLACKPROOF">
+      {demoSteps.map((step) => (
+        <a class="pipeline-card" href={step.route} role="listitem">
+          <span>{step.id}</span>
+          <strong>{step.title}</strong>
+          <small>{step.input} -> {step.output}</small>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container demo-walkthrough">
+      <div>
+        <p class="eyebrow">Parcours</p>
+        <h2>Cinq étapes pour passer du fichier reçu au dossier prêt à envoyer.</h2>
+        <p>
+          Chaque étape présente son entrée, son résultat et le contrôle disponible.
+          Vous pouvez télécharger les fichiers et vérifier le parcours vous-même.
+        </p>
+      </div>
+
+      <div class="step-list">
+        {demoSteps.map((step) => (
+          <article>
+            <div>
+              <span>{step.id}</span>
+              <strong>{step.title}</strong>
+            </div>
+            <p>{step.text}</p>
+            <small>{step.proof}</small>
+            <a class="button" href={step.route}>{step.cta}</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container value-panel">
+      <div>
+        <p class="eyebrow">Résultat attendu</p>
+        <h2>Un dossier plus rapide à relire, plus prudent à partager et plus facile à réutiliser.</h2>
+        <p>
+          La démonstration montre le format. Seul un dossier réel peut établir si BLACKPROOF
+          réduit le temps de traitement, limite les informations partagées et facilite la prochaine réponse.
+        </p>
+      </div>
+      <div class="signal-grid">
+        {businessSignals.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container artifact-panel" id="delivery-demo">
+      <div>
+        <p class="eyebrow">Fichiers de démonstration</p>
+        <h2>Téléchargez chaque entrée et chaque livrable.</h2>
+      </div>
+      <div class="artifact-grid">
+        {demoArtifacts.map(([file, label, text]) => (
+          <a href={file} download={file.includes(".csv") || file.includes(".json") || file.includes(".zip") ? true : undefined}>
+            <strong>{label}</strong>
+            <span>{text}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container final-cta">
+      <div>
+        <p class="eyebrow">Prochaine étape</p>
+        <h2>Un questionnaire réel à traiter ? Ouvrez l’application locale.</h2>
+        <p>
+          L’import, la préparation et les exports s’exécutent sur votre appareil. Le code source est disponible sous AGPL-3.0-only.
+        </p>
+      </div>
+      <a class="button primary" href="/open-source">Découvrir le code source</a>
+    </div>
+  </section>
+
+  <style>
+    .demo-hero {
+      padding-bottom: 1.5rem;
+    }
+
+    .demo-hero-grid,
+    .value-panel,
+    .artifact-panel,
+    .final-cta {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.62fr);
+      gap: 1.2rem;
+      align-items: start;
+    }
+
+    .demo-walkthrough {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
+    .demo-case,
+    .demo-walkthrough,
+    .value-panel,
+    .artifact-panel,
+    .final-cta {
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow: var(--shadow-tight);
+    }
+
+    .demo-case,
+    .demo-walkthrough,
+    .value-panel,
+    .artifact-panel,
+    .final-cta {
+      padding: 1rem;
+    }
+
+    .demo-case {
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+    }
+
+    .demo-case span,
+    .demo-case strong,
+    .pipeline-card span,
+    .pipeline-card strong,
+    .pipeline-card small,
+    .step-list article strong,
+    .step-list article small,
+    .signal-grid strong,
+    .signal-grid span,
+    .artifact-grid strong,
+    .artifact-grid span {
+      display: block;
+    }
+
+    .demo-case span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+    }
+
+    .demo-case strong {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      line-height: 1.25;
+    }
+
+    .demo-case p,
+    .demo-walkthrough p,
+    .value-panel p,
+    .final-cta p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .demo-pipeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(0.8rem, 1vw, 1rem);
+    }
+
+    .pipeline-card,
+    .step-list article,
+    .signal-grid article,
+    .artifact-grid a {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.92), rgba(10, 13, 14, 0.92));
+    }
+
+    .pipeline-card {
+      min-height: 8.8rem;
+      padding: 0.85rem;
+      transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+    }
+
+    .pipeline-card:hover,
+    .artifact-grid a:hover {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.055);
+      transform: translateY(-1px);
+    }
+
+    .pipeline-card span,
+    .step-list article span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.74rem;
+    }
+
+    .pipeline-card strong {
+      margin-top: 1.1rem;
+      font-size: 1.05rem;
+    }
+
+    .pipeline-card small {
+      margin-top: 0.7rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .step-list,
+    .signal-grid,
+    .artifact-grid {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .step-list article {
+      display: grid;
+      grid-template-columns: minmax(140px, 0.28fr) minmax(280px, 1fr) minmax(190px, 0.48fr) max-content;
+      grid-template-areas: "heading description proof action";
+      gap: 0.8rem;
+      align-items: center;
+      padding: 0.85rem;
+    }
+
+    .step-list article > div {
+      grid-area: heading;
+    }
+
+    .step-list article p {
+      grid-area: description;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .step-list article small {
+      grid-area: proof;
+      color: var(--accent);
+      line-height: 1.35;
+    }
+
+    .step-list article .button {
+      grid-area: action;
+      justify-self: end;
+      white-space: nowrap;
+    }
+
+    .signal-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .signal-grid article,
+    .artifact-grid a {
+      padding: 0.85rem;
+    }
+
+    .signal-grid span,
+    .artifact-grid span {
+      margin-top: 0.5rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .artifact-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .artifact-grid strong {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1120px) {
+      .step-list article {
+        grid-template-columns: minmax(0, 1fr) max-content;
+        grid-template-areas:
+          "heading action"
+          "description description"
+          "proof proof";
+      }
+    }
+
+    @media (max-width: 960px) {
+      .demo-hero-grid,
+      .demo-walkthrough,
+      .value-panel,
+      .artifact-panel,
+      .final-cta,
+      .demo-pipeline,
+      .step-list article,
+      .signal-grid,
+      .artifact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline-card {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .step-list article {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "heading"
+          "description"
+          "proof"
+          "action";
+      }
+
+      .step-list article .button {
+        justify-self: stretch;
+        white-space: normal;
+      }
+    }
+  </style>
+</BaseLayout>

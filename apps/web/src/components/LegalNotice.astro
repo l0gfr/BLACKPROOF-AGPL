@@ -1,0 +1,292 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const updatedAt = "12 septembre 2026";
+
+const identity = [
+  ["Service", "BLACKPROOF : site public et application locale de préparation de ProofPack."],
+  ["Éditeur", "l0g : Olivier Laurelli, entrepreneur individuel (EI). SIREN : 809005010."],
+  ["Identité EI", "Olivier Laurelli / olivier@l0g.fr"],
+  ["Responsable du traitement", "Olivier Laurelli (EI), opérateur de l0g et du projet BLACKPROOF."],
+  ["Contact", "contact@l0g.fr"],
+  ["Téléphone", "06 95 32 87 21"],
+  ["TVA", "Non applicable."],
+  ["Titulaire de la propriété intellectuelle", "l0g / Olivier Laurelli (EI)"],
+  ["Contact vie privée", "contact@l0g.fr"],
+  ["Nature", "Site statique et application locale dans le navigateur."],
+  ["Licence du logiciel", "GNU Affero General Public License version 3 uniquement (AGPL-3.0-only). Texte et code source accessibles depuis la page Logiciel libre."],
+  ["Hébergeur", "l0g : Olivier Laurelli (EI) : SIREN : 809005010 : Chartres (28000) : 06 95 32 87 21."]
+];
+
+const outgoing = [
+  {
+    title: "Consultation du site",
+    text: "Le chargement d’une page contacte le serveur BLACKPROOF pour recevoir les fichiers statiques nécessaires : HTML, CSS, JavaScript local, JSON publics et fichiers de démonstration."
+  },
+  {
+    title: "Journaux serveur",
+    text: "Comme tout serveur web, l’hébergement peut enregistrer des journaux techniques : adresse IP, date, heure, page demandée, code de réponse et user-agent. Ils servent à l’exploitation, à la sécurité, au diagnostic et à un rapport privé de fréquentation. Ce rapport supprime les paramètres d’URL et anonymise les adresses IP."
+  },
+  {
+    title: "Courriel volontaire",
+    text: "Les liens de contact ouvrent votre client mail. Aucune donnée n’est transmise par BLACKPROOF tant que vous n’envoyez pas volontairement un message."
+  },
+  {
+    title: "Liens sortants",
+    text: "Les sites externes ne sont contactés que si vous cliquez volontairement sur un lien. Ils appliquent alors leurs propres règles de confidentialité."
+  }
+];
+
+
+const processing = [
+  {
+    title: "Consultation du site",
+    data: "Adresse IP, date et heure, page demandée, user-agent, code de réponse, informations techniques nécessaires à la connexion HTTPS.",
+    purpose: "Servir les pages statiques, maintenir la sécurité du site, diagnostiquer les erreurs, prévenir les abus et produire des statistiques privées de fréquentation à partir des seuls journaux serveur.",
+    legalBasis: "Intérêt légitime de l’éditeur à fournir, sécuriser et maintenir le site.",
+    retention: "Les journaux techniques sont supprimés après 14 jours. Le rapport privé agrège cette période, anonymise les adresses IP et retire les paramètres d’URL. Une copie liée à un incident ne peut être conservée plus longtemps que sur décision documentée.",
+    recipients: "Éditeur du site, administrateur technique et prestataire d’hébergement strictement pour l’exploitation de l’infrastructure."
+  },
+  {
+    title: "Courriel volontaire",
+    data: "Adresse e-mail, contenu du message et métadonnées techniques du courriel que vous choisissez d’envoyer.",
+    purpose: "Répondre à une demande, traiter une demande RGPD ou échanger sur BLACKPROOF.",
+    legalBasis: "Mesures précontractuelles ou intérêt légitime à répondre à votre demande ; consentement lorsque le message est purement volontaire et non contractuel.",
+    retention: "Demandes sans suite : 12 mois après le dernier échange. Dossier contractuel : conservation pendant la relation, puis archivage intermédiaire selon la durée légale ou contentieuse applicable.",
+    recipients: "Éditeur du site et prestataires techniques de messagerie impliqués dans l’acheminement du courriel."
+  },
+  {
+    title: "Traitements locaux dans le navigateur",
+    data: "Questionnaires importés, dossiers locaux, réponses, réserves et ProofPacks conservés dans le navigateur de l’utilisateur.",
+    purpose: "Analyser localement, préparer un registre de réponse cyber, générer des exports et contrôler un ProofPack.",
+    legalBasis: "Traitement effectué localement par l’utilisateur ; BLACKPROOF ne reçoit pas ces données.",
+    retention: "Sous le contrôle de l’utilisateur : stockage local du navigateur jusqu’à suppression par l’utilisateur ou effacement du profil navigateur.",
+    recipients: "Aucun destinataire serveur BLACKPROOF."
+  }
+];
+
+
+const localProcessing = [
+  ["Questionnaires", "Les fichiers importés sont lus dans le navigateur et traités comme du texte non fiable."],
+  ["Dossiers locaux", "Les dossiers créés dans l’application peuvent être conservés dans le stockage local du navigateur, sous le contrôle de l’utilisateur."],
+  ["ProofPack", "Les exports sont produits localement et ne sont pas envoyés à un serveur BLACKPROOF."],
+  ["Vérification", "La vérification d’un ProofPack repose sur des contrats publics et un calcul local."]
+];
+
+const noGo = [
+  "Aucun cookie déposé par cette application BLACKPROOF.",
+  "Aucun outil de mesure d’audience tiers.",
+  "Aucun pixel publicitaire.",
+  "Aucune police chargée depuis Google Fonts.",
+  "Aucun CDN tiers pour les actifs applicatifs.",
+  "Aucun formulaire serveur sur la surface publique.",
+  "Aucune ingestion serveur de preuves sensibles.",
+  "Aucune exécution de code provenant des fichiers importés."
+];
+
+const rights = [
+  ["Accès", "Demander quelles données techniques ou échanges vous concernant sont éventuellement conservés."],
+  ["Rectification", "Corriger une information que vous auriez transmise par courriel."],
+  ["Effacement", "Demander la suppression d’un échange ou d’une donnée technique lorsque c’est applicable."],
+  ["Opposition", "Vous opposer à un traitement non strictement nécessaire, dans les limites des obligations de sécurité."],
+  ["Limitation", "Demander la limitation d’un traitement lorsque les conditions prévues par le RGPD sont réunies."],
+  ["Portabilité", "Recevoir les données que vous avez volontairement transmises lorsque ce droit est applicable."],
+  ["Réclamation CNIL", "Saisir la CNIL si vous estimez que vos droits ne sont pas respectés : cnil.fr."]
+];
+
+const transfers = [
+  ["Transferts applicatifs", "Aucun transfert applicatif volontaire hors de votre navigateur : pas de tracker, pas de télémétrie, pas de CDN tiers et pas d’ingestion serveur de preuves."],
+  ["Transferts liés à l’hébergement", "La surface blackproof.fr est hébergée par l0g, opérée par Olivier Laurelli (EI) à Chartres (28000). Les journaux techniques nécessaires à l’exploitation et à la sécurité peuvent être traités sur cette infrastructure."],
+  ["Liens sortants", "Un site tiers n’est contacté que si vous cliquez volontairement sur un lien externe ; il applique alors ses propres conditions."]
+];
+
+const isRgpdAlias = Astro.url.pathname.startsWith("/rgpd");
+---
+
+<BaseLayout
+  title="Mentions légales et RGPD - BLACKPROOF"
+  description="Mentions légales, confidentialité et RGPD BLACKPROOF : site statique, local-first, sans tracker ni cookie publicitaire, sans CDN tiers."
+  canonicalPath="/legal"
+  noindex={isRgpdAlias}
+>
+  <section class="hero legal-hero">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Mentions légales & RGPD</p>
+        <h1>Transparence, ligne par ligne.</h1>
+        <p class="lead">
+          Cette page recense ce qui peut quitter votre navigateur lorsque vous consultez
+          BLACKPROOF ou utilisez l’application locale. Version courte : la surface publique
+          est statique, sans tracker, sans cookie publicitaire et sans collecte serveur de preuves.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/security">Lire la posture sécurité</a>
+          <a class="button" href="/api">Voir l’API publique</a>
+        </div>
+      </div>
+
+      <aside class="command-panel" aria-label="Résumé confidentialité BLACKPROOF">
+        <p><strong>Dernière mise à jour</strong></p>
+        <p>{updatedAt}</p>
+        <br />
+        <p><strong>Résumé</strong></p>
+        <p>
+          Site statique. Traitement local. Aucun tracker. Aucun cookie publicitaire. Aucun CDN tiers.
+        </p>
+        <br />
+        <p><strong>Opérateur</strong></p>
+        <p>l0g · Olivier Laurelli (EI) · SIREN 809005010 · Chartres (28000) · contact : contact@l0g.fr</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-panel">
+      <div>
+        <p class="eyebrow">Éditeur & hébergement</p>
+        <h2>Qui opère BLACKPROOF.</h2>
+      </div>
+      <div class="legal-facts">
+        {identity.map(([label, value]) => (
+          <article>
+            <span>{label}</span>
+            <strong>{value}</strong>
+          </article>
+        ))}
+      </div>
+      <div class="notice">
+        L’opérateur commercial et hébergeur déclaré est l0g, exploité par Olivier Laurelli (EI),
+        SIREN 809005010, à Chartres (28000). Pour toute question, écrivez à contact@l0g.fr.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-panel">
+      <div>
+        <p class="eyebrow">Flux sortants possibles</p>
+        <h2>Les flux réseau sont limités et explicites.</h2>
+        <p>
+          BLACKPROOF évite les dépendances tierces côté navigateur. Les seules transmissions
+          normales sont celles nécessaires au chargement du site, aux journaux techniques du
+          serveur et aux actions que vous déclenchez volontairement.
+        </p>
+      </div>
+      <div class="legal-grid">
+        {outgoing.map((item) => (
+          <article class="card">
+            <p class="kpi">// flux</p>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-panel">
+      <div>
+        <p class="eyebrow">Transparence RGPD</p>
+        <h2>Finalités, bases légales, durées et destinataires.</h2>
+        <p>
+          BLACKPROOF ne collecte pas les questionnaires ni les preuves par défaut. Les traitements
+          serveur identifiés concernent principalement la consultation du site et les journaux
+          techniques nécessaires à l’exploitation et à la sécurité.
+        </p>
+      </div>
+      <div class="legal-grid">
+        {processing.map((item) => (
+          <article class="card">
+            <p class="kpi">// traitement</p>
+            <h3>{item.title}</h3>
+            <p><strong>Données :</strong> {item.data}</p>
+            <p><strong>Finalité :</strong> {item.purpose}</p>
+            <p><strong>Base légale :</strong> {item.legalBasis}</p>
+            <p><strong>Conservation :</strong> {item.retention}</p>
+            <p><strong>Destinataires :</strong> {item.recipients}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-panel">
+      <div>
+        <p class="eyebrow">Traitement local</p>
+        <h2>Vos preuves restent sous votre contrôle par défaut.</h2>
+      </div>
+      <div class="legal-list">
+        {localProcessing.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-panel">
+      <div>
+        <p class="eyebrow">Destinataires & transferts</p>
+        <h2>Pas de diffusion commerciale des données.</h2>
+      </div>
+      <div class="legal-list">
+        {transfers.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-panel">
+      <div>
+        <p class="eyebrow">Pratiques exclues</p>
+        <h2>La confidentialité se vérifie aussi par absence.</h2>
+      </div>
+      <ul class="legal-checklist">
+        {noGo.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-panel">
+      <div>
+        <p class="eyebrow">Vos droits</p>
+        <h2>Demandes RGPD.</h2>
+        <p>
+          Pour toute demande relative aux journaux techniques ou aux échanges que vous avez
+          volontairement envoyés, écrivez à <a href="mailto:contact@l0g.fr">contact@l0g.fr</a>.
+          Vous pouvez également introduire une réclamation auprès de la CNIL si vous estimez
+          que vos droits ne sont pas respectés.
+        </p>
+      </div>
+      <div class="legal-rights">
+        {rights.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="notice">
+        Cette page décrit la surface publique actuelle de BLACKPROOF. Une relation contractuelle,
+        une intégration ou un traitement spécifique peut nécessiter des clauses complémentaires.
+      </div>
+    </div>
+  </section>
+</BaseLayout>

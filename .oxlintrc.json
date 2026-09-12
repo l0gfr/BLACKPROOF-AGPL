@@ -1,0 +1,46 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "allow",
+    "nursery": "allow",
+    "pedantic": "allow",
+    "perf": "allow",
+    "restriction": "allow",
+    "style": "allow",
+    "suspicious": "allow"
+  },
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/generated/**",
+    "**/*.astro",
+    "**/*.svelte",
+    "artifacts/**"
+  ],
+  "rules": {
+    "no-constant-binary-expression": "error",
+    "no-constant-condition": "error",
+    "no-unneeded-ternary": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "none",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-useless-assignment": "error"
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.spec.*",
+        "**/*.test.*",
+        "tests/**"
+      ],
+      "rules": {
+        "no-useless-assignment": "off"
+      }
+    }
+  ]
+}

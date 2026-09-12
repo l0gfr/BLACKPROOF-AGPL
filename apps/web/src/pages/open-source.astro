@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SOFTWARE_LICENSE, SOURCE_CODE_URL } from "../lib/source-code";
+---
+
+<BaseLayout title="Logiciel libre AGPL | BLACKPROOF" description="BLACKPROOF est un logiciel libre sous AGPL-3.0 : préparez, chiffrez, exportez et vérifiez vos dossiers dans votre navigateur.">
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Logiciel libre · {SOFTWARE_LICENSE}</p>
+      <h1>Vos dossiers, votre navigateur, un code ouvert.</h1>
+      <p class="lead">BLACKPROOF est accessible gratuitement. Importez un questionnaire, préparez vos réponses et exportez un dossier à partager. Vos contenus restent dans votre navigateur.</p>
+      <div class="actions">
+        <a class="button primary" href="/app">Ouvrir l’application</a>
+        <a class="button" href={SOURCE_CODE_URL} rel="noopener noreferrer">Consulter le code source</a>
+        <a class="button" href="/demo">Découvrir la démonstration</a>
+      </div>
+      <p>Parcours pris en charge sur Chrome et Edge sur ordinateur. Firefox, Safari et les navigateurs mobiles ne sont pas encore qualifiés.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container split">
+      <article>
+        <p class="eyebrow">Utiliser et partager</p>
+        <h2>Un parcours local accessible à tous.</h2>
+        <ul>
+          <li>Importer des questionnaires TXT, MD, CSV, TSV et XLSX.</li>
+          <li>Conserver des dossiers chiffrés dans le navigateur.</li>
+          <li>Relire les informations sélectionnées avant de créer une version client.</li>
+          <li>Exporter, sauvegarder et vérifier les fichiers localement.</li>
+        </ul>
+        <p>Le stockage dépend du navigateur et de l’adresse du site. Téléchargez des sauvegardes chiffrées et conservez vos phrases secrètes.</p>
+      </article>
+      <article>
+        <p class="eyebrow">Étudier, modifier et héberger</p>
+        <h2>GNU Affero General Public License, version 3.</h2>
+        <p>Le logiciel, sa documentation, ses schémas et son vérificateur sont publiés sous AGPL-3.0-only. Vous pouvez les utiliser, les modifier et les redistribuer selon cette licence.</p>
+        <p>Si vous mettez une version modifiée à disposition sur un réseau, l’AGPL exige de proposer son code source correspondant aux utilisateurs de cette version. Les dépendances tierces conservent leurs propres licences.</p>
+        <p>Copyright © 2026 BLACKPROOF. Le logiciel est fourni sans garantie, dans les limites prévues par la licence. Il ne fournit ni certification, ni avis juridique, ni validation de la véracité des déclarations.</p>
+        <div class="actions"><a class="button" href="/LICENSE.txt">Lire la licence complète</a><a class="button" href={SOURCE_CODE_URL} rel="noopener noreferrer">Source de cette version</a></div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

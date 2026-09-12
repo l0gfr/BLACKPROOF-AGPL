@@ -1,0 +1,209 @@
+---
+interface Props {
+  name:
+    | "repeat"
+    | "package"
+    | "route"
+    | "shield"
+    | "layers"
+    | "briefcase"
+    | "lock"
+    | "key"
+    | "eye-off"
+    | "server-off"
+    | "braces"
+    | "toggle"
+    | "book"
+    | "play"
+    | "verify"
+    | "import"
+    | "analyze"
+    | "export"
+    | "fingerprint"
+    | "buyers";
+  tone?: "teal" | "blue" | "violet" | "gold";
+}
+
+const { name, tone = "teal" } = Astro.props;
+---
+
+<span class:list={["card-icon", `card-icon--${tone}`]} aria-hidden="true" data-card-icon={name}>
+  <svg viewBox="0 0 24 24" fill="none">
+    {name === "repeat" && (
+      <>
+        <path d="M17.5 4.5 20 7l-2.5 2.5" />
+        <path d="M4 7h16M6.5 19.5 4 17l2.5-2.5M20 17H4" />
+      </>
+    )}
+    {name === "package" && (
+      <>
+        <path d="m4 7.5 8-4 8 4-8 4-8-4Z" />
+        <path d="M4 7.5v9l8 4 8-4v-9M12 11.5v9" />
+      </>
+    )}
+    {name === "route" && (
+      <>
+        <circle cx="6" cy="18" r="2" />
+        <circle cx="18" cy="6" r="2" />
+        <path d="M8 18h2.5a2.5 2.5 0 0 0 0-5H9a2.5 2.5 0 0 1 0-5h7" />
+      </>
+    )}
+    {name === "shield" && (
+      <>
+        <path d="M12 3 19 6v5.2c0 4.1-2.7 7.8-7 9.8-4.3-2-7-5.7-7-9.8V6l7-3Z" />
+        <path d="m9 12 2 2 4-4" />
+      </>
+    )}
+    {name === "layers" && (
+      <>
+        <path d="m12 3 8 4-8 4-8-4 8-4Z" />
+        <path d="m4 12 8 4 8-4M4 17l8 4 8-4" />
+      </>
+    )}
+    {name === "briefcase" && (
+      <>
+        <rect x="3" y="7" width="18" height="13" rx="2" />
+        <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
+      </>
+    )}
+    {name === "lock" && (
+      <>
+        <rect x="4" y="10" width="16" height="11" rx="2" />
+        <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" />
+      </>
+    )}
+    {name === "key" && (
+      <>
+        <circle cx="8" cy="15" r="4" />
+        <path d="m11 12 8-8M16 7l2 2M14 9l2 2" />
+      </>
+    )}
+    {name === "eye-off" && (
+      <>
+        <path d="M3 3 21 21M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+        <path d="M9.2 5.3A10.8 10.8 0 0 1 12 5c5.4 0 9 7 9 7a16 16 0 0 1-2.2 3M6.4 6.4C4.3 7.8 3 10 3 12c0 0 3.6 7 9 7a9.8 9.8 0 0 0 4-.9" />
+      </>
+    )}
+    {name === "server-off" && (
+      <>
+        <path d="M4 4h12a2 2 0 0 1 2 2v2M4 4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h7M2 15v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2h-3" />
+        <path d="M6 7h.01M6 17h.01M3 3l18 18" />
+      </>
+    )}
+    {name === "braces" && (
+      <>
+        <path d="M8 3H6a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v6a2 2 0 0 0 2 2h2M16 3h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v6a2 2 0 0 1-2 2h-2" />
+      </>
+    )}
+    {name === "toggle" && (
+      <>
+        <rect x="3" y="7" width="18" height="10" rx="5" />
+        <circle cx="8" cy="12" r="3" />
+      </>
+    )}
+    {name === "book" && (
+      <>
+        <path d="M4 4h5a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4V4ZM20 4h-5a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h5V4Z" />
+      </>
+    )}
+    {name === "play" && (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="m10 8 6 4-6 4V8Z" />
+      </>
+    )}
+    {name === "verify" && (
+      <>
+        <circle cx="11" cy="11" r="7" />
+        <path d="m16.5 16.5 4 4M8 11l2 2 4-4" />
+      </>
+    )}
+    {name === "import" && (
+      <>
+        <path d="M12 3v12M7 10l5 5 5-5" />
+        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+      </>
+    )}
+    {name === "analyze" && (
+      <>
+        <path d="M4 19V9M10 19V5M16 19v-7M22 19H2" />
+        <path d="m4 6 6-3 6 6 5-4" />
+      </>
+    )}
+    {name === "export" && (
+      <>
+        <path d="M12 15V3M7 8l5-5 5 5" />
+        <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" />
+      </>
+    )}
+    {name === "fingerprint" && (
+      <>
+        <path d="M7.5 5.7A7.2 7.2 0 0 1 19 11.5M5 8.2a7.2 7.2 0 0 0-.2 6.6M8 19a10 10 0 0 1-1.1-6.1 5.1 5.1 0 0 1 10.2 0c0 3.5-.9 6.4-2.5 8.1" />
+        <path d="M10 21a12 12 0 0 1-.8-7.9 2.8 2.8 0 0 1 5.6 0c0 2.8-.6 5.2-1.6 7.2" />
+      </>
+    )}
+    {name === "buyers" && (
+      <>
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3 20v-2a6 6 0 0 1 12 0v2M16 4.5a3 3 0 0 1 0 5.8M17 14a5 5 0 0 1 4 4.9V20" />
+      </>
+    )}
+  </svg>
+</span>
+
+<style>
+  .card-icon {
+    --icon-color: var(--accent);
+    --icon-bg: var(--accent-soft);
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    flex: 0 0 auto;
+    border: 1px solid color-mix(in srgb, var(--icon-color) 30%, transparent);
+    position: relative;
+    border-radius: 14px 14px 14px 4px;
+    color: var(--icon-color);
+    background:
+      radial-gradient(circle at 78% 18%, color-mix(in srgb, var(--icon-color) 18%, transparent), transparent 43%),
+      var(--icon-bg);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.045);
+  }
+
+  .card-icon::after {
+    position: absolute;
+    right: 0.34rem;
+    bottom: 0.34rem;
+    width: 0.22rem;
+    height: 0.22rem;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    content: "";
+    opacity: 0.7;
+  }
+
+  .card-icon--blue {
+    --icon-color: var(--accent-blue);
+    --icon-bg: var(--accent-blue-soft);
+  }
+
+  .card-icon--violet {
+    --icon-color: var(--accent-violet);
+    --icon-bg: var(--accent-violet-soft);
+  }
+
+  .card-icon--gold {
+    --icon-color: var(--accent-gold);
+    --icon-bg: var(--accent-gold-soft);
+  }
+
+  svg {
+    width: 1.35rem;
+    height: 1.35rem;
+    stroke: currentColor;
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+</style>

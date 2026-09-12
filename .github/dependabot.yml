@@ -1,0 +1,32 @@
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "06:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 0
+    rebase-strategy: "disabled"
+    groups:
+      npm-security-fixes:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "06:30"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 0
+    rebase-strategy: "disabled"
+    groups:
+      github-actions-security-fixes:
+        applies-to: "security-updates"
+        patterns:
+          - "*"

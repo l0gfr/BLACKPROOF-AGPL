@@ -1,0 +1,174 @@
+name: BLACKPROOF CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blackproof-ci-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  classify-changes:
+    name: Classify the exact PR diff
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      scope: ${{ steps.scope.outputs.scope }}
+    steps:
+      - name: Checkout complete history without credentials
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup reviewed Node.js runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+      - name: Classify changed paths fail-closed
+        id: scope
+        run: >-
+          node scripts/classify-release-scope.mjs
+          "${{ github.event.pull_request.base.sha }}"
+          "${{ github.event.pull_request.head.sha }}"
+          --github-output "$GITHUB_OUTPUT"
+
+  editorial-content:
+    name: Editorial content gate
+    needs: classify-changes
+    if: needs.classify-changes.outputs.scope == 'editorial'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository without credentials
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 10.34.5
+          run_install: false
+      - name: Setup reviewed Node.js runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Validate sources, build output and static security
+        run: pnpm editorial:gate
+      - name: Install the single editorial browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Test every published analysis in a real browser
+        run: pnpm editorial:e2e
+
+  security-build-test:
+    name: Security, tests and build
+    needs: classify-changes
+    if: needs.classify-changes.outputs.scope == 'full'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 10.34.5
+          run_install: false
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm check
+      - name: Test security invariants
+        run: pnpm test
+      - name: Build static app
+        run: pnpm build && pnpm open-source:check && pnpm artifact:security-test
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run critical browser E2E flow
+        env:
+          PLAYWRIGHT_SKIP_WEBSERVER: "1"
+        run: |
+          pnpm --filter @blackproof/web preview --host 127.0.0.1 --port 4321 > /tmp/blackproof-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 90); do
+            if curl -fsS http://127.0.0.1:4321/ >/dev/null; then
+              break
+            fi
+            if ! kill -0 "$preview_pid" 2>/dev/null; then
+              cat /tmp/blackproof-preview.log
+              exit 1
+            fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4321/ >/dev/null || { cat /tmp/blackproof-preview.log; exit 1; }
+          node scripts/check-public-proofpack-contract.mjs http://127.0.0.1:4321
+          pnpm exec playwright test --workers=1
+      - name: Render Apache config from built CSP
+        run: pnpm csp:render-apache-conf
+      - name: Create production SBOM
+        run: pnpm artifact:sbom
+      - name: Create deployment artifact manifest
+        run: pnpm artifact:manifest
+      - name: Upload static deployment artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: blackproof-static-${{ github.sha }}
+          path: |
+            apps/web/dist/
+            artifacts/blackproof.fr.conf
+            artifacts/blackproof-sbom.cdx.json
+            artifacts/artifact-manifest.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Audit all dependencies, including production
+        run: pnpm audit --registry=https://registry.npmjs.com/
+      - name: Run BLACKPROOF static security audit
+        run: pnpm security:audit
+
+  ci-gate:
+    name: CI gate
+    if: always()
+    needs:
+      - classify-changes
+      - editorial-content
+      - security-build-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require the gate selected by the classifier
+        env:
+          SCOPE: ${{ needs.classify-changes.outputs.scope }}
+          CLASSIFIER_RESULT: ${{ needs.classify-changes.result }}
+          EDITORIAL_RESULT: ${{ needs.editorial-content.result }}
+          FULL_RESULT: ${{ needs.security-build-test.result }}
+        run: |
+          test "$CLASSIFIER_RESULT" = "success"
+          case "$SCOPE" in
+            editorial)
+              test "$EDITORIAL_RESULT" = "success"
+              test "$FULL_RESULT" = "skipped"
+              ;;
+            full)
+              test "$EDITORIAL_RESULT" = "skipped"
+              test "$FULL_RESULT" = "success"
+              ;;
+            *)
+              echo "Unknown or missing release scope." >&2
+              exit 1
+              ;;
+          esac

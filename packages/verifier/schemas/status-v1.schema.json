@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blackproof.fr/schemas/delivery-protocol/status-v1.schema.json",
+  "title": "BLACKPROOF Public Delivery Status V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["product", "formatVersion", "deliveryId", "deliveryFingerprint", "status", "publishedAt", "updatedAt"],
+  "properties": {
+    "product": { "const": "BLACKPROOF" }, "formatVersion": { "const": "blackproof-delivery-status-v1" },
+    "deliveryId": { "type": "string", "pattern": "^delivery_[a-f0-9]{32}$" }, "deliveryFingerprint": { "type": "string", "pattern": "^bp_sha256_[a-f0-9]{64}$" },
+    "status": { "enum": ["active", "revoked"] }, "publishedAt": { "type": "string", "format": "date-time" }, "updatedAt": { "type": "string", "format": "date-time" },
+    "revokedAt": { "type": "string", "format": "date-time" }, "reason": { "type": "string", "minLength": 1, "maxLength": 240 }
+  },
+  "allOf": [{
+    "if": { "properties": { "status": { "const": "revoked" } }, "required": ["status"] },
+    "then": { "properties": { "revokedAt": { "type": "string", "format": "date-time" } }, "required": ["revokedAt"] },
+    "else": { "properties": { "revokedAt": false, "reason": false } }
+  }]
+}

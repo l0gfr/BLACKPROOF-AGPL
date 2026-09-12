@@ -1,0 +1,278 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardIcon from "../components/ui/CardIcon.astro";
+
+const personas = [
+  {
+    role: "RSSI / DPO",
+    icon: "shield",
+    tone: "teal",
+    title: "Répondre sans exposer plus que nécessaire.",
+    pain: "Les questionnaires clients demandent des preuves, mais certaines preuves contiennent des secrets, des informations personnelles ou des détails internes.",
+    outcome: "Un dossier qui distingue la réponse, les justificatifs attendus, les réserves et les informations non partageables.",
+    href: "/questionnaire-import"
+  },
+  {
+    role: "Fournisseur SaaS B2B",
+    icon: "layers",
+    tone: "violet",
+    title: "Structurer les revues cyber répétitives.",
+    pain: "Les mêmes questions reviennent, les réponses se dispersent et les preuves changent selon les clients.",
+    outcome: "Un dossier réutilisable, vérifiable et plus facile à maintenir entre deux questionnaires.",
+    href: "/app"
+  },
+  {
+    role: "Cabinet cyber",
+    icon: "briefcase",
+    tone: "gold",
+    title: "Livrer une revue exploitable, pas seulement un tableau.",
+    pain: "Une collecte de réponses ne suffit pas si le client ne sait pas ce qui est déclaré disponible, faible, sensible ou à corriger.",
+    outcome: "Un dossier structuré avec registre des justificatifs, points à corriger, plan d’actions et réserves explicites.",
+    href: "/proofpack-example"
+  },
+  {
+    role: "Achats / Évaluation fournisseurs",
+    icon: "buyers",
+    tone: "blue",
+    title: "Lire plus vite l’état de préparation d’un dossier fournisseur.",
+    pain: "Les réponses fournisseur sont souvent longues, déclaratives et difficiles à comparer.",
+    outcome: "Un dossier plus lisible, avec statuts de preuve, limites, actions et empreinte de vérification.",
+    href: "/verify"
+  }
+] as const;
+
+const situations = [
+  ["Questionnaire avant signature", "Préparer une réponse documentée avant une vente, un renouvellement ou une revue annuelle."],
+  ["Preuves sensibles", "Identifier ce qui peut être partagé, expurgé, résumé ou conservé en interne."],
+  ["Réponse fournisseur récurrente", "Transformer une réponse ponctuelle en base documentaire réutilisable."],
+  ["Revue post-audit", "Convertir des écarts et réserves en actions, preuves attendues et prochain export."]
+];
+
+const outputs = [
+  ["reponse-fournisseur.md", "Réponse lisible, prudente, prête à relire."],
+  ["registre-preuves.csv", "Preuves attendues, déclarées disponibles, déclaratives ou non exportables."],
+  ["plan-remediation.csv", "Actions concrètes pour réduire la dette de preuve."],
+  ["proofpack.json", "Dossier JSON lisible par logiciel, avec méthode et empreinte."]
+];
+---
+
+<BaseLayout
+  title="Cas d’usage - BLACKPROOF"
+  description="Cas d’usage BLACKPROOF pour les RSSI, DPO, fournisseurs SaaS B2B, cabinets cyber et équipes achats."
+>
+  <section class="hero usecase-hero">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Cas d’usage</p>
+        <h1>Préparer une réponse cyber claire pour un client, un auditeur ou un assureur.</h1>
+        <p class="lead">
+          BLACKPROOF rassemble les réponses, justificatifs, réserves et actions avant la transmission
+          d’un questionnaire à un client, un auditeur, un assureur, une direction ou une équipe achats.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/questionnaire-import">Importer un questionnaire</a>
+          <a class="button" href="/proofpack-example">Voir un exemple</a>
+          <a class="button" href="/grc">Comparer avec un GRC</a>
+        </div>
+      </div>
+
+      <aside class="command-panel" aria-label="Lecture cas d’usage BLACKPROOF">
+        <p><strong>Le signal</strong></p>
+        <p>Si une réponse doit être relue, défendue ou transmise, elle doit être structurée.</p>
+        <br />
+        <p><strong>Le livrable</strong></p>
+        <p>Un dossier exportable, vérifiable par empreinte et utilisable sans compte BLACKPROOF.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container usecase-grid">
+      {personas.map((item) => (
+        <a class="usecase-card" href={item.href}>
+          <div class="usecase-card-head">
+            <CardIcon name={item.icon} tone={item.tone} />
+            <span class="usecase-role">{item.role}</span>
+          </div>
+          <h2>{item.title}</h2>
+          <p><strong>Problème :</strong> {item.pain}</p>
+          <p><strong>Résultat :</strong> {item.outcome}</p>
+          <small>Ouvrir le parcours</small>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container situation-panel">
+      <div>
+        <p class="eyebrow">Situations fréquentes</p>
+        <h2>BLACKPROOF intervient avant l’envoi au destinataire.</h2>
+      </div>
+      <div class="situation-list">
+        {situations.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container output-panel">
+      <div>
+        <p class="eyebrow">Fichiers livrés</p>
+        <h2>Le destinataire reçoit des réponses, des réserves et des fichiers vérifiables.</h2>
+        <p>
+          Les livrables BLACKPROOF sont pensés pour une revue humaine et une vérification
+          technique : chaque fichier a un rôle clair.
+        </p>
+      </div>
+      <div class="artifact-list" role="list" aria-label="Livrables BLACKPROOF">
+        {outputs.map(([file, text]) => (
+          <span role="listitem"><strong>{file}</strong>{text}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="notice">
+        BLACKPROOF est utile avant l’envoi : au moment où l’on peut encore retirer un secret,
+        expliciter une réserve ou renforcer une preuve faible.
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .usecase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .usecase-card {
+      display: flex;
+      min-height: 310px;
+      flex-direction: column;
+      gap: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.95), rgba(13, 17, 18, 0.95));
+      box-shadow: var(--shadow-tight);
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .usecase-card:hover {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.055);
+      transform: translateY(-1px);
+    }
+
+    .usecase-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+
+    .usecase-card .usecase-role {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .usecase-card h2 {
+      margin-top: 0.1rem;
+      font-size: 1.35rem;
+    }
+
+    .usecase-card p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .usecase-card p strong {
+      color: var(--text);
+    }
+
+    .usecase-card small {
+      margin-top: auto;
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.76rem;
+    }
+
+    .situation-panel,
+    .output-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+      gap: 1rem;
+      align-items: start;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .output-panel p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .situation-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .situation-list article {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background: rgba(8, 11, 12, 0.48);
+    }
+
+    .situation-list strong,
+    .situation-list span,
+    .artifact-list strong {
+      display: block;
+    }
+
+    .situation-list strong {
+      color: var(--text);
+    }
+
+    .situation-list span {
+      margin-top: 0.5rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .artifact-list span {
+      min-height: 4.8rem;
+      white-space: normal;
+    }
+
+    .artifact-list strong {
+      margin-bottom: 0.35rem;
+      color: var(--accent);
+    }
+
+    @media (max-width: 900px) {
+      .usecase-grid,
+      .situation-panel,
+      .output-panel,
+      .situation-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

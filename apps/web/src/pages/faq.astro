@@ -1,0 +1,686 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const situations = [
+  {
+    title: "Je reviens avec le même navigateur",
+    state: "Accès direct",
+    text: "Ouvrez Dossiers locaux, choisissez le dossier puis saisissez sa phrase secrète.",
+    href: "/app/cases",
+    action: "Voir mes dossiers locaux",
+  },
+  {
+    title: "Je change de navigateur ou d’appareil",
+    state: "Sauvegarde requise",
+    text: "Il n’existe pas de synchronisation automatique. Restaurez le ZIP chiffré conservé hors de l’ancien appareil.",
+    href: "#restaurer",
+    action: "Lire la procédure",
+  },
+  {
+    title: "Les données du site ont été effacées",
+    state: "Restauration requise",
+    text: "Seule une sauvegarde locale complète permet de restaurer les dossiers. Le projet ne possède pas de copie de vos contenus.",
+    href: "#sauvegardes",
+    action: "Comprendre les sauvegardes",
+  },
+  {
+    title: "J’ai perdu la phrase secrète",
+    state: "Irrécupérable",
+    text: "BLACKPROOF ne conserve ni la phrase secrète ni une clé de récupération des dossiers. Le contenu chiffré ne peut pas être ouvert.",
+    href: "#phrase-secrete",
+    action: "Comprendre la protection",
+  },
+] as const;
+
+const faqGroups = [
+  {
+    id: "retrouver-dossiers",
+    eyebrow: "Revenir travailler",
+    title: "Retrouver ses dossiers",
+    items: [
+      {
+        question: "Comment me reconnecter à BLACKPROOF ?",
+        answer: "Dans la version publique actuelle, il n’y a pas de connexion à effectuer. Avec le même navigateur et le même profil, ouvrez la page Dossiers locaux puis déverrouillez le dossier avec sa phrase secrète.",
+      },
+      {
+        question: "Fermer l’onglet ou quitter le navigateur supprime-t-il mon travail ?",
+        answer: "Non. Un dossier enregistré reste dans le stockage IndexedDB de ce profil de navigateur. À la prochaine visite, il doit réapparaître dans Dossiers locaux. Les modifications non sauvegardées avant la fermeture, elles, sont perdues.",
+      },
+      {
+        question: "Qu’entend-on par « même navigateur » ?",
+        answer: "Il faut utiliser le même appareil, la même application de navigation et le même profil. Chrome et Edge séparent les données entre leurs profils. Un profil professionnel, un profil personnel et une fenêtre privée possèdent donc des stockages différents.",
+      },
+      {
+        question: "Je suis sur le même ordinateur mais mes dossiers ne s’affichent plus. Que vérifier ?",
+        answer: "Vérifiez que vous êtes sur blackproof.fr, dans le bon profil Chrome ou Edge, hors navigation privée, et que les données du site n’ont pas été effacées. Utilisez ensuite Rafraîchir sur Dossiers locaux. Si le stockage a été supprimé, restaurez votre sauvegarde chiffrée.",
+      },
+      {
+        question: "Puis-je retrouver mes dossiers depuis mon téléphone ?",
+        answer: "Non. Les navigateurs mobiles ne sont pas pris en charge actuellement et les dossiers ne sont pas synchronisés. Utilisez Chrome ou Edge Desktop et restaurez une sauvegarde locale complète si vous changez d’appareil.",
+      },
+      {
+        question: "Pourquoi le nom complet du client n’apparaît-il pas avant déverrouillage ?",
+        answer: "Le titre métier, les parties, les questions et les réponses restent chiffrés. Seul un repère local facultatif, choisi par vous et explicitement non sensible, peut être visible dans la liste avant saisie de la phrase secrète.",
+      },
+    ],
+  },
+  {
+    id: "logiciel-libre",
+    eyebrow: "Logiciel libre",
+    title: "Un logiciel ouvert, des dossiers locaux.",
+    items: [
+      {
+        question: "Que permet la licence AGPL de BLACKPROOF ?",
+        answer: "Vous pouvez utiliser, étudier, modifier et redistribuer BLACKPROOF sous AGPL-3.0-only. La licence complète et le code source sont accessibles depuis la page Logiciel libre.",
+      },
+      {
+        question: "Faut-il un compte pour utiliser BLACKPROOF ?",
+        answer: "Non. La création, l’import, le chiffrement, les exports et la vérification fonctionnent directement dans le navigateur.",
+      },
+      {
+        question: "Le projet peut-il restaurer un dossier effacé ?",
+        answer: "Non. Les dossiers restent dans votre navigateur. Leur restauration dépend de votre sauvegarde chiffrée et de sa phrase secrète.",
+      },
+    ],
+  },
+  {
+    id: "phrase-secrete",
+    eyebrow: "Chiffrement local",
+    title: "Phrase secrète et verrouillage",
+    items: [
+      {
+        question: "Où ma phrase secrète est-elle enregistrée ?",
+        answer: "Elle n’est pas enregistrée par BLACKPROOF. Elle sert localement à dériver la clé de chiffrement du dossier. Après verrouillage, rechargement ou expiration de la session de travail, elle doit être saisie à nouveau.",
+      },
+      {
+        question: "Que se passe-t-il si je perds la phrase secrète ?",
+        answer: "Le dossier devient irrécupérable. BLACKPROOF ne possède ni copie serveur, ni clé maîtresse, ni mécanisme permettant de contourner le chiffrement. Conservez la phrase secrète dans un gestionnaire de mots de passe adapté à votre organisation.",
+      },
+      {
+        question: "Pourquoi le dossier se verrouille-t-il tout seul ?",
+        answer: "Une page déverrouillée efface son état lisible après 15 minutes sans interaction ou après une minute prolongée en arrière-plan. Cette mesure limite l’exposition d’un dossier laissé ouvert sur un poste partagé ou déverrouillé.",
+      },
+      {
+        question: "La phrase secrète protège-t-elle aussi la sauvegarde téléchargée ?",
+        answer: "Oui. La sauvegarde locale complète est chiffrée et sa restauration exige une phrase secrète. Le fichier ZIP doit tout de même être protégé, sauvegardé et géré comme un actif sensible.",
+      },
+      {
+        question: "Puis-je utiliser la même phrase secrète pour tous mes clients ?",
+        answer: "C’est techniquement possible mais déconseillé. Une phrase distincte par dossier réduit l’impact d’une divulgation. Utilisez un gestionnaire de mots de passe et une procédure interne de transmission ou de continuité adaptée.",
+      },
+    ],
+  },
+  {
+    id: "sauvegardes",
+    eyebrow: "Continuité",
+    title: "Sauvegarder et restaurer",
+    items: [
+      {
+        question: "Comment créer une sauvegarde exploitable ?",
+        answer: "Ouvrez le dossier, enregistrez les changements, allez à la section Sauvegardes puis choisissez Sauvegarde locale complète. Vérifiez le message de complétude et confirmez que le fichier blackproof-local-backup.zip a bien été téléchargé.",
+      },
+      {
+        question: "Que contient une sauvegarde locale complète ?",
+        answer: "Elle contient le dossier maître chiffré et les copies locales de dossiers clients archivées qui sont encore disponibles. BLACKPROOF indique si la sauvegarde est complète ou si certaines copies archivées manquent.",
+      },
+      {
+        question: "Où conserver le fichier de sauvegarde ?",
+        answer: "Conservez au moins une copie hors de l’appareil utilisé pour travailler, dans un emplacement chiffré et sauvegardé selon la politique de votre organisation. Ne placez pas la phrase secrète en clair à côté du ZIP.",
+      },
+      {
+        question: "Comment restaurer sur un nouvel appareil ?",
+        answer: "Ouvrez Dossiers locaux, cliquez sur Restaurer une sauvegarde, sélectionnez le ZIP puis renseignez la phrase secrète demandée. En cas de conflit avec un dossier existant, BLACKPROOF demande aussi les éléments nécessaires pour vérifier et remplacer sans affaiblir le chiffrement.",
+      },
+      {
+        question: "Le bouton « Protéger le stockage sur cet appareil » remplace-t-il une sauvegarde ?",
+        answer: "Non. Il demande au navigateur de réduire le risque d’éviction automatique. Il ne protège pas contre un effacement manuel du profil, une panne, une perte de l’appareil ou une politique d’entreprise supprimant les données locales.",
+      },
+      {
+        question: "Que supprime Panic Wipe ?",
+        answer: "Panic Wipe supprime les contenus gérés localement par BLACKPROOF dans le profil courant. Il ne supprime pas les ZIP, JSON, CSV ou autres fichiers déjà téléchargés sur l’appareil.",
+      },
+      {
+        question: "Dois-je tester mes sauvegardes ?",
+        answer: "Oui. Une sauvegarde non testée n’est pas une garantie de reprise. Utilisez un profil de navigateur distinct ou un poste de test, restaurez le ZIP, vérifiez l’ouverture avec la phrase secrète et contrôlez la présence du dossier maître et des copies archivées attendues.",
+      },
+    ],
+  },
+  {
+    id: "confidentialite",
+    eyebrow: "Périmètre",
+    title: "Données, navigateurs et assistance",
+    items: [
+      {
+        question: "Mes questionnaires et preuves sont-ils envoyés à BLACKPROOF ?",
+        answer: "Non par défaut. La création, le chiffrement, l’édition et la sauvegarde des dossiers se font dans le navigateur. Une donnée métier ne quitte l’appareil que lorsque vous téléchargez ou transmettez volontairement un export.",
+      },
+      {
+        question: "Quels navigateurs sont pris en charge ?",
+        answer: "La version actuelle est qualifiée sur Chrome Desktop et Edge Desktop. Firefox, Safari et les navigateurs mobiles ne sont pas pris en charge actuellement.",
+      },
+      {
+        question: "Le support peut-il me demander mon questionnaire ou ma phrase secrète ?",
+        answer: "Non. Ne transmettez jamais une phrase secrète, un dossier client complet ou une preuve sensible pour obtenir de l’aide. Décrivez le problème avec des informations non sensibles et, si nécessaire, un exemple fictif.",
+      },
+      {
+        question: "BLACKPROOF proposera-t-il une synchronisation d’équipe ?",
+        answer: "Aucune synchronisation de dossiers n’est disponible aujourd’hui. Une éventuelle fonction d’équipe nécessiterait un modèle distinct, un chiffrement de bout en bout explicite, des droits d’accès et une procédure de récupération documentée. Elle ne fait pas partie de cette version.",
+      },
+    ],
+  },
+] as const;
+---
+
+<BaseLayout
+  title="FAQ client : compte, dossiers locaux et sauvegardes | BLACKPROOF"
+  description="FAQ détaillée pour retrouver, déverrouiller, sauvegarder et restaurer ses dossiers BLACKPROOF sans confondre compte, phrase secrète et stockage local."
+  mainSchema="webpage"
+>
+  <section class="hero faq-hero">
+    <div class="container faq-hero-grid">
+      <div>
+        <p class="eyebrow">FAQ client</p>
+        <h1>Retrouver ses dossiers sans confondre compte et stockage local.</h1>
+        <p class="lead">
+          BLACKPROOF conserve les dossiers chiffrés dans votre navigateur. La version publique
+          actuelle n’a pas de login utilisateur et ne synchronise pas les dossiers clients sur un serveur.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/app/cases">Voir mes dossiers locaux</a>
+          <a class="button" href="#sauvegardes">Sauvegarder et restaurer</a>
+          <a class="button" href="/security">Sécurité des données</a>
+        </div>
+      </div>
+
+      <aside class="faq-truth" aria-label="Résumé du fonctionnement actuel">
+        <p>À retenir en 20 secondes</p>
+        <dl>
+          <div><dt>Login actuel</dt><dd>aucun</dd></div>
+          <div><dt>Dossiers clients</dt><dd>dans ce navigateur</dd></div>
+          <div><dt>Clé d’ouverture</dt><dd>phrase secrète</dd></div>
+          <div><dt>Changement d’appareil</dt><dd>ZIP chiffré requis</dd></div>
+        </dl>
+        <strong>Vos dossiers restent dans votre navigateur.</strong>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section situation-section">
+    <div class="container section-header">
+      <p class="eyebrow">Diagnostic rapide</p>
+      <h2>Quel est votre cas ?</h2>
+    </div>
+    <div class="container situation-grid">
+      {situations.map((situation) => (
+        <article>
+          <span>{situation.state}</span>
+          <h3>{situation.title}</h3>
+          <p>{situation.text}</p>
+          <a href={situation.href}>{situation.action} <span aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section guide-section" aria-labelledby="guide-title">
+    <div class="container section-header">
+      <p class="eyebrow">Parcours illustré</p>
+      <h2 id="guide-title">Les trois écrans à connaître.</h2>
+      <p>Captures réalisées avec des données fictives. Aucun dossier client réel n’est affiché.</p>
+    </div>
+
+    <div class="container guide-grid">
+      <figure class="guide-shot">
+        <img
+          src="/guides/faq-dossiers-locaux.png"
+          alt="Liste vide des dossiers locaux BLACKPROOF avec état de persistance du stockage du navigateur"
+          width="1280"
+          height="720"
+          loading="lazy"
+        />
+        <figcaption>
+          <span>02</span>
+          <div><strong>Dossiers locaux</strong><p>C’est le point de retour normal sur le même navigateur.</p></div>
+        </figcaption>
+      </figure>
+
+      <figure class="guide-shot">
+        <img
+          src="/guides/faq-phrase-secrete.png"
+          alt="Écran de création d’un dossier BLACKPROOF demandant une phrase secrète et sa confirmation"
+          width="1280"
+          height="720"
+          loading="lazy"
+        />
+        <figcaption>
+          <span>03</span>
+          <div><strong>Phrase secrète</strong><p>Elle chiffre le dossier et doit être conservée hors de BLACKPROOF.</p></div>
+        </figcaption>
+      </figure>
+
+      <figure class="guide-shot">
+        <img
+          src="/guides/faq-sauvegarde.png"
+          alt="Section Sauvegardes d’un dossier fictif avec le bouton Sauvegarde locale complète"
+          width="1280"
+          height="720"
+          loading="lazy"
+        />
+        <figcaption>
+          <span>04</span>
+          <div><strong>Sauvegarde complète</strong><p>Le ZIP chiffré permet la reprise sur un autre appareil.</p></div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section faq-section">
+    <div class="container faq-layout">
+      <aside class="faq-index" aria-labelledby="faq-index-title">
+        <p class="eyebrow" id="faq-index-title">Dans cette FAQ</p>
+        <nav aria-label="Catégories de la FAQ">
+          {faqGroups.map((group) => <a href={`#${group.id}`}>{group.title}</a>)}
+        </nav>
+        <div class="index-note">
+          <strong>Avant une manipulation risquée</strong>
+          <p>Téléchargez une sauvegarde locale complète et vérifiez sa présence hors du navigateur.</p>
+        </div>
+      </aside>
+
+      <div class="faq-groups">
+        {faqGroups.map((group) => (
+          <section class="faq-group" id={group.id}>
+            <p class="eyebrow">{group.eyebrow}</p>
+            <h2>{group.title}</h2>
+            <div class="faq-list">
+              {group.items.map((item, index) => (
+                <details open={index === 0}>
+                  <summary>{item.question}</summary>
+                  <p>{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section checklist-section" id="restaurer">
+    <div class="container checklist-panel">
+      <div>
+        <p class="eyebrow">Procédure recommandée</p>
+        <h2>Avant de fermer un dossier important.</h2>
+        <p>Cette vérification prend quelques minutes et évite de confondre stockage navigateur et sauvegarde opérationnelle.</p>
+      </div>
+      <ol>
+        <li><span>1</span><p><strong>Enregistrer</strong> les changements dans l’éditeur.</p></li>
+        <li><span>2</span><p><strong>Télécharger</strong> une sauvegarde locale complète.</p></li>
+        <li><span>3</span><p><strong>Déplacer</strong> le ZIP vers un emplacement chiffré hors de l’appareil.</p></li>
+        <li><span>4</span><p><strong>Conserver</strong> la phrase secrète séparément dans un gestionnaire adapté.</p></li>
+        <li><span>5</span><p><strong>Tester</strong> périodiquement une restauration dans un profil distinct.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <style>
+    .faq-hero {
+      padding-bottom: 1.5rem;
+    }
+
+    .faq-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.62fr);
+      gap: 1.4rem;
+      align-items: center;
+    }
+
+    .faq-truth,
+    .situation-grid article,
+    .guide-shot,
+    .faq-group,
+    .faq-index,
+    .checklist-panel {
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+      box-shadow: var(--shadow-tight);
+    }
+
+    .faq-truth {
+      padding: 1rem;
+    }
+
+    .faq-truth > p,
+    .faq-truth > strong {
+      font-family: var(--font-display);
+    }
+
+    .faq-truth > p {
+      margin: 0;
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .faq-truth dl {
+      display: grid;
+      gap: 0.55rem;
+      margin: 1rem 0;
+    }
+
+    .faq-truth dl div {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.55rem;
+    }
+
+    .faq-truth dt {
+      color: var(--muted);
+    }
+
+    .faq-truth dd {
+      margin: 0;
+      color: var(--text);
+      font-weight: 780;
+      text-align: right;
+    }
+
+    .faq-truth > strong {
+      display: block;
+      border-left: 3px solid var(--warning);
+      padding: 0.75rem;
+      background: rgba(245, 182, 91, 0.07);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .section-header > p:last-child {
+      max-width: 760px;
+      color: var(--muted);
+    }
+
+    .situation-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .situation-grid article {
+      display: flex;
+      min-height: 16rem;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .situation-grid article > span {
+      align-self: flex-start;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 0.3rem 0.55rem;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .situation-grid h3 {
+      margin: 1rem 0 0;
+      font-size: 1.14rem;
+    }
+
+    .situation-grid p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .situation-grid a {
+      margin-top: auto;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 760;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .guide-shot {
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .guide-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      border-bottom: 1px solid var(--line-strong);
+      object-fit: cover;
+      object-position: top;
+      background: var(--panel);
+    }
+
+    .guide-shot figcaption {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.8rem;
+      align-items: start;
+      padding: 0.9rem;
+    }
+
+    .guide-shot figcaption > span {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+
+    .guide-shot figcaption strong,
+    .guide-shot figcaption p {
+      display: block;
+    }
+
+    .guide-shot figcaption p {
+      margin: 0.28rem 0 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .faq-layout {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.3fr) minmax(0, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .faq-index {
+      position: sticky;
+      top: 1rem;
+      padding: 1rem;
+    }
+
+    .faq-index nav {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .faq-index nav a {
+      border-left: 2px solid var(--line-strong);
+      padding: 0.45rem 0.65rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .faq-index nav a:hover {
+      border-left-color: var(--accent);
+      color: var(--text);
+    }
+
+    .index-note {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .index-note p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .faq-groups {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .faq-group {
+      scroll-margin-top: 1rem;
+      padding: clamp(1rem, 2vw, 1.3rem);
+    }
+
+    .faq-group h2 {
+      margin-top: 0.4rem;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    .faq-list details {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .faq-list details[open] {
+      border-color: var(--line-strong);
+      background: rgba(142, 229, 209, 0.035);
+    }
+
+    .faq-list summary {
+      cursor: pointer;
+      padding: 0.9rem;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 760;
+      line-height: 1.4;
+    }
+
+    .faq-list details p {
+      margin: 0;
+      border-top: 1px solid var(--line);
+      padding: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .checklist-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr);
+      gap: 1.2rem;
+      padding: clamp(1rem, 2.5vw, 1.5rem);
+    }
+
+    .checklist-panel > div > p:last-child {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .checklist-panel ol {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist-panel li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.7rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.65rem;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .checklist-panel li > span {
+      display: grid;
+      width: 1.8rem;
+      height: 1.8rem;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+    }
+
+    .checklist-panel li p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .checklist-panel li strong {
+      color: var(--text);
+    }
+
+    @media (max-width: 980px) {
+      .situation-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .faq-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-index {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .faq-hero-grid,
+      .guide-grid,
+      .checklist-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .situation-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .situation-grid article {
+        min-height: 0;
+      }
+
+      .faq-truth dl div {
+        display: grid;
+        gap: 0.2rem;
+      }
+
+      .faq-truth dd {
+        text-align: left;
+      }
+    }
+  </style>
+</BaseLayout>

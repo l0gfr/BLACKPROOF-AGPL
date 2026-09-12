@@ -1,0 +1,133 @@
+{
+  "formatVersion": "blackproof-canonicalization-vectors-v1",
+  "encoding": "UTF-8",
+  "hash": "SHA-256",
+  "vectors": [
+    {
+      "id": "lf",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "UXVlc3Rpb24gMQpRdWVzdGlvbiAy",
+      "canonicalUtf8Base64": "UXVlc3Rpb24gMQpRdWVzdGlvbiAy",
+      "sha256": "383054b6be2f7bba4d2245ee18e0fbbcf8bbe8f35e2b6183bb3ce6f356b4dfe4"
+    },
+    {
+      "id": "lf",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "UXVlc3Rpb24gMQpRdWVzdGlvbiAy",
+      "canonicalUtf8Base64": "UXVlc3Rpb24gMQpRdWVzdGlvbiAy",
+      "sha256": "383054b6be2f7bba4d2245ee18e0fbbcf8bbe8f35e2b6183bb3ce6f356b4dfe4"
+    },
+    {
+      "id": "crlf",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "UXVlc3Rpb24gMQ0KUXVlc3Rpb24gMg==",
+      "canonicalUtf8Base64": "UXVlc3Rpb24gMQ0KUXVlc3Rpb24gMg==",
+      "sha256": "6612d6fb43fe447d819ced35860a59c2f6752af4a7131e3947ba166452451a3d"
+    },
+    {
+      "id": "crlf",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "UXVlc3Rpb24gMQ0KUXVlc3Rpb24gMg==",
+      "canonicalUtf8Base64": "UXVlc3Rpb24gMQpRdWVzdGlvbiAy",
+      "sha256": "383054b6be2f7bba4d2245ee18e0fbbcf8bbe8f35e2b6183bb3ce6f356b4dfe4"
+    },
+    {
+      "id": "cr",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "UXVlc3Rpb24gMQ1RdWVzdGlvbiAy",
+      "canonicalUtf8Base64": "UXVlc3Rpb24gMQ1RdWVzdGlvbiAy",
+      "sha256": "78aa3da97f1b313b51d477a06c9db00b41f93863774c879bf9a3e57626cb1754"
+    },
+    {
+      "id": "cr",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "UXVlc3Rpb24gMQ1RdWVzdGlvbiAy",
+      "canonicalUtf8Base64": "UXVlc3Rpb24gMQpRdWVzdGlvbiAy",
+      "sha256": "383054b6be2f7bba4d2245ee18e0fbbcf8bbe8f35e2b6183bb3ce6f356b4dfe4"
+    },
+    {
+      "id": "nfkc",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "77ym772S772B772O772D772FIO+sgQ==",
+      "canonicalUtf8Base64": "RnJhbmNlIGZp",
+      "sha256": "bc02a3ae08b99754151c005ef885ac654c82323857fc9cd36ac3b1a1d36844ea"
+    },
+    {
+      "id": "nfkc",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "77ym772S772B772O772D772FIO+sgQ==",
+      "canonicalUtf8Base64": "RnJhbmNlIGZp",
+      "sha256": "bc02a3ae08b99754151c005ef885ac654c82323857fc9cd36ac3b1a1d36844ea"
+    },
+    {
+      "id": "bidi",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "YWJj4oCuZGVm2JxnaGk=",
+      "canonicalUtf8Base64": "YWJjZGVm2JxnaGk=",
+      "sha256": "f25c2b85ecd4128b0219cb3e296c8ed15a5dd98076f444592c92da7be3d4cd8d"
+    },
+    {
+      "id": "bidi",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "YWJj4oCuZGVm2JxnaGk=",
+      "canonicalUtf8Base64": "YWJjZGVmZ2hp",
+      "sha256": "19cc02f26df43cc571bc9ed7b0c4d29224a3ec229529221725ef76d021c8326f"
+    },
+    {
+      "id": "control-characters",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "QQBCC0N/RA==",
+      "canonicalUtf8Base64": "QUJDRA==",
+      "sha256": "e12e115acf4552b2568b55e93cbd39394c4ef81c82447fafc997882a02d23677"
+    },
+    {
+      "id": "control-characters",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "QQBCC0N/RA==",
+      "canonicalUtf8Base64": "QUJDRA==",
+      "sha256": "e12e115acf4552b2568b55e93cbd39394c4ef81c82447fafc997882a02d23677"
+    },
+    {
+      "id": "surrounding-spaces",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "ICB0ZXh0ZSBmcmFuw6dhaXMgZW50b3Vyw6kgIA==",
+      "canonicalUtf8Base64": "dGV4dGUgZnJhbsOnYWlzIGVudG91csOp",
+      "sha256": "f07f255fb5d753e5c5f278552ee4816285fd0d8429258525559c765f5ccca649"
+    },
+    {
+      "id": "surrounding-spaces",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "ICB0ZXh0ZSBmcmFuw6dhaXMgZW50b3Vyw6kgIA==",
+      "canonicalUtf8Base64": "dGV4dGUgZnJhbsOnYWlzIGVudG91csOp",
+      "sha256": "f07f255fb5d753e5c5f278552ee4816285fd0d8429258525559c765f5ccca649"
+    },
+    {
+      "id": "preserved-invisible-format-characters",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "QeKAi0LigIxD4oCNROKBoEXvu79G",
+      "canonicalUtf8Base64": "QeKAi0LigIxD4oCNROKBoEXvu79G",
+      "sha256": "af7c39cae277b74ed3b0a146ac91c619294ba7011fc9a2f9c0956feb67869339"
+    },
+    {
+      "id": "preserved-invisible-format-characters",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "QeKAi0LigIxD4oCNROKBoEXvu79G",
+      "canonicalUtf8Base64": "QeKAi0LigIxD4oCNROKBoEXvu79G",
+      "sha256": "af7c39cae277b74ed3b0a146ac91c619294ba7011fc9a2f9c0956feb67869339"
+    },
+    {
+      "id": "french-and-non-latin",
+      "version": "blackproof-questionnaire-canonicalization-v1",
+      "inputUtf8Base64": "U8OpY3VyaXTDqSDkuK3mlocg2KfZhNi52LHYqNmK2Kkg4KS54KS/4KSo4KWN4KSm4KWA",
+      "canonicalUtf8Base64": "U8OpY3VyaXTDqSDkuK3mlocg2KfZhNi52LHYqNmK2Kkg4KS54KS/4KSo4KWN4KSm4KWA",
+      "sha256": "f3a264e2642a8659ec8910af5e5644bab57e2a8d4e5386ad8aae0c0b4b0a0593"
+    },
+    {
+      "id": "french-and-non-latin",
+      "version": "blackproof-questionnaire-canonicalization-v2",
+      "inputUtf8Base64": "U8OpY3VyaXTDqSDkuK3mlocg2KfZhNi52LHYqNmK2Kkg4KS54KS/4KSo4KWN4KSm4KWA",
+      "canonicalUtf8Base64": "U8OpY3VyaXTDqSDkuK3mlocg2KfZhNi52LHYqNmK2Kkg4KS54KS/4KSo4KWN4KSm4KWA",
+      "sha256": "f3a264e2642a8659ec8910af5e5644bab57e2a8d4e5386ad8aae0c0b4b0a0593"
+    }
+  ]
+}

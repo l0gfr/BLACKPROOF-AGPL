@@ -1,0 +1,1307 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardIcon from "../components/ui/CardIcon.astro";
+import ShareLinks from "../components/ShareLinks.astro";
+import homeVideoScriptUrl from "../scripts/home-video.js?url";
+
+const homeUrl = new URL("/", Astro.site ?? "https://blackproof.fr").toString();
+---
+
+<BaseLayout
+  title="BLACKPROOF - Répondre aux questionnaires cyber clients"
+  description="Importez un questionnaire cyber client, préparez les réponses et exportez un dossier prêt à transmettre. Vos contenus restent dans votre navigateur."
+>
+  <section class="hero home-hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Questionnaires cyber clients</p>
+        <h1>Préparez des réponses solides sans envoyer <span class="proof-word">vos preuves sensibles.</span></h1>
+        <p class="lead">
+          Importez le questionnaire, rédigez les réponses, rattachez les justificatifs et signalez
+          les informations à ne pas partager. BLACKPROOF conserve le dossier dans votre navigateur
+          et exporte une version relue pour votre client.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/demo">Voir la démonstration</a>
+          <a class="button" href="/open-source">Découvrir le logiciel libre</a>
+          <a class="text-action" href="/security">Sécurité et confidentialité <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="compatibility-note">
+          <strong>Création et export :</strong> Chrome ou Edge sur ordinateur uniquement.
+          Firefox, Safari et les navigateurs mobiles ne sont pas pris en charge actuellement.
+        </p>
+        <div class="trust-strip" role="list" aria-label="Principes BLACKPROOF">
+          <span role="listitem">Données dans votre navigateur</span>
+          <span role="listitem">Aucun tracker</span>
+          <span role="listitem">Sans CDN</span>
+          <span role="listitem">Fichiers exportables</span>
+          <span role="listitem">Intégrité vérifiable</span>
+        </div>
+      </div>
+
+      <aside class="proof-visual" aria-label="Aperçu d’un dossier questionnaire dans BLACKPROOF">
+        <div class="visual-topline">
+          <span>Questionnaire client</span>
+          <strong>BP-2026-0710</strong>
+        </div>
+
+        <div class="proof-pipeline" role="list" aria-label="Chaîne de traitement">
+          <div class="pipeline-node active" role="listitem">
+            <span>01</span>
+            <strong>Questionnaire</strong>
+            <small>importé</small>
+          </div>
+          <div class="pipeline-node" role="listitem">
+            <span>02</span>
+            <strong>Preuves</strong>
+            <small>attendues</small>
+          </div>
+          <div class="pipeline-node warning" role="listitem">
+            <span>03</span>
+            <strong>Réserves</strong>
+            <small>à documenter</small>
+          </div>
+          <div class="pipeline-node ok" role="listitem">
+            <span>04</span>
+            <strong>Dossier</strong>
+            <small>prêt à relire</small>
+          </div>
+        </div>
+
+        <div class="proof-dashboard">
+          <div class="score-ring">
+            <svg viewBox="0 0 120 120" role="img" aria-labelledby="score-title">
+              <title id="score-title">Indicateur de préparation du dossier, valeur 78</title>
+              <circle cx="60" cy="60" r="48" class="ring-bg"></circle>
+              <circle cx="60" cy="60" r="48" class="ring-value"></circle>
+            </svg>
+            <div>
+              <strong>78</strong>
+              <span>à relire</span>
+            </div>
+          </div>
+
+          <div class="evidence-stack">
+            <div class="evidence-row ok">
+              <span></span>
+              <p>Politique MFA</p>
+              <strong>déclarée disponible</strong>
+            </div>
+            <div class="evidence-row warning">
+              <span></span>
+              <p>Test de restauration</p>
+              <strong>partiel</strong>
+            </div>
+            <div class="evidence-row blocked">
+              <span></span>
+              <p>Registre fournisseurs</p>
+              <strong>réservé</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="integrity-bar">
+          <div>
+            <span>Empreinte</span>
+            <code>bp_sha256_9f3c...a71e</code>
+          </div>
+          <strong>contrôlable</strong>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="container home-share">
+    <ShareLinks
+      url={homeUrl}
+      title="BLACKPROOF — Répondre aux questionnaires cyber clients"
+      heading="Partager BLACKPROOF"
+    />
+  </div>
+
+  <section class="section demo-video-section" aria-labelledby="demo-video-title">
+    <div class="container video-showcase">
+      <div class="video-copy">
+        <p class="eyebrow">Démonstration guidée</p>
+        <h2 id="demo-video-title">Voir le parcours BLACKPROOF en situation.</h2>
+        <p class="lead">
+          De l'import du questionnaire à son analyse locale, cette démonstration sous-titrée
+          montre le produit en action sans masquer les étapes de contrôle.
+        </p>
+        <p class="video-note">Cliquez sur l'aperçu pour lancer la vidéo en plein écran.</p>
+      </div>
+
+      <button
+        class="video-launch"
+        type="button"
+        aria-label="Voir la démonstration du parcours BLACKPROOF en plein écran"
+        aria-haspopup="dialog"
+        aria-controls="blackproof-demo-video"
+        data-video-open
+      >
+        <span class="video-frame">
+          <img
+            src="/media/blackproof-parcours-utilisateur-poster.jpg"
+            width="1400"
+            height="787"
+            loading="lazy"
+            decoding="async"
+            alt="Aperçu de l'analyse locale d'un questionnaire dans BLACKPROOF"
+          />
+          <span class="video-scrim" aria-hidden="true"></span>
+          <span class="video-badge" aria-hidden="true">Vidéo sous-titrée</span>
+          <span class="video-play" aria-hidden="true"><span></span></span>
+        </span>
+        <span class="video-launch-copy">
+          <strong>Voir la démonstration</strong>
+          <span>Lecture plein écran</span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <dialog
+    id="blackproof-demo-video"
+    class="video-dialog"
+    aria-labelledby="video-dialog-title"
+    data-video-dialog
+  >
+    <div class="video-dialog-shell">
+      <div class="video-dialog-header">
+        <p id="video-dialog-title">Parcours utilisateur BLACKPROOF</p>
+        <button type="button" aria-label="Fermer la vidéo" data-video-close>Fermer</button>
+      </div>
+      <video
+        controls
+        preload="none"
+        poster="/media/blackproof-parcours-utilisateur-poster.jpg"
+        data-video-player
+      >
+        <source src="/media/blackproof-parcours-utilisateur.mp4" type="video/mp4" />
+        <p>
+          Votre navigateur ne peut pas lire cette vidéo.
+          <a href="/media/blackproof-parcours-utilisateur.mp4">Télécharger la démonstration</a>.
+        </p>
+      </video>
+    </div>
+  </dialog>
+
+  <section class="section home-section">
+    <div class="container section-header">
+      <p class="eyebrow">Quand l’utiliser</p>
+        <h2>Quand une réponse client engage votre crédibilité et vos données sensibles.</h2>
+      <p class="lead">
+        BLACKPROOF prépare une sortie concrète : des réponses relues, les justificatifs associés,
+        les réserves visibles et les actions restantes avant transmission au client.
+      </p>
+    </div>
+
+    <div class="container evidence-grid">
+      <article class="evidence-card">
+        <CardIcon name="repeat" tone="blue" />
+        <p class="kpi">01 / situation</p>
+        <h3>Questionnaires répétitifs</h3>
+        <p>Les réponses reviennent, les preuves changent, les réserves se perdent et la revue devient un risque commercial.</p>
+      </article>
+      <article class="evidence-card highlighted">
+        <CardIcon name="package" tone="teal" />
+        <p class="kpi">02 / résultat</p>
+        <h3>Dossier exportable</h3>
+        <p>Un questionnaire réel, un dossier enregistré dans votre navigateur et des fichiers prêts à relire avant envoi.</p>
+      </article>
+      <article class="evidence-card">
+        <CardIcon name="route" tone="gold" />
+        <p class="kpi">03 / suite</p>
+        <h3>Travail réutilisable</h3>
+        <p>Le dossier peut être rouvert et servir de base au prochain questionnaire client.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section persona-section">
+    <div class="container section-header">
+      <p class="eyebrow">Pour qui</p>
+      <h2>Trois situations où BLACKPROOF devient immédiatement utile.</h2>
+    </div>
+
+    <div class="container persona-grid">
+      <article class="persona-card">
+        <div class="persona-card-head">
+          <CardIcon name="shield" tone="teal" />
+          <span class="persona-label">RSSI / DPO</span>
+        </div>
+        <h3>Répondre sans exposer plus que nécessaire.</h3>
+        <p>Structurer une réponse client, identifier les preuves sensibles et documenter les réserves avant envoi.</p>
+      </article>
+      <article class="persona-card">
+        <div class="persona-card-head">
+          <CardIcon name="layers" tone="violet" />
+          <span class="persona-label">Fournisseur SaaS B2B</span>
+        </div>
+        <h3>Structurer les revues cyber récurrentes.</h3>
+        <p>Reprendre un dossier local, produire des exports explicites et éviter les réponses dispersées dans des fichiers fragiles.</p>
+      </article>
+      <article class="persona-card">
+        <div class="persona-card-head">
+          <CardIcon name="briefcase" tone="gold" />
+          <span class="persona-label">Cabinet cyber</span>
+        </div>
+        <h3>Passer de la revue déclarative au livrable.</h3>
+        <p>Transformer une collecte de réponses en dossier lisible, vérifiable et directement exploitable.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section workflow-section">
+    <div class="container workflow-layout">
+      <div>
+        <p class="eyebrow">Fonctionnement</p>
+        <h2>Du questionnaire reçu au dossier prêt à transmettre.</h2>
+        <p class="lead">
+          Quand un grand compte, un assureur ou un donneur d'ordre demande des réponses cyber,
+          BLACKPROOF distingue les réponses prêtes, les justificatifs disponibles, les réserves
+          et les informations qui ne doivent pas être exportées.
+        </p>
+      </div>
+
+      <div class="flow-board" role="list" aria-label="Flux BLACKPROOF">
+        <div class="flow-step" role="listitem">
+          <span>Répondre</span>
+          <p>Formuler une réponse fournisseur prudente.</p>
+        </div>
+        <div class="flow-step" role="listitem">
+          <span>Justifier</span>
+          <p>Relier chaque réponse aux documents qui permettent de l’étayer.</p>
+        </div>
+        <div class="flow-step" role="listitem">
+          <span>Protéger</span>
+          <p>Signaler les informations partielles, sensibles ou non partageables.</p>
+        </div>
+        <div class="flow-step" role="listitem">
+          <span>Partager</span>
+          <p>Conserver le dossier complet et générer uniquement la version destinée au client.</p>
+        </div>
+        <div class="flow-step" role="listitem">
+          <span>Vérifier</span>
+          <p>Contrôler localement l'empreinte SHA-256.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section security-proof-section">
+    <div class="container security-proof">
+      <div>
+        <p class="eyebrow">Protection des données</p>
+        <h2>Conçu pour ne pas collecter vos preuves.</h2>
+        <p>
+          Vos questionnaires, réponses et justificatifs restent dans votre navigateur.
+          BLACKPROOF ne les reçoit pas pour faire fonctionner le produit.
+        </p>
+      </div>
+      <div class="security-grid" role="list" aria-label="Garanties de sécurité BLACKPROOF">
+        <span role="listitem">Pas de tracker</span>
+        <span role="listitem">Pas de Google Fonts</span>
+        <span role="listitem">Pas de CDN</span>
+        <span role="listitem">Sécurité du navigateur renforcée</span>
+        <span role="listitem">Taille des imports limitée</span>
+        <span role="listitem">Pas d'exécution de code importé</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section proofpack-section">
+    <div class="container proofpack-band">
+      <div>
+        <p class="eyebrow">Livrable</p>
+        <h2>Un dossier exportable avec cinq fichiers directement utilisables.</h2>
+      </div>
+      <div class="artifact-list" role="list" aria-label="Contenu ProofPack">
+        <span role="listitem">proofpack.json</span>
+        <span role="listitem">reponse-fournisseur.md</span>
+        <span role="listitem">registre-preuves.csv</span>
+        <span role="listitem">plan-remediation.csv</span>
+        <span role="listitem">note-synthese.md</span>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .home-share {
+      position: relative;
+      z-index: 2;
+      margin-top: -1.2rem;
+    }
+
+    .home-hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(4.6rem, 7.5vw, 6.8rem) 0 4.4rem;
+    }
+
+    .home-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent 0 11%, rgba(142, 229, 209, 0.07) 11% calc(11% + 1px), transparent calc(11% + 1px) 37%, rgba(142, 229, 209, 0.045) 37% calc(37% + 1px), transparent calc(37% + 1px) 72%, rgba(224, 182, 111, 0.045) 72% calc(72% + 1px), transparent calc(72% + 1px)),
+        repeating-linear-gradient(180deg, transparent 0 63px, rgba(142, 229, 209, 0.04) 63px 64px);
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.62), transparent 78%);
+      pointer-events: none;
+    }
+
+    .home-hero::after {
+      position: absolute;
+      top: -28rem;
+      right: -25rem;
+      width: 60rem;
+      height: 60rem;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, transparent 0 37px, rgba(142, 229, 209, 0.045) 38px 39px, transparent 40px 62px);
+      content: "";
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.92fr);
+      gap: clamp(2.2rem, 4vw, 4.6rem);
+      align-items: center;
+    }
+
+    .hero-copy h1 {
+      max-width: 740px;
+      font-size: clamp(2.65rem, 4.35vw, 4.05rem);
+    }
+
+    .proof-word {
+      position: relative;
+      display: inline-block;
+      color: #f8fbf7;
+      white-space: nowrap;
+    }
+
+    .proof-word::after {
+      position: absolute;
+      right: 0.04em;
+      bottom: -0.09em;
+      left: 0.03em;
+      height: 0.075em;
+      background: linear-gradient(90deg, var(--accent), var(--accent) 78%, var(--accent-gold) 78% 84%, transparent 84%);
+      box-shadow: 0 0.08em 0 rgba(142, 229, 209, 0.08);
+      content: "";
+    }
+
+    .hero-copy .lead {
+      max-width: 700px;
+    }
+
+    .hero-copy .actions {
+      align-items: center;
+    }
+
+    .compatibility-note {
+      max-width: 700px;
+      margin: 1rem 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .compatibility-note strong {
+      color: var(--text);
+    }
+
+    .text-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 2.75rem;
+      padding: 0.45rem 0.2rem;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.79rem;
+      font-weight: 650;
+      transition: color 160ms ease;
+    }
+
+    .text-action span {
+      color: var(--accent);
+      transition: transform 160ms ease;
+    }
+
+    .text-action:hover {
+      color: var(--text);
+    }
+
+    .text-action:hover span {
+      transform: translateX(2px);
+    }
+
+    .trust-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1.35rem;
+    }
+
+    .trust-strip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      padding: 0.2rem 0;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+    }
+
+    .trust-strip span::before {
+      width: 0.28rem;
+      height: 0.28rem;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(129, 218, 203, 0.28);
+      content: "";
+    }
+
+    .proof-visual {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: 20px 20px 20px 5px;
+      padding: 0;
+      background:
+        radial-gradient(circle at top right, rgba(142, 229, 209, 0.15), transparent 38%),
+        linear-gradient(145deg, rgba(25, 35, 31, 0.97), rgba(7, 11, 10, 0.99));
+      box-shadow: -1px 0 0 rgba(142, 229, 209, 0.22), 0 34px 100px rgba(0, 0, 0, 0.42);
+    }
+
+    .proof-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255, 255, 255, 0.035);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .visual-topline,
+    .integrity-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 0;
+      padding: 0.9rem 1rem;
+      background:
+        repeating-linear-gradient(90deg, rgba(142, 229, 209, 0.025) 0 1px, transparent 1px 8px),
+        rgba(255, 255, 255, 0.024);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+
+    .visual-topline span,
+    .integrity-bar span {
+      color: var(--muted-2);
+    }
+
+    .visual-topline strong,
+    .integrity-bar strong {
+      color: var(--accent);
+      font-weight: 760;
+    }
+
+    .proof-pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      margin: 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .pipeline-node {
+      position: relative;
+      min-height: 112px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      padding: 0.8rem;
+      background: rgba(10, 13, 14, 0.38);
+    }
+
+    .pipeline-node:last-child {
+      border-right: 0;
+    }
+
+    .pipeline-node span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+    }
+
+    .pipeline-node strong,
+    .pipeline-node small {
+      display: block;
+      margin-top: 0.7rem;
+    }
+
+    .pipeline-node strong {
+      color: var(--text);
+      font-size: 0.86rem;
+    }
+
+    .pipeline-node small {
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .pipeline-node.active {
+      background: linear-gradient(180deg, rgba(121, 216, 200, 0.105), rgba(121, 216, 200, 0.035));
+    }
+
+    .pipeline-node.warning {
+      background: linear-gradient(180deg, rgba(214, 181, 111, 0.09), rgba(214, 181, 111, 0.025));
+    }
+
+    .pipeline-node.ok {
+      background: linear-gradient(180deg, rgba(128, 200, 154, 0.09), rgba(128, 200, 154, 0.025));
+    }
+
+    .proof-dashboard {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    .score-ring,
+    .evidence-stack {
+      border: 0;
+      background: rgba(255, 255, 255, 0.018);
+    }
+
+    .score-ring {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 176px;
+      border-right: 1px solid var(--line);
+    }
+
+    .score-ring svg {
+      width: 130px;
+      height: 130px;
+      transform: rotate(-90deg);
+    }
+
+    .ring-bg,
+    .ring-value {
+      fill: none;
+      stroke-width: 9;
+    }
+
+    .ring-bg {
+      stroke: rgba(255, 255, 255, 0.075);
+    }
+
+    .ring-value {
+      stroke: var(--accent);
+      stroke-linecap: round;
+      stroke-dasharray: 302;
+      stroke-dashoffset: 66;
+      filter: drop-shadow(0 0 8px rgba(121, 216, 200, 0.24));
+    }
+
+    .score-ring div {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      gap: 0.15rem;
+    }
+
+    .score-ring strong {
+      font-family: var(--font-display);
+      font-size: 2rem;
+    }
+
+    .score-ring span {
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+    }
+
+    .evidence-stack {
+      display: grid;
+      gap: 0;
+      padding: 0.55rem 0.8rem;
+    }
+
+    .evidence-row {
+      display: grid;
+      grid-template-columns: 0.7rem minmax(0, 1fr) auto;
+      gap: 0.65rem;
+      align-items: center;
+      min-height: 2.65rem;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      padding: 0.58rem 0.18rem;
+      background: transparent;
+    }
+
+    .evidence-row:last-child {
+      border-bottom: 0;
+    }
+
+    .evidence-row span {
+      width: 0.58rem;
+      height: 0.58rem;
+      border-radius: 999px;
+      background: var(--muted-2);
+    }
+
+    .evidence-row.ok span {
+      background: var(--ok);
+    }
+
+    .evidence-row.warning span {
+      background: var(--warning);
+    }
+
+    .evidence-row.blocked span {
+      background: var(--danger);
+    }
+
+    .evidence-row p {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.82rem;
+    }
+
+    .evidence-row strong {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-family: var(--font-display);
+    }
+
+    .integrity-bar {
+      border-top: 1px solid var(--line);
+      margin-top: 0;
+    }
+
+    .integrity-bar div {
+      display: grid;
+      gap: 0.18rem;
+      min-width: 0;
+    }
+
+    .integrity-bar code {
+      overflow: hidden;
+      color: var(--text);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .section-header {
+      margin-bottom: 1.2rem;
+    }
+
+    .demo-video-section {
+      padding-top: 1.25rem;
+    }
+
+    .video-showcase {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(420px, 1.28fr);
+      gap: 1.5rem;
+      align-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 20px 20px 20px 5px;
+      padding: 1.25rem;
+      background:
+        radial-gradient(circle at 78% 18%, rgba(121, 216, 200, 0.12), transparent 34%),
+        linear-gradient(145deg, rgba(23, 30, 28, 0.96), rgba(8, 11, 12, 0.98));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
+    }
+
+    .video-copy .lead {
+      max-width: 620px;
+    }
+
+    .video-note {
+      margin: 1rem 0 0;
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 760;
+    }
+
+    .video-launch {
+      display: grid;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(121, 216, 200, 0.34);
+      border-radius: 16px;
+      padding: 0;
+      background: #080b0c;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 20px 52px rgba(0, 0, 0, 0.32);
+      transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .video-launch:hover {
+      border-color: rgba(121, 216, 200, 0.72);
+      transform: translateY(-2px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .video-launch:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .video-frame {
+      position: relative;
+      display: block;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #070a0b;
+    }
+
+    .video-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 240ms ease;
+    }
+
+    .video-launch:hover .video-frame img {
+      transform: scale(1.012);
+    }
+
+    .video-scrim {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(5, 8, 9, 0.08), rgba(5, 8, 9, 0.48)),
+        radial-gradient(circle at center, transparent 0 12%, rgba(4, 7, 8, 0.18) 54%, rgba(4, 7, 8, 0.48));
+    }
+
+    .video-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 0;
+      border-bottom: 1px solid rgba(121, 216, 200, 0.35);
+      border-left: 1px solid rgba(121, 216, 200, 0.35);
+      border-radius: 0 0 0 12px;
+      padding: 0.55rem 0.72rem;
+      background: #070a0b;
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 760;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .video-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      place-items: center;
+      width: 4.6rem;
+      height: 4.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      border-radius: 999px;
+      background: rgba(121, 216, 200, 0.92);
+      box-shadow: 0 0 0 12px rgba(121, 216, 200, 0.11), 0 16px 40px rgba(0, 0, 0, 0.42);
+      transform: translate(-50%, -50%);
+    }
+
+    .video-play span {
+      width: 0;
+      height: 0;
+      margin-left: 0.28rem;
+      border-top: 0.72rem solid transparent;
+      border-bottom: 0.72rem solid transparent;
+      border-left: 1.08rem solid #07100e;
+    }
+
+    .video-launch-copy {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      font-family: var(--font-display);
+    }
+
+    .video-launch-copy strong {
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+
+    .video-launch-copy span {
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .video-dialog {
+      width: 100vw;
+      max-width: none;
+      height: 100dvh;
+      max-height: none;
+      margin: 0;
+      border: 0;
+      padding: 0;
+      background: #030506;
+      color: var(--text);
+    }
+
+    .video-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.94);
+    }
+
+    .video-dialog-shell {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      width: 100%;
+      height: 100%;
+      background: #030506;
+    }
+
+    .video-dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8, 11, 12, 0.98);
+    }
+
+    .video-dialog-header p {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 760;
+    }
+
+    .video-dialog-header button {
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 0.48rem 0.72rem;
+      background: rgba(255, 255, 255, 0.055);
+      color: var(--text);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 760;
+    }
+
+    .video-dialog video {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      object-fit: contain;
+      background: #000;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .video-launch,
+      .video-frame img {
+        transition: none;
+      }
+
+      .video-launch:hover,
+      .video-launch:hover .video-frame img {
+        transform: none;
+      }
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.2fr 0.9fr;
+      gap: 0.9rem;
+      align-items: stretch;
+    }
+
+    .evidence-card {
+      position: relative;
+      min-height: 190px;
+      border: 1px solid var(--line);
+      border-radius: 16px 16px 16px 5px;
+      padding: 1.15rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.92), rgba(13, 17, 18, 0.92));
+      box-shadow: var(--shadow-panel);
+    }
+
+    .evidence-card::after {
+      position: absolute;
+      inset: 0.75rem 0.75rem auto auto;
+      width: 1.7rem;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent)));
+      opacity: 0.65;
+    }
+
+    .evidence-card:nth-child(1) {
+      --card-accent: var(--accent-blue);
+    }
+
+    .evidence-card:nth-child(3) {
+      --card-accent: var(--accent-gold);
+    }
+
+    .evidence-card .kpi {
+      margin-top: 1.1rem;
+    }
+
+    .evidence-card.highlighted {
+      border-color: rgba(121, 216, 200, 0.36);
+      background:
+        linear-gradient(180deg, rgba(121, 216, 200, 0.12), rgba(13, 17, 18, 0.94));
+    }
+
+    .evidence-card p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .workflow-section {
+      padding-top: 2rem;
+    }
+
+    .persona-section {
+      padding-top: 1.5rem;
+    }
+
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .persona-card {
+      min-height: 230px;
+      border: 1px solid var(--line);
+      border-radius: 16px 16px 16px 5px;
+      padding: 1.15rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.94), rgba(9, 12, 13, 0.94));
+      box-shadow: var(--shadow-panel);
+    }
+
+    .persona-card-head {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .persona-card .persona-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.6rem;
+      border: 1px solid rgba(121, 216, 200, 0.26);
+      border-radius: 999px;
+      padding: 0.26rem 0.52rem;
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 760;
+    }
+
+    .persona-card h3 {
+      margin-top: 1rem;
+    }
+
+    .persona-card p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .workflow-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+      gap: 1.4rem;
+      align-items: start;
+    }
+
+    .flow-board {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border: 1px solid var(--line-strong);
+      border-radius: 16px 16px 16px 5px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .flow-step {
+      position: relative;
+      min-height: 174px;
+      padding: 1rem 0.9rem;
+      border-right: 1px solid var(--line);
+    }
+
+    .flow-step:last-child {
+      border-right: 0;
+    }
+
+    .flow-step::after {
+      content: "";
+      position: absolute;
+      top: 1.15rem;
+      right: -0.38rem;
+      z-index: 1;
+      width: 0.7rem;
+      height: 0.7rem;
+      border-top: 1px solid var(--line-strong);
+      border-right: 1px solid var(--line-strong);
+      background: #121716;
+      transform: rotate(45deg);
+    }
+
+    .flow-step:last-child::after {
+      display: none;
+    }
+
+    .flow-step span {
+      display: block;
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 760;
+    }
+
+    .flow-step p {
+      margin: 1.8rem 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.88rem;
+    }
+
+    .proofpack-band {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: 1.2rem;
+      align-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 18px 18px 18px 5px;
+      padding: 1.2rem;
+      background:
+        linear-gradient(135deg, rgba(121, 216, 200, 0.1), rgba(128, 200, 154, 0.06)),
+        rgba(255, 255, 255, 0.035);
+    }
+
+    .security-proof {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: 1.2rem;
+      align-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 18px 18px 18px 5px;
+      padding: 1.2rem;
+      background:
+        linear-gradient(135deg, rgba(128, 200, 154, 0.08), rgba(121, 216, 200, 0.065)),
+        rgba(255, 255, 255, 0.03);
+      box-shadow: var(--shadow-tight);
+    }
+
+    .security-proof p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+
+    .security-grid span {
+      display: flex;
+      align-items: center;
+      min-height: 3.1rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.55rem 0.68rem;
+      background: rgba(8, 11, 12, 0.55);
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.74rem;
+      font-weight: 720;
+      line-height: 1.35;
+    }
+
+    .artifact-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .artifact-list span {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.6rem 0.7rem;
+      background: rgba(8, 11, 12, 0.55);
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 1050px) {
+      .hero-grid,
+      .video-showcase,
+      .workflow-layout,
+      .security-proof,
+      .proofpack-band {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-visual {
+        max-width: 760px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .home-hero {
+        padding: 2.4rem 0 1.35rem;
+      }
+
+      .hero-grid {
+        gap: 1rem;
+      }
+
+      .demo-video-section {
+        padding-top: 0.7rem;
+      }
+
+      .video-showcase {
+        gap: 1rem;
+        border-radius: 16px;
+        padding: 0.85rem;
+      }
+
+      .video-launch-copy {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.2rem;
+        padding: 0.72rem 0.8rem;
+      }
+
+      .video-play {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+
+      .video-play span {
+        border-top-width: 0.55rem;
+        border-bottom-width: 0.55rem;
+        border-left-width: 0.84rem;
+      }
+
+      .hero-copy h1 {
+        font-size: 2rem;
+        line-height: 1.04;
+      }
+
+      .hero-copy .lead {
+        font-size: 0.96rem;
+        line-height: 1.5;
+      }
+
+      .hero-copy .actions {
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .trust-strip {
+        gap: 0.4rem;
+        margin-top: 0.9rem;
+      }
+
+      .trust-strip span {
+        padding: 0.2rem 0;
+        font-size: 0.64rem;
+      }
+
+      .proof-visual {
+        max-height: 260px;
+        border-radius: 14px;
+        padding: 0.75rem;
+      }
+
+      .visual-topline {
+        padding: 0.55rem 0.62rem;
+      }
+
+      .proof-dashboard,
+      .integrity-bar {
+        display: none;
+      }
+
+      .proof-pipeline,
+      .proof-dashboard,
+      .evidence-grid,
+      .persona-grid,
+      .security-grid,
+      .flow-board {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-pipeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+        margin: 0.65rem 0 0;
+      }
+
+      .pipeline-node,
+      .flow-step {
+        min-height: auto;
+      }
+
+      .pipeline-node {
+        min-height: 84px;
+        padding: 0.55rem;
+      }
+
+      .pipeline-node strong,
+      .pipeline-node small {
+        margin-top: 0.4rem;
+      }
+
+      .pipeline-node::before,
+      .flow-step::after {
+        display: none;
+      }
+
+      .flow-step {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .flow-step:last-child {
+        border-bottom: 0;
+      }
+    }
+  </style>
+
+  <script src={homeVideoScriptUrl} defer></script>
+</BaseLayout>

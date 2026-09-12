@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blackproof.fr/proofpack-delivery-schema.json",
+  "title": "BLACKPROOF ProofPack Delivery",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "product",
+    "formatVersion",
+    "methodVersion",
+    "schemaVersion",
+    "schemaUrl",
+    "deliveryId",
+    "verificationProfile",
+    "case",
+    "questions",
+    "generatedAt",
+    "fingerprint"
+  ],
+  "properties": {
+    "product": {
+      "const": "BLACKPROOF"
+    },
+    "formatVersion": {
+      "const": "blackproof-proofpack-delivery-v4"
+    },
+    "methodVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "const": "blackproof-proofpack-delivery-schema-v4"
+    },
+    "schemaUrl": {
+      "const": "https://blackproof.fr/proofpack-delivery-schema.json"
+    },
+    "deliveryId": {
+      "type": "string",
+      "pattern": "^delivery_[a-f0-9]{32}$"
+    },
+    "verificationProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "verifies",
+        "doesNotVerify"
+      ],
+      "properties": {
+        "id": {
+          "const": "blackproof-local-integrity-v1"
+        },
+        "verifies": {
+          "const": [
+            "schema",
+            "fingerprint",
+            "links",
+            "invariants"
+          ]
+        },
+        "doesNotVerify": {
+          "const": [
+            "issuer-identity",
+            "declaration-truth",
+            "legal-validity",
+            "trusted-timestamp"
+          ]
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "framework"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^case_[a-f0-9]{32}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "framework": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "text",
+          "answer",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^question_[a-f0-9]{32}$"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "answer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "reservation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/evidence"
+            }
+          }
+        }
+      }
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^bp_sha256_[a-f0-9]{64}$"
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "category",
+        "disclosure",
+        "publicReference"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^evidence_[a-f0-9]{32}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "enum": [
+            "access-control",
+            "backup",
+            "incident-response",
+            "business-continuity",
+            "supplier-security",
+            "governance",
+            "logging-monitoring",
+            "vulnerability-management",
+            "data-protection",
+            "unknown"
+          ]
+        },
+        "disclosure": {
+          "const": "reference-only"
+        },
+        "publicReference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        }
+      }
+    }
+  }
+}

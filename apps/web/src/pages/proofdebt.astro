@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { proofDebtScoreBands } from "@blackproof/core";
+
+const signals = [
+  {
+    label: "Preuve manquante",
+    impact: "La réponse repose sur une assertion non documentée.",
+    action: "Ajouter une preuve ou documenter une réserve explicite."
+  },
+  {
+    label: "Preuve déclarative",
+    impact: "Le dossier dit quelque chose, mais ne le rend pas vérifiable.",
+    action: "Remplacer par un extrait, une attestation, un rapport ou un contrôle daté."
+  },
+  {
+    label: "Preuve périmée",
+    impact: "Le dossier peut être vrai historiquement et faible commercialement.",
+    action: "Rafraîchir la preuve ou expliquer sa période de validité."
+  },
+  {
+    label: "Preuve sensible non exportable",
+    impact: "La preuve existe, mais ne doit pas sortir telle quelle.",
+    action: "Produire un extrait contrôlé, une synthèse ou une preuve indirecte."
+  }
+];
+---
+
+<BaseLayout
+  title="Points à corriger avant envoi - BLACKPROOF"
+  description="BLACKPROOF signale les réponses sans justificatif, les documents périmés et les informations sensibles avant l’envoi au client."
+>
+  <section class="hero">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Aide à la relecture</p>
+        <h1>Repérez les réponses fragiles avant l’envoi.</h1>
+        <p class="lead">
+          BLACKPROOF calcule un indicateur de préparation à partir des réponses et statuts que vous saisissez.
+          Il aide à prioriser la relecture, mais ne lit pas les documents sources et ne valide ni la conformité
+          ni la décision de transmettre le dossier.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/app">Créer un dossier local</a>
+          <a class="button" href="/method">Lire la méthode</a>
+        </div>
+      </div>
+
+      <aside class="command-panel" aria-label="Exemple de lecture de l’indicateur de préparation">
+        <p><strong>Repères de lecture</strong></p>
+        <p>Indice 86-100 : registre bien structuré.</p>
+        <p>Indice 71-85 : préparation avancée avec réserves.</p>
+        <p>Indice 51-70 : préparation partielle.</p>
+        <p>Indice 21-50 : préparation très incomplète.</p>
+        <p>Indice 0-20 : reprise indispensable.</p>
+        <div class="meter" aria-hidden="true">
+          <div class="meter-row"><span>faible</span><div class="meter-bar meter-bar-24"><span></span></div></div>
+          <div class="meter-row"><span>partiel</span><div class="meter-bar meter-bar-62"><span></span></div></div>
+          <div class="meter-row"><span>solide</span><div class="meter-bar meter-bar-86"><span></span></div></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Signaux pris en compte</h2>
+      <p class="lead">
+        L’indicateur met en évidence les justificatifs manquants, déclaratifs, périmés ou sensibles.
+        Le jugement final appartient toujours à la personne qui relit le dossier.
+      </p>
+
+      <div class="grid two">
+        {signals.map((item) => (
+          <article class="card">
+            <p class="kpi">{item.label}</p>
+            <h3>{item.impact}</h3>
+            <p>{item.action}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Bandes de lecture</h2>
+      <p class="lead">
+        L'indicateur est une aide à la revue. Il n'est pas calibré contre un corpus
+        d'audits, de décisions d'acheteurs ou de dossiers acceptés. Un niveau haut ne valide ni les documents sources ni une décision d’envoi.
+      </p>
+
+      <div class="grid three">
+        {proofDebtScoreBands.map((band) => (
+          <article class="card">
+            <p class="kpi">{band.min} à {band.max}</p>
+            <h3>{band.label}</h3>
+            <p>{band.meaning}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="notice">
+        Cet indicateur sert uniquement à organiser la relecture. Un niveau élevé ne prouve pas la conformité,
+        la véracité des réponses ni l’acceptation du dossier par son destinataire.
+      </div>
+    </div>
+  </section>
+</BaseLayout>

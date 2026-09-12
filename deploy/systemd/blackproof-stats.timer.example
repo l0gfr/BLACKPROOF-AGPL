@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh the private BLACKPROOF GoAccess report every 15 minutes
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=30
+Unit=blackproof-stats.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,534 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ShareLinks from "../../components/ShareLinks.astro";
+import {
+  formatAnalysisDate,
+  getAnalysisLastModified,
+  getAnalysisLastVerified,
+  getAnalysisPath,
+  getPublishedAnalyses,
+  type AnalysisEntry,
+} from "../../lib/analyses";
+
+export async function getStaticPaths() {
+  const analyses = await getPublishedAnalyses();
+
+  return analyses.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: AnalysisEntry;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content, headings } = await render(entry);
+const articlePath = getAnalysisPath(entry);
+const articleUrl = new URL(articlePath, Astro.site ?? "https://blackproof.fr").toString();
+const lastModified = getAnalysisLastModified(entry);
+const lastVerified = getAnalysisLastVerified(entry);
+const articleHeadings = headings.filter((heading) => heading.depth === 2);
+---
+
+<BaseLayout
+  title={`${data.title} - BLACKPROOF`}
+  description={data.description}
+  canonicalPath={articlePath}
+  ogType="article"
+  publishedAt={data.publishedAt.toISOString()}
+  modifiedAt={lastModified.toISOString()}
+  articleTags={data.tags}
+  mainSchema="none"
+>
+  <article class="analysis" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="mainEntityOfPage" content={new URL(articlePath, Astro.site).toString()} />
+    <meta itemprop="inLanguage" content="fr-FR" />
+    <meta itemprop="author" content={data.author} />
+    <meta itemprop="datePublished" content={data.publishedAt.toISOString()} />
+    <meta itemprop="dateModified" content={lastModified.toISOString()} />
+    <meta itemprop="image" content={new URL("/og/blackproof.png", Astro.site ?? "https://blackproof.fr").toString()} />
+
+    <header class="analysis-header">
+      <div class="container analysis-header-inner">
+        <nav class="breadcrumb" aria-label="Fil d’Ariane">
+          <a href="/">Accueil</a>
+          <span aria-hidden="true">›</span>
+          <a href="/analyses">Analyses</a>
+          <span aria-hidden="true">›</span>
+          <span>{data.category}</span>
+        </nav>
+
+        <div class="analysis-kicker">
+          <span>{data.category}</span>
+          <span>{data.format}</span>
+          <span>{data.confidence}</span>
+        </div>
+        <h1 itemprop="headline">{data.title}</h1>
+        <p class="analysis-deck" itemprop="description">{data.description}</p>
+
+        <div class="analysis-byline">
+          <span itemprop="author">{data.author}</span>
+          <time datetime={data.publishedAt.toISOString()}>
+            Publié le {formatAnalysisDate(data.publishedAt)}
+          </time>
+          {data.updatedAt && (
+            <time datetime={data.updatedAt.toISOString()}>
+              Mis à jour le {formatAnalysisDate(data.updatedAt)}
+            </time>
+          )}
+          <span>{data.readingMinutes} min de lecture</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="container analysis-shell">
+      <aside class="analysis-aside" aria-label="Repères de lecture">
+        <div class="analysis-status">
+          <p class="kpi">Statut de l’analyse</p>
+          <dl>
+            <div>
+              <dt>Niveau</dt>
+              <dd>{data.confidence}</dd>
+            </div>
+            <div>
+              <dt>Sources</dt>
+              <dd>{data.sources.length}</dd>
+            </div>
+            <div>
+              <dt>Vérifiées</dt>
+              <dd>{formatAnalysisDate(lastVerified)}</dd>
+            </div>
+          </dl>
+        </div>
+
+        {articleHeadings.length > 1 && (
+          <nav class="analysis-toc" aria-labelledby="analysis-toc-title">
+            <p class="kpi" id="analysis-toc-title">Dans cette analyse</p>
+            <ol>
+              {articleHeadings.map((heading) => (
+                <li><a href={`#${heading.slug}`}>{heading.text}</a></li>
+              ))}
+            </ol>
+          </nav>
+        )}
+      </aside>
+
+      <div class="analysis-main">
+        <div class="analysis-body" itemprop="articleBody">
+          <Content />
+        </div>
+
+        <section class="source-register" aria-labelledby="source-register-title">
+          <p class="eyebrow">Traçabilité</p>
+          <h2 id="source-register-title">Registre des sources</h2>
+          <p>
+            Les dates de consultation indiquent quand la rédaction a vérifié les pages liées.
+            Une source peut évoluer après cette date.
+          </p>
+          <ol>
+            {data.sources.map((source) => (
+              <li>
+                <div>
+                  <span>{source.kind}</span>
+                  <strong>{source.publisher}</strong>
+                </div>
+                <p>
+                  <a href={source.url} rel="noreferrer">{source.title}</a>
+                </p>
+                <small>
+                  {source.publicationDate && <>Publié le {formatAnalysisDate(source.publicationDate)} · </>}
+                  Consulté le {formatAnalysisDate(source.consultedAt)}
+                </small>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <aside class="analysis-note">
+          <strong>Une correction à signaler ?</strong>
+          <p>
+            Écrivez à <a href="mailto:contact@l0g.fr">contact@l0g.fr</a> avec la source
+            concernée. Toute correction substantielle sera datée dans cette page.
+          </p>
+        </aside>
+
+        <div class="analysis-share">
+          <ShareLinks
+            url={articleUrl}
+            title={data.title}
+            heading="Partager cette analyse"
+          />
+        </div>
+
+        <a class="back-link" href="/analyses">← Toutes les analyses</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .analysis-header {
+    border-bottom: 1px solid var(--line);
+    padding: clamp(3.8rem, 8vw, 6.5rem) 0 3.4rem;
+    background:
+      radial-gradient(circle at 82% 4%, rgba(129, 218, 203, 0.08), transparent 28rem),
+      rgba(8, 12, 12, 0.22);
+  }
+
+  .analysis-header-inner {
+    max-width: 980px;
+  }
+
+  .breadcrumb,
+  .analysis-kicker,
+  .analysis-byline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem 0.75rem;
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--accent);
+  }
+
+  .analysis-kicker {
+    margin-top: 2.4rem;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .analysis-kicker span:not(:last-child)::after,
+  .analysis-byline span:not(:last-child)::after,
+  .analysis-byline time::after {
+    margin-left: 0.75rem;
+    color: var(--line-strong);
+    content: "/";
+  }
+
+  h1 {
+    max-width: 940px;
+    font-size: clamp(2.25rem, 5vw, 4.4rem);
+  }
+
+  .analysis-deck {
+    max-width: 800px;
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(1.05rem, 1.65vw, 1.28rem);
+    line-height: 1.7;
+  }
+
+  .analysis-byline {
+    margin-top: 1.5rem;
+  }
+
+  .analysis-byline > span:first-child {
+    color: var(--text);
+  }
+
+  .analysis-shell {
+    display: grid;
+    grid-template-columns: minmax(210px, 0.32fr) minmax(0, 0.68fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+    max-width: 1080px;
+    padding-top: 3.2rem;
+    padding-bottom: 5rem;
+  }
+
+  .analysis-aside {
+    position: sticky;
+    top: 6rem;
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .analysis-status,
+  .analysis-toc {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    background: rgba(13, 18, 17, 0.75);
+  }
+
+  .analysis-status dl,
+  .analysis-status dd,
+  .analysis-toc ol {
+    margin: 0;
+  }
+
+  .analysis-status dl {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .analysis-status dl > div {
+    border-top: 1px solid var(--line);
+    padding-top: 0.65rem;
+  }
+
+  .analysis-status dt {
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+  }
+
+  .analysis-status dd {
+    margin-top: 0.18rem;
+    color: var(--text);
+    font-size: 0.82rem;
+  }
+
+  .analysis-toc ol {
+    display: grid;
+    gap: 0.55rem;
+    padding-left: 1.2rem;
+    color: var(--muted-2);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+
+  .analysis-toc a {
+    color: var(--muted);
+  }
+
+  .analysis-toc a:hover {
+    color: var(--accent);
+  }
+
+  .analysis-main {
+    min-width: 0;
+  }
+
+  .analysis-share {
+    margin-top: 1.5rem;
+  }
+
+  .analysis-body {
+    color: #dbe1dc;
+    font-size: clamp(1rem, 1.2vw, 1.08rem);
+    line-height: 1.82;
+  }
+
+  .analysis-body :global(h2) {
+    scroll-margin-top: 7rem;
+    margin: 3.4rem 0 1rem;
+    font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+  }
+
+  .analysis-body :global(h3) {
+    scroll-margin-top: 7rem;
+    margin: 2.2rem 0 0.75rem;
+    color: var(--text);
+    font-size: 1.2rem;
+  }
+
+  .analysis-body :global(p),
+  .analysis-body :global(ul),
+  .analysis-body :global(ol) {
+    margin: 0 0 1.25rem;
+  }
+
+  .analysis-body :global(li + li) {
+    margin-top: 0.5rem;
+  }
+
+  .analysis-body :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(129, 218, 203, 0.42);
+    text-underline-offset: 0.18em;
+  }
+
+  .analysis-body :global(strong) {
+    color: var(--text);
+  }
+
+  .analysis-body :global(blockquote) {
+    margin: 1.8rem 0;
+    border-left: 3px solid var(--accent-violet);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+
+  .analysis-body :global(table) {
+    width: 100%;
+    margin: 1.6rem 0 2rem;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .analysis-body :global(th),
+  .analysis-body :global(td) {
+    border: 1px solid var(--line);
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .analysis-body :global(th) {
+    background: var(--panel-muted);
+    color: var(--text);
+  }
+
+  .analysis-body :global(figure.analysis-figure) {
+    overflow: hidden;
+    margin: 2.2rem 0 1.6rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    padding: clamp(0.8rem, 2vw, 1.3rem) clamp(0.8rem, 2vw, 1.3rem) 1rem;
+    background: linear-gradient(150deg, rgba(24, 32, 30, 0.88), rgba(8, 12, 12, 0.9));
+  }
+
+  .analysis-body :global(figure.analysis-figure svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .analysis-body :global(figure.analysis-figure .analysis-figure-mobile) {
+    display: none;
+  }
+
+  .analysis-body :global(figure.analysis-figure figcaption) {
+    padding: 0.9rem 0.2rem 0.25rem;
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+
+  .source-register {
+    margin-top: 4rem;
+    border-top: 1px solid var(--line-strong);
+    padding-top: 2rem;
+  }
+
+  .source-register > p:not(.eyebrow) {
+    color: var(--muted);
+  }
+
+  .source-register ol {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1.4rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .source-register li {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.28fr) minmax(0, 0.72fr);
+    gap: 0.45rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.018);
+  }
+
+  .source-register li div span,
+  .source-register li div strong {
+    display: block;
+  }
+
+  .source-register li div span,
+  .source-register small {
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+  }
+
+  .source-register li div strong {
+    margin-top: 0.2rem;
+    color: var(--text);
+    font-size: 0.8rem;
+  }
+
+  .source-register li p,
+  .source-register li small {
+    margin: 0;
+  }
+
+  .source-register li a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(129, 218, 203, 0.32);
+    text-underline-offset: 0.16em;
+  }
+
+  .source-register li small {
+    grid-column: 2;
+  }
+
+  .analysis-note {
+    margin-top: 2rem;
+    border-left: 3px solid var(--accent-gold);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1rem 1.1rem;
+    background: var(--accent-gold-soft);
+  }
+
+  .analysis-note p {
+    margin: 0.3rem 0 0;
+    color: var(--muted);
+  }
+
+  .analysis-note a {
+    color: var(--accent);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2.2rem;
+    color: var(--accent);
+  }
+
+  @media (max-width: 820px) {
+    .analysis-shell {
+      grid-template-columns: 1fr;
+    }
+
+    .analysis-aside {
+      position: static;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .analysis-body :global(h2),
+    .analysis-body :global(h3) {
+      scroll-margin-top: 12rem;
+    }
+
+    .analysis-aside,
+    .source-register li {
+      grid-template-columns: 1fr;
+    }
+
+    .source-register li small {
+      grid-column: 1;
+    }
+
+    .analysis-body :global(table) {
+      display: block;
+      overflow-x: auto;
+    }
+
+    .analysis-body :global(figure.analysis-figure .analysis-figure-desktop) {
+      display: none;
+    }
+
+    .analysis-body :global(figure.analysis-figure .analysis-figure-mobile) {
+      display: block;
+    }
+  }
+</style>

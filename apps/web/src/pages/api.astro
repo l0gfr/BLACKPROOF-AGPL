@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const endpoints = [
+  ["/api/index.json", "Index exploitable par machine de l'API publique."],
+  ["/api/status.json", "Statut public, version, changelog et limites assumées."],
+  ["/api/methodology.json", "Méthode BLACKPROOF, ProofGraph, statuts de preuve et invariants."],
+  ["/api/evidence-library.json", "Bibliothèque publique des preuves attendues."],
+  ["/api/frameworks.json", "Référentiels, exigences et cartographies."],
+  ["/api/proofdebt.json", "Modèle ProofDebt, bandes de lecture et signaux d'interprétation."],
+  ["/api/proofpack/schema.json", "JSON Schema du fichier proofpack.json."],
+  ["/schemas/proofpack/v1.schema.json", "Schéma immuable des ProofPacks historiques."],
+  ["/schemas/proofpack/v2.schema.json", "Schéma immuable des ProofPacks Master V2."],
+  ["/schemas/proofpack/v3.schema.json", "Schéma immuable courant des ProofPacks Master V3."],
+  ["/canonicalization-vectors.json", "Vecteurs UTF-8 et SHA-256 pour les canonicalisations V1 et V2."],
+  ["/api/questionnaire-import.json", "Contrat des formats, limites et garanties de l’import local XLSX."],
+  ["/api/verify.json", "Contrat de vérification locale."],
+];
+---
+
+<BaseLayout
+  title="API - BLACKPROOF"
+  description="API publique en lecture seule BLACKPROOF pour les contrats de méthode, de preuve et de vérification."
+>
+  <section class="hero">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">$ blackproof --api</p>
+        <h1>Une API pour les contrats, sans collecte de secrets.</h1>
+        <p class="lead">
+          L'API publique BLACKPROOF expose la méthode, les schémas, les cartographies,
+          ProofDebt et le contrat de vérification. Elle est en lecture seule et ne reçoit
+          pas de questionnaires ou de preuves sensibles par défaut.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/api/index.json">Lire le manifeste JSON</a>
+          <a class="button" href="/api/proofpack/schema.json">Voir le schéma ProofPack</a>
+        </div>
+      </div>
+
+      <aside class="command-panel" aria-label="Posture API BLACKPROOF">
+        <p><strong>Posture</strong></p>
+        <p>Contrats ouverts. Secrets locaux. Vérification explicite. Pas de promesse de conformité.</p>
+        <br />
+        <p><strong>Mode V0</strong></p>
+        <p>Public, statique, en lecture seule, compatible cache, sans envoi de données sensibles.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Routes V0</h2>
+      <p class="lead">
+        Ces routes donnent à BLACKPROOF une surface exploitable par scripts,
+        agents, relecteurs et intégrations, sans affaiblir le modèle local.
+      </p>
+
+      <div class="flow">
+        {endpoints.map(([path, description]) => (
+          <a class="flow-item" href={path}>
+            <strong>GET {path}</strong> - {description}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="notice">
+        Une future API dynamique devra être explicite, bornée et non persistante.
+        La V0 publique reste volontairement en lecture seule.
+      </div>
+    </div>
+  </section>
+</BaseLayout>

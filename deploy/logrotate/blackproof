@@ -1,0 +1,16 @@
+/var/log/apache2/blackproof-access.log /var/log/apache2/blackproof-error.log /var/log/apache2/blackproof-http-access.log /var/log/apache2/blackproof-http-error.log {
+    daily
+    rotate 14
+    maxage 14
+    missingok
+    notifempty
+    compress
+    delaycompress
+    create 0640 root adm
+    sharedscripts
+    postrotate
+        if /usr/bin/systemctl is-active --quiet apache2; then
+            /usr/bin/systemctl reload apache2
+        fi
+    endscript
+}

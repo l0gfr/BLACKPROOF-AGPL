@@ -1,0 +1,217 @@
+name: BLACKPROOF production artifact
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blackproof-production-artifact
+  cancel-in-progress: false
+
+jobs:
+  build-publish-artifact:
+    name: Build, checksum and publish production artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    outputs:
+      artifact_id: ${{ steps.production_artifact.outputs.artifact-id }}
+      bundle_sha256: ${{ steps.production_bundle.outputs.sha256 }}
+
+    steps:
+      - name: Reject every production build outside main
+        run: test "$GITHUB_REF" = "refs/heads/main"
+
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Freeze reproducible build timestamp
+        run: echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" >> "$GITHUB_ENV"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 10.34.5
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+
+      - name: Validate production configuration before expensive gates
+        env:
+          PUBLIC_BLACKPROOF_RELEASE_COMMIT: ${{ github.sha }}
+        run: node scripts/check-production-workflow-config.mjs
+
+      - name: Classify the release from the exact live commit
+        id: release_scope
+        env:
+          LIVE_STATUS_URL: https://blackproof.fr/api/status.json
+        run: |
+          status_file="${RUNNER_TEMP}/blackproof-live-status.json"
+          classified=0
+          if curl --proto '=https' --tlsv1.2 --fail --silent --show-error \
+            --connect-timeout 10 --max-time 20 \
+            "$LIVE_STATUS_URL" > "$status_file"; then
+            live_commit="$(node -e '
+              const fs = require("node:fs");
+              const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8")).releaseCommit;
+              if (typeof value !== "string" || !/^[a-f0-9]{40}$/.test(value)) process.exit(1);
+              process.stdout.write(value);
+            ' "$status_file" || true)"
+            if [[ -n "$live_commit" ]] \
+              && git cat-file -e "${live_commit}^{commit}" 2>/dev/null \
+              && git merge-base --is-ancestor "$live_commit" "$GITHUB_SHA"; then
+              if node scripts/classify-release-scope.mjs \
+                "$live_commit" "$GITHUB_SHA" \
+                --github-output "$GITHUB_OUTPUT"; then
+                classified=1
+                echo "live_commit=$live_commit" >> "$GITHUB_OUTPUT"
+              fi
+            fi
+          fi
+          if [[ "$classified" -ne 1 ]]; then
+            echo "scope=full" >> "$GITHUB_OUTPUT"
+            echo "reason=live-boundary-unavailable-or-invalid" >> "$GITHUB_OUTPUT"
+            echo "::warning::The live release boundary could not be proven; the full production gate is mandatory."
+          fi
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate every editorial source
+        run: pnpm editorial:source-check
+
+      - name: Source and unit quality gate
+        if: steps.release_scope.outputs.scope == 'full'
+        run: pnpm check && pnpm test
+
+      - name: Audit all dependencies, including production
+        if: steps.release_scope.outputs.scope == 'full'
+        run: pnpm audit --registry=https://registry.npmjs.com/
+
+      - name: Install Playwright browser
+        if: steps.release_scope.outputs.scope == 'full'
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build the exact open-source production artifact
+        env:
+          BLACKPROOF_BUILD_PROFILE: production
+          PUBLIC_BLACKPROOF_RELEASE_COMMIT: ${{ github.sha }}
+        run: pnpm build && pnpm open-source:check && pnpm artifact:security-test && pnpm security:audit
+
+      - name: Run every business scenario against the exact production artifact
+        if: steps.release_scope.outputs.scope == 'full'
+        env:
+          PLAYWRIGHT_SKIP_WEBSERVER: "1"
+        run: |
+          find apps/web/dist -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum > "${RUNNER_TEMP}/production-dist-before.sha256"
+          pnpm --filter @blackproof/web preview --host 127.0.0.1 --port 4321 > /tmp/blackproof-production-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 90); do
+            if curl -fsS http://127.0.0.1:4321/api/status.json >/dev/null; then
+              break
+            fi
+            if ! kill -0 "$preview_pid" 2>/dev/null; then
+              cat /tmp/blackproof-production-preview.log
+              exit 1
+            fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4321/api/status.json >/dev/null || { cat /tmp/blackproof-production-preview.log; exit 1; }
+          node scripts/check-public-proofpack-contract.mjs http://127.0.0.1:4321
+          pnpm exec playwright test --project=chromium --workers=1
+          find apps/web/dist -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum > "${RUNNER_TEMP}/production-dist-after.sha256"
+          cmp "${RUNNER_TEMP}/production-dist-before.sha256" "${RUNNER_TEMP}/production-dist-after.sha256"
+
+      - name: Validate the exact editorial production artifact
+        if: steps.release_scope.outputs.scope == 'editorial'
+        run: pnpm editorial:dist-check
+
+      - name: Render Apache config from exact build artifact CSP
+        run: pnpm csp:render-apache-conf
+
+      - name: Create CycloneDX software bill of materials
+        run: pnpm artifact:sbom
+
+      - name: Create artifact manifest with per-file checksums
+        run: pnpm artifact:manifest
+
+      - name: Create and verify the deterministic complete bundle
+        run: pnpm artifact:bundle && pnpm artifact:bundle-verify
+
+      - name: Record exact production bundle digest
+        id: production_bundle
+        run: echo "sha256=$(sha256sum artifacts/blackproof-production-bundle.zip | cut -d ' ' -f1)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload production artifact
+        id: production_artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: blackproof-production-${{ github.sha }}
+          path: |
+            apps/web/dist/
+            artifacts/blackproof.fr.conf
+            artifacts/artifact-manifest.json
+            artifacts/blackproof-sbom.cdx.json
+            artifacts/blackproof-production-bundle.zip
+            scripts/smoke-apache-prod.sh
+            scripts/verify-release-directory.mjs
+            deploy/server/promote-static-release.sh
+            deploy/server/activate-static-release.sh
+            deploy/server/snapshot-verified-release-components.mjs
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Record private-repository provenance limitation
+        if: github.event.repository.visibility != 'public'
+        env:
+          BUNDLE_SHA256: ${{ steps.production_bundle.outputs.sha256 }}
+        run: |
+          echo "::notice title=Provenance attestation unavailable::GitHub artifact attestations are unavailable for this private user-owned repository. The uploaded bundle remains checksum-verified but is not GitHub-attested."
+          {
+            echo "### Production artifact provenance"
+            echo
+            echo "GitHub attestation is unavailable for this private user-owned repository."
+            echo "The uploaded bundle is checksum-verified but must not be described as GitHub-attested."
+            echo
+            echo "Bundle SHA-256: \`${BUNDLE_SHA256}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  attest-public-production-artifact:
+    name: Attest exact public production artifact
+    if: github.event.repository.visibility == 'public'
+    needs: build-publish-artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+
+    steps:
+      - name: Download exact production artifact by immutable run artifact id
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          artifact-ids: ${{ needs.build-publish-artifact.outputs.artifact_id }}
+          path: ${{ runner.temp }}/blackproof-production-artifact
+
+      - name: Verify downloaded production bundle digest
+        env:
+          EXPECTED_BUNDLE_SHA256: ${{ needs.build-publish-artifact.outputs.bundle_sha256 }}
+          DOWNLOADED_BUNDLE: ${{ runner.temp }}/blackproof-production-artifact/artifacts/blackproof-production-bundle.zip
+        run: |
+          test "$EXPECTED_BUNDLE_SHA256" = "$(sha256sum "$DOWNLOADED_BUNDLE" | cut -d ' ' -f1)"
+
+      - name: Attest production artifact provenance
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: ${{ runner.temp }}/blackproof-production-artifact/artifacts/blackproof-production-bundle.zip

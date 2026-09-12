@@ -1,0 +1,588 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const summary = [
+  ["Questions", "3", "demandes client structurées"],
+  ["Justificatifs", "3", "éléments attendus ou disponibles"],
+  ["À corriger", "2", "réserves avant transmission"],
+  ["Fichiers", "6", "exports lisibles et vérifiables"]
+];
+
+const pipeline = [
+  ["1", "Questionnaire", "Le fichier client devient une liste de demandes normalisées."],
+  ["2", "Analyse", "Chaque demande est reliée à une preuve attendue, un statut et une réserve."],
+  ["3", "Points à corriger", "Les limites sont visibles avant envoi : sensible, incomplet, non exportable."],
+  ["4", "Export", "Le dossier est produit en fichiers lisibles et en JSON à empreinte recalculable."],
+  ["5", "Vérification", "Le destinataire peut contrôler les fichiers sans compte BLACKPROOF."]
+];
+
+const questions = [
+  {
+    title: "MFA pour les comptes administrateurs",
+    status: "déclarée disponible",
+    answer: "MFA activé pour les comptes administrateurs. Les exceptions éventuelles sont documentées.",
+    reservation: "Ne pas exporter la liste nominative des comptes administrateurs."
+  },
+  {
+    title: "Restauration des sauvegardes",
+    status: "réservée",
+    answer: "Des tests de restauration sont réalisés sur un périmètre prioritaire.",
+    reservation: "Le périmètre complet et les chemins internes ne sont pas exportés."
+  },
+  {
+    title: "Registre des fournisseurs critiques",
+    status: "non exportable tel quel",
+    answer: "Un registre existe et fait l’objet d’une revue périodique.",
+    reservation: "Le registre complet est confidentiel ; seul un extrait contrôlé peut être partagé."
+  }
+];
+
+const files = [
+  ["/demo/proofpack-demo.json", "proofpack-demo.json", "Dossier lisible par logiciel, méthode, résumé et empreinte.", "Empreinte"],
+  ["/demo/reponse-fournisseur-demo.md", "reponse-fournisseur-demo.md", "Réponses prêtes à relire, avec réserves explicites.", "Humain"],
+  ["/demo/registre-preuves-demo.csv", "registre-preuves-demo.csv", "Preuves attendues, statuts, formats et sensibilités.", "CSV"],
+  ["/demo/plan-remediation-demo.csv", "plan-remediation-demo.csv", "Actions pour réduire la dette de preuve.", "CSV"],
+  ["/demo/note-synthese-demo.md", "note-synthese-demo.md", "Synthèse humaine du dossier avant transmission.", "Humain"],
+  ["/demo/proofpack-bundle-manifest.json", "proofpack-bundle-manifest.json", "Liste des fichiers inclus et de leur rôle.", "Inventaire"]
+];
+
+const debts = [
+  ["Test de restauration", "Élevée", "Le test est déclaré mais le périmètre exportable reste partiel."],
+  ["Registre fournisseurs", "Moyenne", "Le registre complet existe mais ne doit pas être transmis tel quel."]
+];
+
+const comparison = [
+  ["GRC classique", "Gère un programme, des contrôles, des workflows et des propriétaires."],
+  ["Questionnaire automatisé", "Réutilise une base de réponses pour remplir plus vite les portails client."],
+  ["BLACKPROOF", "Produit un dossier portable : réponses, justificatifs attendus, réserves et fichiers vérifiables."]
+];
+
+const fingerprint = "bp_sha256_7030f8f66f56e25e558133dd35636c3b4eebd3cb07570f7bb25cdde6c0ef40fa";
+---
+
+<BaseLayout
+  title="Exemple de dossier livré - BLACKPROOF"
+  description="Exemple concret des fichiers BLACKPROOF livrés après traitement d’un questionnaire cyber client."
+>
+  <section class="hero example-hero">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Exemple de dossier livré</p>
+        <h1>Voici les fichiers que vous pouvez transmettre à votre client.</h1>
+        <p class="lead">
+          Cet exemple fictif contient les réponses, les justificatifs attendus, les réserves,
+          les actions restantes et une empreinte permettant de vérifier l’intégrité du dossier.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/demo/proofpack-demo.json" download>Télécharger le dossier JSON</a>
+          <a class="button" href="/demo/proofpack-bundle-manifest.json" download>Télécharger la liste des fichiers</a>
+          <a class="button" href="/verify">Vérifier l’empreinte</a>
+          <a class="button" href="/app">Créer un dossier local</a>
+        </div>
+      </div>
+
+      <aside class="example-scorecard" aria-label="Résumé du dossier Northstar SaaS">
+        <span>Northstar SaaS</span>
+        <strong>Revue cyber client</strong>
+        <div class="score-ring-lite">
+          <div class="score-ring-label">
+            <b>3</b>
+            <small>questions analysées</small>
+          </div>
+        </div>
+        <code>{fingerprint}</code>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container proofpack-difference">
+      <div>
+        <p class="eyebrow">Résultat</p>
+        <h2>Un dossier prêt à relire, partager et archiver.</h2>
+        <p>
+          Vous pouvez ouvrir chaque fichier, relire les réserves, vérifier le JSON
+          et choisir les informations effectivement transmises au client.
+        </p>
+      </div>
+      <div class="comparison-grid">
+        {comparison.map(([title, text]) => (
+          <article class={title === "BLACKPROOF" ? "is-blackproof" : ""}>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container example-summary-grid">
+      {summary.map(([label, value, text]) => (
+        <article>
+          <span>{label}</span>
+          <strong>{value}</strong>
+          <small>{text}</small>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container pipeline-strip">
+      {pipeline.map(([id, title, text]) => (
+        <article>
+          <span>{id}</span>
+          <strong>{title}</strong>
+          <small>{text}</small>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container proofpack-visual">
+      <div>
+        <p class="eyebrow">Questions et réserves</p>
+        <h2>Chaque réponse montre aussi ses limites.</h2>
+        <p>
+          Le dossier indique les informations prêtes à partager, celles qui doivent être retirées
+          et les justificatifs encore incomplets. Une personne responsable valide toujours l’envoi.
+        </p>
+      </div>
+      <div class="question-stack">
+        {questions.map((item) => (
+          <article>
+            <div>
+              <strong>{item.title}</strong>
+              <span>{item.status}</span>
+            </div>
+            <p>{item.answer}</p>
+            <small>{item.reservation}</small>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container example-two-col">
+      <div class="example-panel">
+        <p class="eyebrow">Fichiers à télécharger</p>
+        <h2>Tous les livrables s’ouvrent sans compte.</h2>
+        <div class="file-list">
+          {files.map(([href, file, text, tag]) => (
+            <a href={href} download>
+              <span>{tag}</span>
+              <strong>{file}</strong>
+              <span>{text}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="example-panel">
+        <p class="eyebrow">Points à corriger</p>
+        <h2>Points à reprendre avant envoi.</h2>
+        <div class="debt-list">
+          {debts.map(([title, level, text]) => (
+            <article>
+              <span>{level}</span>
+              <strong>{title}</strong>
+              <small>{text}</small>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container verify-strip">
+      <div>
+        <p class="eyebrow">Intégrité</p>
+        <h2>Une empreinte permet de détecter toute modification du fichier JSON.</h2>
+        <p>
+          Téléchargez le JSON, ouvrez la page Vérifier, puis testez l’empreinte. Une modification
+          du fichier sans recalcul doit produire une non-correspondance. Ce contrôle n’authentifie
+          pas l’identité de l’émetteur. Les fichiers de synthèse précisent les informations partageables
+          et les réserves encore ouvertes.
+        </p>
+      </div>
+      <div class="actions">
+        <a class="button primary" href="/demo/proofpack-demo.json" download>Télécharger</a>
+        <a class="button" href="/verify">Vérifier</a>
+        <a class="button" href="/api/proofpack/schema.json">Voir le schéma</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container pilot-strip">
+      <div>
+        <p class="eyebrow">Votre questionnaire</p>
+        <h2>Utilisez BLACKPROOF sur une demande client réelle.</h2>
+        <p>
+          BLACKPROOF reprend cette structure avec vos questions, vos réserves, vos documents sensibles
+          et vos contraintes de partage. Vous obtenez un dossier exploitable, pas une simple démonstration.
+        </p>
+      </div>
+      <a class="button primary" href="/open-source">Découvrir le code source</a>
+    </div>
+  </section>
+
+  <style>
+    .proofpack-difference,
+    .pipeline-strip,
+    .pilot-strip {
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: var(--shadow-tight);
+    }
+
+    .proofpack-difference {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .proofpack-difference p,
+    .pilot-strip p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .comparison-grid article {
+      min-height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background: rgba(8, 11, 12, 0.48);
+    }
+
+    .comparison-grid article.is-blackproof {
+      border-color: rgba(121, 216, 200, 0.42);
+      background: rgba(121, 216, 200, 0.075);
+    }
+
+    .comparison-grid strong,
+    .comparison-grid span {
+      display: block;
+    }
+
+    .comparison-grid strong {
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+    }
+
+    .comparison-grid span {
+      margin-top: 0.55rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .example-scorecard {
+      display: grid;
+      gap: 0.75rem;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      background:
+        radial-gradient(circle at top right, rgba(121, 216, 200, 0.16), transparent 12rem),
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+      box-shadow: var(--shadow-tight);
+    }
+
+    .example-scorecard span,
+    .example-scorecard strong,
+    .example-scorecard code {
+      display: block;
+      font-family: var(--font-display);
+    }
+
+    .example-scorecard span {
+      color: var(--accent);
+      font-size: 0.78rem;
+    }
+
+    .example-scorecard strong {
+      font-size: 1.45rem;
+    }
+
+    .example-scorecard code {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.65rem;
+      color: var(--muted);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .score-ring-lite {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 9rem;
+      height: 9rem;
+      border: 1px solid rgba(121, 216, 200, 0.36);
+      border-radius: 999px;
+      background:
+        conic-gradient(from 220deg, var(--accent) 0 74%, rgba(255, 255, 255, 0.08) 74% 100%);
+      color: var(--text);
+    }
+
+    .score-ring-lite::before {
+      content: "";
+      position: absolute;
+      inset: 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: inherit;
+      background: #080b0c;
+    }
+
+    .score-ring-label {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.45rem;
+      place-items: center;
+      text-align: center;
+    }
+
+    .score-ring-lite b {
+      display: block;
+      font-size: 2.4rem;
+      line-height: 1;
+    }
+
+    .score-ring-lite small {
+      display: block;
+      color: var(--muted);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .example-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .example-summary-grid article {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .example-summary-grid span,
+    .example-summary-grid strong,
+    .example-summary-grid small {
+      display: block;
+    }
+
+    .example-summary-grid span {
+      color: var(--muted-2);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    .example-summary-grid strong {
+      margin-top: 0.65rem;
+      color: var(--text);
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .example-summary-grid small {
+      margin-top: 0.55rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .pipeline-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .pipeline-strip article {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background: rgba(8, 11, 12, 0.48);
+    }
+
+    .pipeline-strip span,
+    .pipeline-strip strong,
+    .pipeline-strip small {
+      display: block;
+    }
+
+    .pipeline-strip span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+    }
+
+    .pipeline-strip strong {
+      margin-top: 0.55rem;
+      color: var(--text);
+    }
+
+    .pipeline-strip small {
+      margin-top: 0.55rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .proofpack-visual,
+    .verify-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+      gap: 1rem;
+      align-items: start;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .proofpack-visual p,
+    .verify-strip p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .question-stack,
+    .file-list,
+    .debt-list {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .question-stack article,
+    .file-list a,
+    .debt-list article,
+    .example-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem;
+      background: rgba(8, 11, 12, 0.48);
+    }
+
+    .file-list a {
+      display: grid;
+      gap: 0.32rem;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .file-list a:hover {
+      border-color: rgba(121, 216, 200, 0.42);
+      background: rgba(121, 216, 200, 0.065);
+      transform: translateY(-1px);
+    }
+
+    .question-stack article div {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .question-stack strong,
+    .question-stack span,
+    .question-stack small,
+    .file-list strong,
+    .file-list span,
+    .debt-list span,
+    .debt-list strong,
+    .debt-list small {
+      display: block;
+    }
+
+    .question-stack strong,
+    .file-list strong,
+    .debt-list strong {
+      color: var(--text);
+    }
+
+    .question-stack span,
+    .debt-list span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .file-list a > span:first-child {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+    }
+
+    .question-stack p,
+    .question-stack small,
+    .file-list span,
+    .debt-list small {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .example-two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .verify-strip {
+      align-items: center;
+    }
+
+    .verify-strip .actions {
+      justify-content: flex-end;
+    }
+
+    .pilot-strip {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .example-summary-grid,
+      .proofpack-difference,
+      .comparison-grid,
+      .pipeline-strip,
+      .proofpack-visual,
+      .example-two-col,
+      .verify-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .verify-strip .actions {
+        justify-content: flex-start;
+      }
+
+      .pilot-strip {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,35 @@
+{
+  "formatVersion": "blackproof-source-import-v1",
+  "caseId": "case_fixture",
+  "sourceQuestionnaire": {
+    "fileName": "security.xlsx",
+    "format": "unknown",
+    "importedAt": "2026-07-12T12:00:00.000Z",
+    "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "normalizedQuestionnaireSha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "originalFileSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "canonicalizationVersion": "blackproof-questionnaire-canonicalization-v2",
+    "size": 42
+  },
+  "profile": "blackproof-xlsx-import-v1",
+  "sourceFormat": "xlsx",
+  "selectedSheet": "Security Questionnaire",
+  "selectedColumn": 6,
+  "selectedColumnName": "Question",
+  "formulaCount": 1,
+  "formulaWithoutCachedValueCount": 0,
+  "hiddenSheetCount": 0,
+  "externalLinkPartCount": 0,
+  "externalRelationshipCount": 0,
+  "connectionPartCount": 0,
+  "queryTablePartCount": 0,
+  "warnings": [],
+  "questionSources": [
+    {
+      "question": "Décrivez vos contrôles d'accès administrateur.",
+      "source": "cached-formula-value",
+      "cellReference": "F2"
+    }
+  ],
+  "ignoredFormulaCells": []
+}

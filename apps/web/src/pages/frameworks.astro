@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  getFrameworkDefinitions,
+  getFrameworkMappingSummary,
+  getFrameworkRequirements,
+} from "@blackproof/core";
+
+const summary = getFrameworkMappingSummary();
+const frameworks = getFrameworkDefinitions();
+const requirements = getFrameworkRequirements();
+
+const frameworkStatusLabels: Record<string, string> = {
+  "official-source": "fondé sur une source primaire officielle",
+  "country-pack-alpha": "cartographie BLACKPROOF alpha",
+  internal: "interne"
+};
+
+const legalStatusLabels: Record<string, string> = {
+  "evidence-working-map": "cartographie de travail",
+  "non-official-alpha": "alpha non officiel",
+  custom: "personnalisé"
+};
+
+const jurisdictionLabels: Record<string, string> = {
+  "European Union": "Union européenne",
+  France: "France",
+  Internal: "Interne"
+};
+
+const familyLabels: Record<string, string> = {
+  "access-control": "contrôle des accès",
+  backup: "sauvegardes",
+  "incident-response": "réponse à incident",
+  "business-continuity": "continuité et reprise",
+  "supplier-security": "sécurité fournisseurs",
+  governance: "gouvernance",
+  "logging-monitoring": "journalisation et supervision",
+  "vulnerability-management": "vulnérabilités et correctifs",
+  "data-protection": "chiffrement et confidentialité",
+  unknown: "à revoir"
+};
+
+const frameworkLabelOverrides: Record<string, string> = {
+  "blackproof-custom": "Questions personnalisées / non reconnues"
+};
+
+const requirementLabelOverrides: Record<string, string> = {
+  "custom.unmapped": "Exigence à revoir"
+};
+
+const labelFor = (labels: Record<string, string>, value: string) => labels[value] ?? value;
+const labelOverride = (labels: Record<string, string>, value: string, fallback: string) => labels[value] ?? fallback;
+---
+
+<BaseLayout
+  title="Cartographie des référentiels - BLACKPROOF"
+  description="Cartographie de travail BLACKPROOF entre catégories cyber, familles inspirées de NIS 2 et du ReCyF, fiches de preuve attendues et lacunes déclarées."
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">{summary.version}</p>
+      <h1>Relier les preuves aux exigences.</h1>
+      <p class="lead">
+        BLACKPROOF ne promet pas une conformité automatique. La cartographie des référentiels relie les questions,
+        les catégories, des familles de travail inspirées de NIS 2 et du ReCyF, les fiches de preuve attendues et les lacunes documentaires déclarées.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="/app">Créer un ProofPack</a>
+        <a class="button" href="/frameworks.json">Voir le JSON</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid three">
+      <h2 class="sr-only">Synthèse des référentiels</h2>
+      <article class="card">
+        <p class="kpi">référentiels</p>
+        <h3>{summary.frameworkCount}</h3>
+        <p>Directive NIS 2, ReCyF en document de travail, questions personnalisées ou non reconnues.</p>
+      </article>
+      <article class="card">
+        <p class="kpi">exigences</p>
+        <h3>{summary.requirementCount}</h3>
+        <p>Exigences de travail reliées aux catégories et aux preuves.</p>
+      </article>
+      <article class="card">
+        <p class="kpi">statut</p>
+        <h3>alpha</h3>
+        <p>Mapping de travail non officiel, conçu pour structurer un registre de préparation.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Cadres</h2>
+      <p class="lead">
+        Chaque cadre porte une origine et une limite explicites. Les correspondances sont produites par BLACKPROOF et doivent rester strictement bornées :
+        pas de certification, pas d'avis juridique, pas de conformité garantie.
+      </p>
+
+      <div class="grid three">
+        {frameworks.map((framework) => (
+          <article class="card">
+            <p class="kpi">{framework.id}</p>
+            <h3>{labelOverride(frameworkLabelOverrides, framework.id, framework.label)}</h3>
+            <p>{framework.purpose}</p>
+            <p><strong>Juridiction :</strong> {labelFor(jurisdictionLabels, framework.jurisdiction)}</p>
+            <p><strong>Statut :</strong> {labelFor(frameworkStatusLabels, framework.status)}</p>
+            <p><strong>Limite :</strong> {framework.disclaimer}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Exigences de travail</h2>
+      <p class="lead">
+        Une exigence BLACKPROOF n'est utile que si elle pointe vers des preuves attendues
+        et une dette explicite quand ces preuves manquent.
+      </p>
+
+      <div class="grid two">
+        {requirements.map((requirement) => (
+          <article class="card">
+            <p class="kpi">{requirement.id}</p>
+            <h3>{labelOverride(requirementLabelOverrides, requirement.id, requirement.label)}</h3>
+            <p>{requirement.shortDescription}</p>
+            <p><strong>Famille :</strong> {labelFor(familyLabels, requirement.family)}</p>
+            <p><strong>Intention :</strong> {requirement.evidenceIntent}</p>
+            <p><strong>Preuves typiques :</strong> {requirement.typicalEvidenceIds.join(", ")}</p>
+            <p><strong>Dette :</strong> {requirement.proofDebtHint}</p>
+            <p><strong>Statut :</strong> {labelFor(legalStatusLabels, requirement.legalStatus)}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="notice">
+        La cartographie BLACKPROOF v0.1 est une couche de travail orientée preuve.
+        Elle aide à préparer un dossier et ne certifie ni conformité, ni couverture réglementaire complète, ni qualité des documents sources.
+      </div>
+    </div>
+  </section>
+</BaseLayout>

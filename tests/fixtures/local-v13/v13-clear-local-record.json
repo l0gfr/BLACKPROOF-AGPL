@@ -1,0 +1,627 @@
+{
+  "id": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+  "title": "Fixture historique BLACKPROOF V13",
+  "questionnaire": "1. Avez-vous activé le MFA pour les comptes administrateurs ?\n2. Disposez-vous d'une procédure de sauvegarde documentée ?\n3. Testez-vous régulièrement la restauration des sauvegardes ?\n4. Avez-vous une procédure de réponse à incident ?\n5. Disposez-vous d'un registre des fournisseurs critiques ?\n6. Réalisez-vous des scans de vulnérabilités ou un suivi des correctifs ?\n7. Collectez-vous et conservez-vous les journaux de sécurité ?\n8. Disposez-vous d'un PRA ou PCA documenté ?",
+  "proofpackFingerprint": "bp_sha256_bffbe5830147d8a610c0dc86f4bd99745bc66d75dbdbd5fd3a1f8bbe7bee6a9d",
+  "proofDebtScore": 19,
+  "questionCount": 8,
+  "evidenceCount": 15,
+  "proofDebtCount": 15,
+  "createdAt": "2026-07-12T04:21:41.612Z",
+  "updatedAt": "2026-07-12T04:21:41.630Z",
+  "methodVersion": "blackproof-method-v0.1.0-alpha",
+  "proofpack": {
+    "id": "proofpack_d31fb122-fc11-4ed7-a918-e96ecb124427",
+    "revisionId": "revision_1081fad4-6ee8-4108-9e88-c7ee9172bbc7",
+    "case": {
+      "id": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+      "title": "Fixture historique BLACKPROOF V13",
+      "framework": "NIS2/ReCyF V1",
+      "createdAt": "2026-07-12T04:21:41.612Z",
+      "updatedAt": "2026-07-12T04:21:41.612Z",
+      "status": "draft"
+    },
+    "sourceQuestionnaire": {
+      "fileName": "questionnaire.txt",
+      "format": "text",
+      "importedAt": "2026-07-12T04:21:41.612Z",
+      "sha256": "sha256:bade1b94d654a88ee9c3f968d804dfefbebe8d3367b5e4a97af7ff4705782f3a",
+      "normalizedQuestionnaireSha256": "sha256:bade1b94d654a88ee9c3f968d804dfefbebe8d3367b5e4a97af7ff4705782f3a",
+      "size": 491
+    },
+    "questions": [
+      {
+        "id": "q_1b53b4e1-b6d4-4a48-8dd4-24175c1a9f07",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Avez-vous activé le MFA pour les comptes administrateurs ?",
+        "category": "access-control",
+        "criticality": "critical",
+        "mappedRequirements": [
+          "recyf.access-control",
+          "nis2.risk-management.access-control"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_ede313dc-fdf6-478c-93af-56a4620f61dd",
+          "ev_2c60ed84-636d-4cc0-91fa-a470aa5db81c"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      },
+      {
+        "id": "q_133ac6bf-1f3c-4886-8daf-fc68088099ed",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Disposez-vous d'une procédure de sauvegarde documentée ?",
+        "category": "backup",
+        "criticality": "high",
+        "mappedRequirements": [
+          "recyf.backup",
+          "nis2.risk-management.business-continuity"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_cea7e85c-0b3b-4245-8849-12c269a54c1a",
+          "ev_b7118edc-7cac-4953-abfa-1c5d584ec253"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      },
+      {
+        "id": "q_d3e6d50e-ef10-474e-afcb-a3febc3a196e",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Testez-vous régulièrement la restauration des sauvegardes ?",
+        "category": "backup",
+        "criticality": "critical",
+        "mappedRequirements": [
+          "recyf.backup",
+          "nis2.risk-management.business-continuity"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_8ced3f2f-2f6d-4a17-9f1b-c1122c0f9fb9",
+          "ev_4274fb71-367b-4c6f-b88e-7f4b39ee1493"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      },
+      {
+        "id": "q_5cf476d5-97c7-49b3-bf7a-8817562fd44e",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Avez-vous une procédure de réponse à incident ?",
+        "category": "incident-response",
+        "criticality": "high",
+        "mappedRequirements": [
+          "recyf.incident-response",
+          "nis2.incident-handling"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_32dce16c-40bf-4436-b43a-64c1904e9915",
+          "ev_8dbf38bd-5803-4dfb-a4de-c8a1696de2e7"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      },
+      {
+        "id": "q_c12cde3f-fcdf-438e-9911-4d5d388bdb61",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Disposez-vous d'un registre des fournisseurs critiques ?",
+        "category": "supplier-security",
+        "criticality": "medium",
+        "mappedRequirements": [
+          "recyf.supplier-security",
+          "nis2.supply-chain-security"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_4963d7c8-f8f0-48dc-b939-bd27a930b895",
+          "ev_7c0c4053-a15c-42e1-a74b-e72a385e1be4"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      },
+      {
+        "id": "q_2fcd983a-2f9f-4709-8bd1-c40b35191c8f",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Réalisez-vous des scans de vulnérabilités ou un suivi des correctifs ?",
+        "category": "vulnerability-management",
+        "criticality": "medium",
+        "mappedRequirements": [
+          "recyf.vulnerability-management",
+          "nis2.risk-management.vulnerability"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_d40aa329-ed44-469a-990e-96e143bb9cd2",
+          "ev_46670093-5944-4e20-b89b-0af0d60314ed"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      },
+      {
+        "id": "q_a624919a-eae9-47e0-a5bf-0cd1f3d2e428",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Collectez-vous et conservez-vous les journaux de sécurité ?",
+        "category": "logging-monitoring",
+        "criticality": "medium",
+        "mappedRequirements": [
+          "recyf.logging-monitoring",
+          "nis2.detection"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_5604911f-dc6e-4aba-bd99-c5048003e80c",
+          "ev_d22d3723-a023-453e-ac4b-c8b2ecf61ff9"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      },
+      {
+        "id": "q_fedb0ef1-3a96-409e-93c0-6818da29e1f9",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "text": "Disposez-vous d'un PRA ou PCA documenté ?",
+        "category": "business-continuity",
+        "criticality": "critical",
+        "mappedRequirements": [
+          "recyf.business-continuity",
+          "nis2.risk-management.continuity"
+        ],
+        "suggestedAnswer": "À compléter avec une réponse factuelle et une réserve si la preuve est absente.",
+        "evidenceIds": [
+          "ev_b6ef29ec-86ee-4844-ad01-a9f0101b7ef8"
+        ],
+        "confidence": "medium",
+        "answerText": "",
+        "answerReservation": "",
+        "answerConfidence": "medium",
+        "answerExportStatus": "draft"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "ev_ede313dc-fdf6-478c-93af-56a4620f61dd",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_1b53b4e1-b6d4-4a48-8dd4-24175c1a9f07",
+        "templateId": "access-mfa-policy",
+        "title": "Politique MFA",
+        "category": "access-control",
+        "description": "Document décrivant les règles d'authentification multifacteur.",
+        "sensitivity": "internal",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, Markdown, lien interne ou extrait contrôlé",
+        "linkedRequirements": [
+          "recyf.access-control",
+          "nis2.risk-management.access-control"
+        ]
+      },
+      {
+        "id": "ev_2c60ed84-636d-4cc0-91fa-a470aa5db81c",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_1b53b4e1-b6d4-4a48-8dd4-24175c1a9f07",
+        "templateId": "access-admin-review",
+        "title": "Revue des comptes administrateurs",
+        "category": "access-control",
+        "description": "Preuve de revue périodique des comptes à privilèges.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "strong",
+        "recommendedFormat": "CSV expurgé, rapport de revue ou capture anonymisée",
+        "linkedRequirements": [
+          "recyf.access-control",
+          "nis2.risk-management.access-control"
+        ]
+      },
+      {
+        "id": "ev_cea7e85c-0b3b-4245-8849-12c269a54c1a",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_133ac6bf-1f3c-4886-8daf-fc68088099ed",
+        "templateId": "backup-policy",
+        "title": "Procédure de sauvegarde",
+        "category": "backup",
+        "description": "Procédure décrivant la fréquence, le périmètre et la conservation des sauvegardes.",
+        "sensitivity": "internal",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, Markdown ou extrait contrôlé",
+        "linkedRequirements": [
+          "recyf.backup",
+          "nis2.risk-management.business-continuity"
+        ]
+      },
+      {
+        "id": "ev_b7118edc-7cac-4953-abfa-1c5d584ec253",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_133ac6bf-1f3c-4886-8daf-fc68088099ed",
+        "templateId": "backup-restore-test",
+        "title": "Preuve de test de restauration",
+        "category": "backup",
+        "description": "Preuve datée qu'une restauration a été testée avec succès.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "strong",
+        "recommendedFormat": "Rapport de test, ticket, journal ou compte rendu",
+        "linkedRequirements": [
+          "recyf.backup",
+          "nis2.risk-management.business-continuity"
+        ]
+      },
+      {
+        "id": "ev_8ced3f2f-2f6d-4a17-9f1b-c1122c0f9fb9",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_d3e6d50e-ef10-474e-afcb-a3febc3a196e",
+        "templateId": "backup-policy",
+        "title": "Procédure de sauvegarde",
+        "category": "backup",
+        "description": "Procédure décrivant la fréquence, le périmètre et la conservation des sauvegardes.",
+        "sensitivity": "internal",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, Markdown ou extrait contrôlé",
+        "linkedRequirements": [
+          "recyf.backup",
+          "nis2.risk-management.business-continuity"
+        ]
+      },
+      {
+        "id": "ev_4274fb71-367b-4c6f-b88e-7f4b39ee1493",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_d3e6d50e-ef10-474e-afcb-a3febc3a196e",
+        "templateId": "backup-restore-test",
+        "title": "Preuve de test de restauration",
+        "category": "backup",
+        "description": "Preuve datée qu'une restauration a été testée avec succès.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "strong",
+        "recommendedFormat": "Rapport de test, ticket, journal ou compte rendu",
+        "linkedRequirements": [
+          "recyf.backup",
+          "nis2.risk-management.business-continuity"
+        ]
+      },
+      {
+        "id": "ev_32dce16c-40bf-4436-b43a-64c1904e9915",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_5cf476d5-97c7-49b3-bf7a-8817562fd44e",
+        "templateId": "incident-response-plan",
+        "title": "Procédure de réponse à incident",
+        "category": "incident-response",
+        "description": "Procédure de détection, qualification, escalade et notification d'incident.",
+        "sensitivity": "internal",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, Markdown ou lien interne",
+        "linkedRequirements": [
+          "recyf.incident-response",
+          "nis2.incident-handling"
+        ]
+      },
+      {
+        "id": "ev_8dbf38bd-5803-4dfb-a4de-c8a1696de2e7",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_5cf476d5-97c7-49b3-bf7a-8817562fd44e",
+        "templateId": "incident-register",
+        "title": "Registre des incidents",
+        "category": "incident-response",
+        "description": "Registre ou journal des incidents de sécurité et de leur traitement.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "strong",
+        "recommendedFormat": "CSV expurgé, rapport ou extrait anonymisé",
+        "linkedRequirements": [
+          "recyf.incident-response",
+          "nis2.incident-handling"
+        ]
+      },
+      {
+        "id": "ev_4963d7c8-f8f0-48dc-b939-bd27a930b895",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_c12cde3f-fcdf-438e-9911-4d5d388bdb61",
+        "templateId": "supplier-policy",
+        "title": "Politique de sécurité fournisseurs",
+        "category": "supplier-security",
+        "description": "Règles de sélection, suivi et revue des fournisseurs critiques.",
+        "sensitivity": "internal",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, Markdown ou extrait contrôlé",
+        "linkedRequirements": [
+          "recyf.supplier-security",
+          "nis2.supply-chain-security"
+        ]
+      },
+      {
+        "id": "ev_7c0c4053-a15c-42e1-a74b-e72a385e1be4",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_c12cde3f-fcdf-438e-9911-4d5d388bdb61",
+        "templateId": "supplier-register",
+        "title": "Registre des fournisseurs critiques",
+        "category": "supplier-security",
+        "description": "Liste qualifiée des fournisseurs critiques avec propriétaires et risques.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "strong",
+        "recommendedFormat": "CSV expurgé ou extrait anonymisé",
+        "linkedRequirements": [
+          "recyf.supplier-security",
+          "nis2.supply-chain-security"
+        ]
+      },
+      {
+        "id": "ev_d40aa329-ed44-469a-990e-96e143bb9cd2",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_2fcd983a-2f9f-4709-8bd1-c40b35191c8f",
+        "templateId": "patch-policy",
+        "title": "Procédure de gestion des correctifs",
+        "category": "vulnerability-management",
+        "description": "Procédure décrivant la priorisation et le traitement des vulnérabilités.",
+        "sensitivity": "internal",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, Markdown ou extrait contrôlé",
+        "linkedRequirements": [
+          "recyf.vulnerability-management",
+          "nis2.risk-management.vulnerability"
+        ]
+      },
+      {
+        "id": "ev_46670093-5944-4e20-b89b-0af0d60314ed",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_2fcd983a-2f9f-4709-8bd1-c40b35191c8f",
+        "templateId": "scan-report",
+        "title": "Rapport de scan ou suivi de vulnérabilités",
+        "category": "vulnerability-management",
+        "description": "Preuve de scan, suivi CVE ou backlog de remédiation.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "strong",
+        "recommendedFormat": "Rapport expurgé, ticketing ou synthèse",
+        "linkedRequirements": [
+          "recyf.vulnerability-management",
+          "nis2.risk-management.vulnerability"
+        ]
+      },
+      {
+        "id": "ev_5604911f-dc6e-4aba-bd99-c5048003e80c",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_a624919a-eae9-47e0-a5bf-0cd1f3d2e428",
+        "templateId": "logging-policy",
+        "title": "Politique de journalisation",
+        "category": "logging-monitoring",
+        "description": "Règles de collecte, conservation et revue des journaux.",
+        "sensitivity": "internal",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, Markdown ou extrait contrôlé",
+        "linkedRequirements": [
+          "recyf.logging-monitoring",
+          "nis2.detection"
+        ]
+      },
+      {
+        "id": "ev_d22d3723-a023-453e-ac4b-c8b2ecf61ff9",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_a624919a-eae9-47e0-a5bf-0cd1f3d2e428",
+        "templateId": "monitoring-evidence",
+        "title": "Preuve de supervision sécurité",
+        "category": "logging-monitoring",
+        "description": "Capture ou rapport montrant la supervision active des événements de sécurité.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "strong",
+        "recommendedFormat": "Capture expurgée, rapport SIEM ou ticket",
+        "linkedRequirements": [
+          "recyf.logging-monitoring",
+          "nis2.detection"
+        ]
+      },
+      {
+        "id": "ev_b6ef29ec-86ee-4844-ad01-a9f0101b7ef8",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_fedb0ef1-3a96-409e-93c0-6818da29e1f9",
+        "templateId": "bcp-plan",
+        "title": "PRA / PCA",
+        "category": "business-continuity",
+        "description": "Plan de continuité ou de reprise d'activité.",
+        "sensitivity": "confidential",
+        "status": "expected",
+        "strength": "medium",
+        "recommendedFormat": "PDF, extrait contrôlé ou mémo de synthèse",
+        "linkedRequirements": [
+          "recyf.business-continuity",
+          "nis2.risk-management.continuity"
+        ]
+      }
+    ],
+    "debts": [
+      {
+        "id": "debt_f1f2cced-6047-4ef8-9988-5f8449d3cc9c",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_1b53b4e1-b6d4-4a48-8dd4-24175c1a9f07",
+        "evidenceId": "ev_ede313dc-fdf6-478c-93af-56a4620f61dd",
+        "severity": "critical",
+        "reason": "Preuve attendue non fournie : Politique MFA.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Politique MFA."
+      },
+      {
+        "id": "debt_ef2f2e25-03de-4690-9763-cb7b15370c68",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_1b53b4e1-b6d4-4a48-8dd4-24175c1a9f07",
+        "evidenceId": "ev_2c60ed84-636d-4cc0-91fa-a470aa5db81c",
+        "severity": "critical",
+        "reason": "Preuve attendue non fournie : Revue des comptes administrateurs.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Revue des comptes administrateurs."
+      },
+      {
+        "id": "debt_e3fdae05-94ae-400d-bbfd-017a0c146d65",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_133ac6bf-1f3c-4886-8daf-fc68088099ed",
+        "evidenceId": "ev_cea7e85c-0b3b-4245-8849-12c269a54c1a",
+        "severity": "high",
+        "reason": "Preuve attendue non fournie : Procédure de sauvegarde.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Procédure de sauvegarde."
+      },
+      {
+        "id": "debt_4cd466e4-b2a8-42d1-a2a2-8799d4355ba4",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_133ac6bf-1f3c-4886-8daf-fc68088099ed",
+        "evidenceId": "ev_b7118edc-7cac-4953-abfa-1c5d584ec253",
+        "severity": "high",
+        "reason": "Preuve attendue non fournie : Preuve de test de restauration.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Preuve de test de restauration."
+      },
+      {
+        "id": "debt_7a0cc97f-76d3-48c4-9d75-300f9d6fe228",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_d3e6d50e-ef10-474e-afcb-a3febc3a196e",
+        "evidenceId": "ev_8ced3f2f-2f6d-4a17-9f1b-c1122c0f9fb9",
+        "severity": "critical",
+        "reason": "Preuve attendue non fournie : Procédure de sauvegarde.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Procédure de sauvegarde."
+      },
+      {
+        "id": "debt_df9149f9-b0ef-4b79-af82-5cb2ac9b9b65",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_d3e6d50e-ef10-474e-afcb-a3febc3a196e",
+        "evidenceId": "ev_4274fb71-367b-4c6f-b88e-7f4b39ee1493",
+        "severity": "critical",
+        "reason": "Preuve attendue non fournie : Preuve de test de restauration.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Preuve de test de restauration."
+      },
+      {
+        "id": "debt_aadb698c-d33e-4617-9d9d-f671bfd445f0",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_5cf476d5-97c7-49b3-bf7a-8817562fd44e",
+        "evidenceId": "ev_32dce16c-40bf-4436-b43a-64c1904e9915",
+        "severity": "high",
+        "reason": "Preuve attendue non fournie : Procédure de réponse à incident.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Procédure de réponse à incident."
+      },
+      {
+        "id": "debt_4a3f43a7-161e-48cc-92da-479fa358587e",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_5cf476d5-97c7-49b3-bf7a-8817562fd44e",
+        "evidenceId": "ev_8dbf38bd-5803-4dfb-a4de-c8a1696de2e7",
+        "severity": "high",
+        "reason": "Preuve attendue non fournie : Registre des incidents.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Registre des incidents."
+      },
+      {
+        "id": "debt_d12e02d8-f513-4ee6-8837-cfc2c15ff50d",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_c12cde3f-fcdf-438e-9911-4d5d388bdb61",
+        "evidenceId": "ev_4963d7c8-f8f0-48dc-b939-bd27a930b895",
+        "severity": "medium",
+        "reason": "Preuve attendue non fournie : Politique de sécurité fournisseurs.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Politique de sécurité fournisseurs."
+      },
+      {
+        "id": "debt_cea0db02-0ebc-4962-90e2-4419caf225ce",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_c12cde3f-fcdf-438e-9911-4d5d388bdb61",
+        "evidenceId": "ev_7c0c4053-a15c-42e1-a74b-e72a385e1be4",
+        "severity": "medium",
+        "reason": "Preuve attendue non fournie : Registre des fournisseurs critiques.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Registre des fournisseurs critiques."
+      },
+      {
+        "id": "debt_f83a768a-e6fa-4482-8af6-665119a6e8d3",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_2fcd983a-2f9f-4709-8bd1-c40b35191c8f",
+        "evidenceId": "ev_d40aa329-ed44-469a-990e-96e143bb9cd2",
+        "severity": "medium",
+        "reason": "Preuve attendue non fournie : Procédure de gestion des correctifs.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Procédure de gestion des correctifs."
+      },
+      {
+        "id": "debt_bbed5c29-1e7c-47f9-a128-f2b3924d8596",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_2fcd983a-2f9f-4709-8bd1-c40b35191c8f",
+        "evidenceId": "ev_46670093-5944-4e20-b89b-0af0d60314ed",
+        "severity": "medium",
+        "reason": "Preuve attendue non fournie : Rapport de scan ou suivi de vulnérabilités.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Rapport de scan ou suivi de vulnérabilités."
+      },
+      {
+        "id": "debt_f51f84bd-6e8d-4faa-8c00-2a9ba3e204d2",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_a624919a-eae9-47e0-a5bf-0cd1f3d2e428",
+        "evidenceId": "ev_5604911f-dc6e-4aba-bd99-c5048003e80c",
+        "severity": "medium",
+        "reason": "Preuve attendue non fournie : Politique de journalisation.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Politique de journalisation."
+      },
+      {
+        "id": "debt_4c8d7610-a58b-4552-998f-33337f90a50e",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_a624919a-eae9-47e0-a5bf-0cd1f3d2e428",
+        "evidenceId": "ev_d22d3723-a023-453e-ac4b-c8b2ecf61ff9",
+        "severity": "medium",
+        "reason": "Preuve attendue non fournie : Preuve de supervision sécurité.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : Preuve de supervision sécurité."
+      },
+      {
+        "id": "debt_0a1ebb95-ea02-4ea7-b330-77ad596d3720",
+        "kind": "missing",
+        "caseId": "case_ba536e61-e528-45ff-83be-c5192f5271ab",
+        "questionId": "q_fedb0ef1-3a96-409e-93c0-6818da29e1f9",
+        "evidenceId": "ev_b6ef29ec-86ee-4844-ad01-a9f0101b7ef8",
+        "severity": "critical",
+        "reason": "Preuve attendue non fournie : PRA / PCA.",
+        "recommendedAction": "Ajouter une preuve ou documenter une réserve pour : PRA / PCA."
+      }
+    ],
+    "deliveryHistory": [],
+    "summary": {
+      "questionCount": 8,
+      "evidenceCount": 15,
+      "proofDebtCount": 15,
+      "criticalDebtCount": 5,
+      "highDebtCount": 4,
+      "responseCompletenessScore": 0,
+      "evidenceCoverageScore": 0,
+      "evidenceQualityFreshnessScore": 0,
+      "exportReadinessScore": 0,
+      "proofDebtScore": 19
+    },
+    "methodVersion": "blackproof-method-v0.1.0-alpha",
+    "generatedAt": "2026-07-12T04:21:41.629Z",
+    "fingerprint": "bp_sha256_bffbe5830147d8a610c0dc86f4bd99745bc66d75dbdbd5fd3a1f8bbe7bee6a9d"
+  }
+}

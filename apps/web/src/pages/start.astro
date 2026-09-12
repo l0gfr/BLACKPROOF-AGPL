@@ -1,0 +1,763 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardIcon from "../components/ui/CardIcon.astro";
+const knowledgeVaultEnabled = import.meta.env.PUBLIC_BLACKPROOF_KNOWLEDGE_VAULT_ENABLED === "enabled";
+
+const primaryPaths = [
+  {
+    kpi: "01 / entrer",
+    icon: "import",
+    tone: "blue",
+    title: "Charger le questionnaire",
+    text: "Chargez un fichier CSV, TSV, texte ou XLSX. BLACKPROOF extrait les questions sans envoyer le fichier.",
+    href: "/questionnaire-import",
+    cta: "Importer"
+  },
+  {
+    kpi: "02 / analyser",
+    icon: "analyze",
+    tone: "violet",
+    title: "Corriger les blocages",
+    text: "Réponses brouillon, preuves manquantes, éléments sensibles : le dossier montre ce qui bloque l’export.",
+    href: "/app/cases",
+    cta: "Ouvrir"
+  },
+  {
+    kpi: "03 / livrer",
+    icon: "export",
+    tone: "gold",
+    title: "Préparer la version client",
+    text: "Choisissez les réponses prêtes, les réserves à afficher et les justificatifs qui peuvent être partagés.",
+    href: "/demo#delivery-demo",
+    cta: "Voir"
+  },
+  {
+    kpi: "04 / prouver",
+    icon: "fingerprint",
+    tone: "teal",
+    title: "Vérifier l’intégrité",
+    text: "Contrôlez localement schéma, liens, résumé et empreinte SHA-256 avant transmission.",
+    href: "/verify",
+    cta: "Vérifier"
+  }
+] as const;
+
+const workflow = [
+  {
+    step: "Import",
+    route: "/questionnaire-import",
+    input: "CSV / TSV / texte / XLSX",
+    output: "questionnaire normalisé"
+  },
+  {
+    step: "Analyse",
+    route: "/questionnaire-crusher",
+    input: "questions extraites",
+    output: "catégories, exigences, alertes"
+  },
+  {
+    step: "Préparation",
+    route: "/app",
+    input: "questionnaire normalisé",
+    output: "justificatifs, points à corriger, empreinte"
+  },
+  {
+    step: "Réponses",
+    route: "/app/cases",
+    input: "dossier local",
+    output: "réponses, réserves, statuts"
+  },
+  {
+    step: "Local",
+    route: "/app/cases",
+    input: "stockage chiffré du navigateur",
+    output: "dossier réouvrable"
+  },
+  {
+    step: "Réutilisation",
+    route: "/app/knowledge",
+    input: "formulations approuvées localement",
+    output: "suggestions à valider par dossier"
+  },
+  {
+    step: "Export",
+    route: "/proofpack",
+    input: "revue et confirmation",
+    output: "ZIP destiné au client"
+  },
+  {
+    step: "Vérification",
+    route: "/verify",
+    input: "dossier interne ou version client",
+    output: "vérification locale des fichiers"
+  }
+].filter((item) => knowledgeVaultEnabled || item.route !== "/app/knowledge");
+
+const recommendedPath = [
+  ["01", "Importer", "Chargez le questionnaire tel qu’il arrive."],
+  ["02", "Préparer", "Identifiez les justificatifs manquants, les réponses brouillon et les réserves."],
+  ["03", "Exporter", "Produisez les livrables utiles, sans bruit documentaire."],
+  ["04", "Vérifier", "Contrôlez l’empreinte et le contrat lisible par machine."]
+];
+
+const firstRunChoices = [
+  {
+    title: "J’ai un questionnaire client",
+    text: "Le parcours normal : import local, création du dossier, corrections, export.",
+    href: "/questionnaire-import",
+    cta: "Importer maintenant",
+    tone: "primary"
+  },
+  {
+    title: "Je veux comprendre le produit",
+    text: "Voir le fonctionnement, les limites et les données qui restent dans votre navigateur.",
+    href: "/demo",
+    cta: "Voir la démonstration",
+    tone: "neutral"
+  },
+  {
+    title: "Je veux voir le livrable",
+    text: "Ouvrir un exemple de dossier avant de créer le vôtre.",
+    href: "/proofpack-example",
+    cta: "Voir l’exemple",
+    tone: "neutral"
+  }
+];
+
+const proofPackPreview = [
+  ["Entrée", "XLSX / CSV", "ou texte brut"],
+  ["Stockage", "Navigateur", "dossier chiffré localement"],
+  ["Sortie", "ZIP", "fichiers contrôlables"],
+  ["Contrôle", "SHA-256", "empreinte recalculable"]
+];
+
+const operatingChecks = [
+  ["Avant import", "Retirez secrets, tokens, logs bruts et données personnelles inutiles."],
+  ["Avant export", "Bloquez les réponses non exportables et explicitez les réserves."],
+  ["Avant envoi", "Vérifiez la version destinée au client et gardez une copie exacte des fichiers transmis."]
+];
+
+const decisionBlocks = [
+  ["RSSI / DPO", "Répondre vite sans exposer plus que nécessaire.", "/use-cases"],
+  ["Fournisseur B2B", "Transformer des questionnaires répétitifs en actifs réutilisables.", "/use-cases"],
+  ["Cabinet cyber", "Livrer une revue structurée, contrôlable et actionnable.", "/use-cases"]
+];
+---
+
+<BaseLayout
+  title="Démarrer - BLACKPROOF"
+  description="Importez un questionnaire cyber client, préparez les réponses et exportez un dossier vérifiable dans BLACKPROOF."
+>
+  <section class="hero start-hero">
+    <div class="container start-hero-grid">
+      <div>
+        <p class="eyebrow">Premier dossier</p>
+        <h1>Importez le questionnaire, préparez les réponses, contrôlez les fichiers.</h1>
+        <p class="lead">
+          Le point de départ est simple : prenez le questionnaire client,
+          transformez-le en dossier enregistré dans votre navigateur, complétez les réponses
+          et les justificatifs, puis exportez la version destinée au client.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/questionnaire-import">Commencer par l’import</a>
+          <a class="button" href="/proofpack-example">Voir un exemple</a>
+          <a class="button" href="/use-cases">Choisir un cas d’usage</a>
+        </div>
+      </div>
+
+      <aside class="start-proofcard" aria-label="Résumé du parcours de création d’un dossier">
+        <div class="proofcard-top">
+          <span>Plan en quatre temps</span>
+          <strong>données dans votre navigateur</strong>
+        </div>
+        <div class="proofcard-grid">
+          {proofPackPreview.map(([label, value, note]) => (
+            <div>
+              <span>{label}</span>
+              <strong>{value}</strong>
+              <small>{note}</small>
+            </div>
+          ))}
+        </div>
+        <code>importer → analyser → exporter → vérifier</code>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section guided-section">
+    <div class="container guided-panel">
+      <div>
+        <p class="eyebrow">Votre besoin</p>
+        <h2>Commencez par le questionnaire, la démonstration ou un dossier exemple.</h2>
+        <p>
+          BLACKPROOF part d’un questionnaire réel. Vous préparez les réponses, associez les
+          justificatifs et décidez des informations qui peuvent être transmises au client.
+        </p>
+      </div>
+
+      <div class="choice-grid">
+        {firstRunChoices.map((item) => (
+          <a class={`choice-card ${item.tone}`} href={item.href}>
+            <strong>{item.title}</strong>
+            <span>{item.text}</span>
+            <small>{item.cta}</small>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section runbook-section">
+    <div class="container runbook-panel">
+      <div>
+        <p class="eyebrow">Quatre étapes</p>
+        <h2>Le premier dossier se termine par des fichiers prêts à relire.</h2>
+      </div>
+      <div class="guided-steps" role="list" aria-label="Parcours recommandé BLACKPROOF">
+        {recommendedPath.map(([id, title, text]) => (
+          <div class="guided-step" role="listitem">
+            <span>{id}</span>
+            <strong>{title}</strong>
+            <small>{text}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section example-section">
+    <div class="container example-panel">
+      <div>
+        <p class="eyebrow">Dossier exemple</p>
+        <h2>Un livrable concret avant de créer le vôtre.</h2>
+        <p>
+          Le dossier de démonstration est fictif. Il contient les questions, réponses, justificatifs,
+          points à corriger, fichiers de synthèse et empreinte de contrôle.
+        </p>
+      </div>
+      <div class="example-actions">
+        <a class="button primary" href="/proofpack-example">Ouvrir l’exemple visuel</a>
+        <a class="button" href="/demo/proofpack-demo.json" download>Télécharger le JSON</a>
+        <a class="button" href="/verify">Vérifier</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section guardrail-section">
+    <div class="container guardrail-panel">
+      <div>
+        <p class="eyebrow">Avant l’envoi</p>
+        <h2>Trois vérifications protègent vos données et votre réponse.</h2>
+      </div>
+      <div class="guardrail-list">
+        {operatingChecks.map(([title, text]) => (
+          <article>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section start-section">
+    <div class="container start-grid">
+      {primaryPaths.map((item) => (
+        <article class="start-card">
+          <div class="start-card-head">
+            <CardIcon name={item.icon} tone={item.tone} />
+            <p class="kpi">{item.kpi}</p>
+          </div>
+          <h2>{item.title}</h2>
+          <p>{item.text}</p>
+          <a class="button primary" href={item.href}>{item.cta}</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Parcours détaillé</p>
+      <h2>Du fichier client à la version prête à transmettre</h2>
+      <p class="lead">
+        BLACKPROOF importe les questions, rassemble les réponses et justificatifs, enregistre le dossier,
+        exporte les fichiers puis vérifie leur intégrité.
+      </p>
+
+      <div class="workflow-list">
+        {workflow.map((item, index) => (
+          <a class="workflow-item" href={item.route}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{item.step}</strong>
+            <small>{item.input} → {item.output}</small>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid three">
+      {decisionBlocks.map(([title, text, href]) => (
+        <a class="card" href={href}>
+          <p class="kpi">// usage</p>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <style>
+    .start-hero {
+      padding-bottom: 1.5rem;
+    }
+
+    .start-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(330px, 0.68fr);
+      gap: 1.4rem;
+      align-items: center;
+    }
+
+    .start-hero-grid > * {
+      min-width: 0;
+    }
+
+    .start-proofcard {
+      min-width: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(22, 29, 27, 0.96), rgba(8, 11, 12, 0.96));
+      box-shadow: var(--shadow-tight);
+    }
+
+    .proofcard-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.65rem 0.75rem;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+    }
+
+    .proofcard-top strong {
+      color: var(--accent);
+    }
+
+    .proofcard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin: 0.8rem 0;
+    }
+
+    .proofcard-grid div {
+      min-height: 112px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .proofcard-grid span,
+    .proofcard-grid strong,
+    .proofcard-grid small {
+      display: block;
+    }
+
+    .proofcard-grid span {
+      color: var(--muted-2);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+    }
+
+    .proofcard-grid strong {
+      margin-top: 0.8rem;
+      color: var(--text);
+      font-size: 1.3rem;
+    }
+
+    .proofcard-grid small {
+      margin-top: 0.45rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .start-proofcard code {
+      display: block;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 0.6rem 0.7rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .start-section {
+      padding-top: 1rem;
+    }
+
+    .guided-section {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .guided-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+      gap: 1.2rem;
+      align-items: stretch;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 1.2rem;
+      background:
+        linear-gradient(135deg, rgba(121, 216, 200, 0.10), rgba(128, 200, 154, 0.055)),
+        rgba(255, 255, 255, 0.035);
+      box-shadow: var(--shadow-tight);
+    }
+
+    .guided-panel p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .choice-card {
+      display: flex;
+      min-height: 205px;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem;
+      background: rgba(8, 11, 12, 0.52);
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .choice-card:hover {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.055);
+      transform: translateY(-1px);
+    }
+
+    .choice-card.primary {
+      border-color: rgba(121, 216, 200, 0.48);
+      background:
+        linear-gradient(180deg, rgba(121, 216, 200, 0.12), rgba(8, 11, 12, 0.62));
+    }
+
+    .choice-card strong,
+    .choice-card span,
+    .choice-card small {
+      display: block;
+    }
+
+    .choice-card strong {
+      color: var(--text);
+      font-size: 1.1rem;
+      line-height: 1.25;
+    }
+
+    .choice-card span {
+      margin-top: 0.8rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .choice-card small {
+      margin-top: 1rem;
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+    }
+
+    .runbook-section {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .runbook-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.55fr) minmax(0, 1.45fr);
+      gap: 1rem;
+      align-items: center;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding-block: 1.1rem;
+    }
+
+    .runbook-panel h2 {
+      margin-bottom: 0;
+    }
+
+    .guided-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(8, 11, 12, 0.42);
+    }
+
+    .guided-step {
+      min-height: 145px;
+      border-right: 1px solid var(--line);
+      padding: 0.85rem;
+    }
+
+    .guided-step:last-child {
+      border-right: 0;
+    }
+
+    .guided-step span,
+    .guided-step strong,
+    .guided-step small {
+      display: block;
+    }
+
+    .guided-step span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+    }
+
+    .guided-step strong {
+      margin-top: 1.1rem;
+    }
+
+    .guided-step small {
+      margin-top: 0.5rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .start-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .example-section {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .example-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .example-panel p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .example-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0.55rem;
+    }
+
+    .guardrail-section {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .guardrail-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.58fr) minmax(0, 1.42fr);
+      gap: 1rem;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .guardrail-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .guardrail-list article {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.85rem;
+      background: rgba(8, 11, 12, 0.45);
+    }
+
+    .guardrail-list strong,
+    .guardrail-list span {
+      display: block;
+    }
+
+    .guardrail-list strong {
+      color: var(--text);
+    }
+
+    .guardrail-list span {
+      margin-top: 0.55rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .start-card {
+      display: flex;
+      min-height: 275px;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      background:
+        radial-gradient(circle at bottom right, rgba(121, 216, 200, 0.10), transparent 14rem),
+        linear-gradient(180deg, rgba(22, 29, 27, 0.95), rgba(13, 17, 18, 0.95));
+      box-shadow: var(--shadow-tight);
+    }
+
+    .start-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+
+    .start-card-head .kpi {
+      margin: 0;
+    }
+
+    .start-card h2 {
+      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .start-card p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .start-card .button {
+      width: fit-content;
+      margin-top: 1rem;
+    }
+
+    .workflow-list {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 1.4rem;
+    }
+
+    .workflow-item {
+      display: grid;
+      grid-template-columns: 3.2rem 11rem 1fr;
+      gap: 0.8rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 0.8rem 0.95rem;
+      background: rgba(255, 255, 255, 0.035);
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .workflow-item:hover {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.055);
+      transform: translateY(-1px);
+    }
+
+    .workflow-item span {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+    }
+
+    .workflow-item strong {
+      font-family: var(--font-display);
+      letter-spacing: 0;
+    }
+
+    .workflow-item small {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 1000px) {
+      .start-hero-grid,
+      .example-panel,
+      .runbook-panel,
+      .guardrail-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .start-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .guided-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .choice-grid,
+      .guardrail-list {
+        grid-template-columns: 1fr;
+      }
+
+      .guided-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .guided-step {
+        min-height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .guided-step:last-child {
+        border-bottom: 0;
+      }
+
+      .workflow-item {
+        grid-template-columns: 2.5rem 1fr;
+      }
+
+      .workflow-item small {
+        grid-column: 2;
+      }
+
+      .example-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .start-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .proofcard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

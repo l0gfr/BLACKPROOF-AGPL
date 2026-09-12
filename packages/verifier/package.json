@@ -1,0 +1,38 @@
+{
+  "name": "@blackproof/verifier",
+  "version": "0.1.0",
+  "description": "Standalone verifier and comparison SDK for BLACKPROOF Delivery artifacts",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "exports": {
+    ".": "./src/index.js",
+    "./schemas/change-report-v1.schema.json": "./schemas/change-report-v1.schema.json",
+    "./schemas/revocation-v1.schema.json": "./schemas/revocation-v1.schema.json",
+    "./schemas/signature-v1.schema.json": "./schemas/signature-v1.schema.json",
+    "./schemas/status-v1.schema.json": "./schemas/status-v1.schema.json"
+  },
+  "bin": {
+    "blackproof-verify": "./bin/blackproof-verify.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "schemas",
+    "README.md"
+  ],
+  "scripts": {
+    "check": "node --check src/index.js && node --check bin/blackproof-verify.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "jszip": "3.10.1"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  },
+  "engines": {
+    "node": ">=22.23.2 <23"
+  }
+}

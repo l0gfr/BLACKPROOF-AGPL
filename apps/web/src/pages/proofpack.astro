@@ -1,0 +1,175 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { proofPackFiles } from "@blackproof/core";
+
+const plainFilePurpose: Record<string, string> = {
+  "proofpack.json": "Dossier structuré avec questions, réponses, justificatifs, réserves et empreinte de contrôle.",
+  "reponse-fournisseur.md": "Réponses destinées au client, dans un format lisible et facile à relire.",
+  "registre-preuves.csv": "Liste des justificatifs attendus, disponibles, sensibles, manquants ou à mettre à jour.",
+  "plan-remediation.csv": "Actions à mener pour compléter les réponses et les justificatifs.",
+  "note-synthese.md": "Résumé du dossier, des réserves et des points encore ouverts.",
+};
+---
+
+<BaseLayout
+  title="Contenu du dossier BLACKPROOF"
+  description="BLACKPROOF conserve un dossier de travail complet et exporte une version distincte contenant uniquement les éléments autorisés pour le client."
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Dossier BLACKPROOF</p>
+      <h1>Un dossier complet pour vous. Une version maîtrisée pour votre client.</h1>
+        <p class="lead">
+        Le dossier de travail conserve les réponses, brouillons, justificatifs et réserves.
+        La version client contient uniquement les éléments que vous avez relus et autorisés.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="/app">Créer un dossier local</a>
+        <a class="button" href="/proofpack-example">Voir un dossier livré</a>
+        <a class="button" href="/demo/proofpack-demo.json" download>Télécharger un exemple</a>
+        <a class="button" href="/verify">Vérifier l’empreinte</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container proofpack-demo">
+      <div>
+        <p class="eyebrow">Exemple</p>
+        <h2>Un exemple complet avant de créer votre dossier.</h2>
+        <p>
+          L'exemple Northstar SaaS est fictif et ne contient aucune donnée sensible. Il présente le JSON,
+          la réponse fournisseur, le registre des justificatifs, le plan d’actions, la synthèse
+          et la liste des fichiers.
+        </p>
+      </div>
+      <div class="demo-stack">
+        <span>proofpack-demo.json</span>
+        <strong>bp_sha256_a17d26a9...57cfa9</strong>
+        <div class="actions">
+          <a class="button primary" href="/proofpack-example">Explorer</a>
+          <a class="button" href="/demo/proofpack-demo.json" download>Télécharger</a>
+          <a class="button" href="/verify">Vérifier l’empreinte</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Contenu du dossier de travail</h2>
+      <p class="lead">
+        Ce dossier reste sous votre contrôle. Il rassemble le travail complet, y compris les brouillons,
+        les points à corriger et les informations qui ne doivent pas être transmises.
+      </p>
+
+      <div class="grid three">
+        {proofPackFiles.map((file) => (
+          <article class="card">
+            <p class="kpi">{file.filename}</p>
+            <h3>{file.filename}</h3>
+            <p>{plainFilePurpose[file.filename] ?? file.purpose}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Version destinée au client</h2>
+      <p class="lead">
+        Le ZIP destiné au client est construit à partir d’une sélection explicite. Il contient les réponses,
+        réserves et justificatifs que vous avez autorisés, ainsi qu’un guide de lecture et la liste des fichiers.
+      </p>
+      <p>
+        Le destinataire peut vérifier le JSON ou le ZIP depuis la page <a href="/verify">Vérifier</a>,
+        sans créer de compte. Un <a href="/demo/proofpack-delivery-demo.zip">ZIP de démonstration</a> est disponible.
+      </p>
+      <div class="notice">
+        Les brouillons, réponses marquées « ne pas exporter », documents non partageables,
+        chemins internes, plans d’actions et synthèses internes sont exclus de cette version.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Principe d'intégrité</h2>
+      <p class="lead">
+        Le fichier <strong>proofpack.json</strong> embarque une empreinte SHA-256 recalculable localement
+        depuis la page Vérifier. Une modification du fichier après génération doit produire une non-correspondance.
+      </p>
+      <div class="notice">
+        L'empreinte permet de contrôler que le contenu correspond à l'empreinte fournie.
+        Elle ne garantit ni l’identité de l’auteur ni la véracité des déclarations.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Documentation technique</p>
+      <h2>Des formats versionnés pour vos équipes techniques.</h2>
+      <p class="lead">
+        Les schémas JSON, les règles de vérification et l’historique des versions sont publiés
+        pour permettre l’intégration et l’archivage dans vos propres outils.
+      </p>
+      <div class="actions"><a class="button" href="/api">Voir la documentation technique</a></div>
+    </div>
+  </section>
+
+  <style>
+    .proofpack-demo {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(300px, 0.55fr);
+      gap: 1.2rem;
+      align-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      background:
+        linear-gradient(135deg, rgba(121, 216, 200, 0.08), rgba(128, 200, 154, 0.055)),
+        rgba(255, 255, 255, 0.035);
+      box-shadow: var(--shadow-tight);
+    }
+
+    .proofpack-demo p {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .demo-stack {
+      display: grid;
+      gap: 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 0.85rem;
+      background: rgba(8, 11, 12, 0.55);
+    }
+
+    .demo-stack span,
+    .demo-stack strong {
+      font-family: var(--font-display);
+    }
+
+    .demo-stack span {
+      color: var(--accent);
+      font-size: 0.76rem;
+    }
+
+    .demo-stack strong {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 0.78rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 820px) {
+      .proofpack-demo {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,3 @@
+id;question_id;severite;raison;action_recommandee;livrable_attendu
+debt_demo_restore_scope;question_demo_restore_test;high;Le test de restauration est declare mais le perimetre exportable reste partiel;Produire une note de test expurgee avec date perimetre resultat et responsable;note-test-restauration-expurgee.md
+debt_demo_supplier_register_export;question_demo_supplier_register;medium;Le registre complet est confidentiel et ne peut pas etre transmis tel quel;Preparer un extrait controle ou une attestation de revue fournisseurs;attestation-revue-fournisseurs.md

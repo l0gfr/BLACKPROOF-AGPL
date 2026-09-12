@@ -1,0 +1,295 @@
+---
+import "../styles/global.css";
+import blackproofNavScriptUrl from "../scripts/blackproof-nav.js?url";
+import { SOURCE_CODE_URL } from "../lib/source-code";
+
+const {
+  title = "BLACKPROOF",
+  description = "Préparez et partagez vos réponses aux questionnaires cyber clients sans envoyer vos preuves sensibles à BLACKPROOF.",
+  canonicalPath,
+  noindex = false,
+  ogType = "website",
+  publishedAt,
+  modifiedAt,
+  articleTags = [],
+  mainSchema = "software",
+  ogImage = "/og/blackproof.png",
+  ogImageAlt = "BLACKPROOF — Questionnaires cyber clients, données locales",
+} = Astro.props;
+
+const defaultSiteUrl = "https:" + "//blackproof.fr";
+const siteUrl = Astro.site ?? defaultSiteUrl;
+const canonicalUrl = new URL(canonicalPath ?? Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const socialTitle = title;
+const socialDescription = description;
+const knowledgeVaultEnabled = import.meta.env.PUBLIC_BLACKPROOF_KNOWLEDGE_VAULT_ENABLED === "enabled";
+const currentPath = Astro.url.pathname;
+const understandingPaths = ["/use-cases", "/proofpack-example", "/proofpack", "/proofdebt", "/security"];
+const usingPaths = ["/start", "/app", "/questionnaire-import", "/verify"];
+const resourcePaths = ["/demo", "/analyses", "/faq", "/resources", "/method", "/evidence-library", "/api", "/status"];
+const isCurrent = (path: string) => currentPath === path || (path !== "/" && currentPath.startsWith(`${path}/`));
+const groupIsCurrent = (paths: string[]) => paths.some(isCurrent);
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#0a0d0e" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" type="application/rss+xml" title="Analyses cyber BLACKPROOF" href="/analyses/feed.xml" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=blackproof-1" />
+    <link rel="icon" href="/favicon.ico?v=blackproof-1" sizes="32x32" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="BLACKPROOF" />
+    <meta property="og:title" content={socialTitle} />
+    <meta property="og:description" content={socialDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:secure_url" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:description" content={socialDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    {publishedAt && <meta property="article:published_time" content={publishedAt} />}
+    {modifiedAt && <meta property="article:modified_time" content={modifiedAt} />}
+    {articleTags.map((tag: string) => <meta property="article:tag" content={tag} />)}
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <header class="header">
+      <div class="container nav">
+        <a class="logo" href="/" aria-label="BLACKPROOF accueil">
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 44 44" focusable="false">
+              <path class="logo-frame" d="M3.5 3.5h27l10 10v27h-37z" />
+              <path class="logo-cut" d="M30.5 3.5v10h10" />
+              <text x="10" y="26.5">BP</text>
+              <path class="logo-register" d="M10 33h6m3 0h4m3 0h7" />
+              <circle class="logo-seal" cx="36" cy="8" r="2.35" />
+            </svg>
+          </span>
+          <span class="logo-lockup">
+            <span class="logo-word">BLACKPROOF</span>
+            <small>Questionnaires cyber clients</small>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Navigation principale">
+          <details class="nav-group" data-nav-group>
+            <summary class:list={[{ current: groupIsCurrent(understandingPaths) }]}>Comprendre</summary>
+            <div class="nav-menu">
+              <a href="/use-cases">Cas d’usage <small>revues cyber</small></a>
+              <a href="/proofpack-example">Exemple <small>livrable</small></a>
+              <a href="/proofpack">Dossier livré <small>contenu</small></a>
+              <a href="/proofdebt">Points à corriger <small>avant envoi</small></a>
+              <a href="/security">Sécurité <small>données locales</small></a>
+            </div>
+          </details>
+
+          <details class="nav-group" data-nav-group>
+            <summary class:list={[{ current: groupIsCurrent(usingPaths) }]}>Utiliser</summary>
+            <div class="nav-menu">
+              <a href="/start">Démarrer <small>parcours</small></a>
+              <a href="/app">Créer un dossier <small>local</small></a>
+              <a href="/app/cases">Dossiers locaux <small>chiffrés</small></a>
+              {knowledgeVaultEnabled && <a href="/app/knowledge">Base personnelle <small>réponses approuvées</small></a>}
+              <a href="/questionnaire-import">Importer <small>XLSX / CSV</small></a>
+              <a href="/verify">Vérifier <small>empreinte</small></a>
+            </div>
+          </details>
+
+          <details class="nav-group" data-nav-group>
+            <summary class:list={[{ current: groupIsCurrent(resourcePaths) }]}>Ressources</summary>
+            <div class="nav-menu">
+              <a href="/demo">Démo <small>scénario</small></a>
+              <a href="/analyses">Analyses <small>cyber</small></a>
+              <a href="/faq">FAQ client <small>dossiers et sauvegardes</small></a>
+              <a href="/resources">Documentation <small>produit</small></a>
+              <a href="/method">Méthode <small>contrôles</small></a>
+              <a href="/evidence-library">Justificatifs <small>attendus</small></a>
+              <a href="/api">Données techniques <small>intégration</small></a>
+              <a href="/status">Disponibilité <small>versions</small></a>
+            </div>
+          </details>
+
+          <a class="button nav-offer" href="/open-source" aria-current={isCurrent("/open-source") ? "page" : undefined}>Logiciel libre</a>
+          <a class="button primary nav-cta" href="/app">
+            <span>Créer un dossier local</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </nav>
+      </div>
+      <div class="proof-rail" aria-hidden="true">
+        <div class="container proof-rail-inner">
+          <span>DONNÉES LOCALES</span>
+          <span>DOSSIER INTERNE / DOSSIER CLIENT</span>
+          <span>INTÉGRITÉ VÉRIFIABLE</span>
+          <i></i>
+          <strong>BLACKPROOF</strong>
+        </div>
+      </div>
+    </header>
+
+    <main
+      id="contenu"
+      itemscope={mainSchema === "software" ? true : undefined}
+      itemtype={mainSchema === "software" ? "https://schema.org/SoftwareApplication" : undefined}
+    >
+      {mainSchema === "software" && (
+        <>
+          <meta itemprop="name" content="BLACKPROOF" />
+          <meta itemprop="applicationCategory" content="SecurityApplication" />
+          <meta itemprop="operatingSystem" content="Web" />
+          <meta itemprop="url" content={canonicalUrl} />
+          <meta itemprop="description" content={description} />
+        </>
+      )}
+      <slot />
+    </main>
+
+    <footer class="footer" aria-label="Pied de page">
+      <div class="container footer-inner">
+        <div class="footer-top">
+          <a class="footer-brand" href="/" aria-label="BLACKPROOF accueil">
+            <span class="logo-mark" aria-hidden="true">
+              <svg viewBox="0 0 44 44" focusable="false">
+                <path class="logo-frame" d="M3.5 3.5h27l10 10v27h-37z" />
+                <path class="logo-cut" d="M30.5 3.5v10h10" />
+                <text x="10" y="26.5">BP</text>
+                <path class="logo-register" d="M10 33h6m3 0h4m3 0h7" />
+                <circle class="logo-seal" cx="36" cy="8" r="2.35" />
+              </svg>
+            </span>
+            <span>
+              <strong>BLACKPROOF</strong>
+              <small>Répondre. Justifier. Partager. Vérifier.</small>
+            </span>
+          </a>
+
+          <div class="footer-assurance" role="list" aria-label="Garanties">
+            <span role="listitem">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l7 3v5c0 4.4-2.8 8.4-7 10-4.2-1.6-7-5.6-7-10V6l7-3z" />
+                <path d="M9 12l2 2 4-5" />
+              </svg>
+              Traitement local
+            </span>
+            <span role="listitem">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h16" />
+                <path d="M7 7v11h10V7" />
+                <path d="M9 7V5h6v2" />
+                <path d="M10 11v4" />
+                <path d="M14 11v4" />
+              </svg>
+              Aucune collecte cachée
+            </span>
+            <span role="listitem">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12h16" />
+                <path d="M12 4v16" />
+                <path d="M7 7l10 10" />
+                <path d="M17 7L7 17" />
+              </svg>
+              Aucun tracker
+            </span>
+          </div>
+        </div>
+
+        <div class="footer-grid">
+          <section class="footer-section">
+            <h2>
+              <span class="footer-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h16v12H4z" />
+                  <path d="M7 10h6" />
+                  <path d="M7 14h10" />
+                </svg>
+              </span>
+              Produit
+            </h2>
+            <a href="/use-cases">Cas d’usage</a>
+            <a href="/start">Démarrer le parcours</a>
+            <a href="/proofpack-example">Exemple de dossier livré</a>
+            <a href="/verify">Vérifier un dossier</a>
+            <a href="/app">Créer un dossier local</a>
+          </section>
+
+          <section class="footer-section">
+            <h2>
+              <span class="footer-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 4l8 4-8 4-8-4 8-4z" />
+                  <path d="M4 12l8 4 8-4" />
+                  <path d="M4 16l8 4 8-4" />
+                </svg>
+              </span>
+              Méthode
+            </h2>
+            <a href="/about">À propos</a>
+            <a href="/analyses">Analyses cyber</a>
+            <a href="/method">Méthode</a>
+            <a href="/evidence-library">Bibliothèque de preuves</a>
+            <a href="/frameworks">Référentiels</a>
+            <a href="/security">Sécurité des données</a>
+          </section>
+
+          <section class="footer-section">
+            <h2>
+              <span class="footer-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 9l-4 3 4 3" />
+                  <path d="M16 9l4 3-4 3" />
+                  <path d="M13 6l-2 12" />
+                </svg>
+              </span>
+              Données
+            </h2>
+            <a href="/api">Documentation technique</a>
+            <a href="/api/status.json">Statut JSON</a>
+            <a href="/api/index.json">Catalogue JSON</a>
+            <a href="/api/proofpack/schema.json">Schéma ProofPack</a>
+          </section>
+
+          <section class="footer-section">
+            <h2>
+              <span class="footer-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.1 2.1 0 013 3L8 18l-4 1 1-4 11.5-11.5z" />
+                </svg>
+              </span>
+              Accès
+            </h2>
+            <a href="/demo">Voir la démo</a>
+            <a href="/app">Créer un dossier local</a>
+            <a href="/app/cases">Dossiers locaux</a>
+            <a href="/faq">FAQ client</a>
+            {knowledgeVaultEnabled && <a href="/app/knowledge">Base personnelle</a>}
+            <a href="/open-source">Logiciel libre</a>
+          </section>
+        </div>
+
+        <div class="footer-bottom">
+          <span>BLACKPROOF © 2026 · site statique · sans cookie publicitaire · sans tracker</span>
+          <a href="/LICENSE.txt">AGPL-3.0</a>
+          <a href={SOURCE_CODE_URL} rel="noopener noreferrer">Code source</a>
+          <a href="/rgpd">Mentions légales & RGPD</a>
+        </div>
+      </div>
+    </footer>
+    <script src={blackproofNavScriptUrl} defer></script>
+  </body>
+</html>
