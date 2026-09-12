@@ -470,7 +470,7 @@
       <details class="security-note">
         <summary>Voir les protections appliquées</summary>
         <p>
-          Un questionnaire fournisseur peut contenir des informations confidentielles.
+          Un questionnaire ou une grille d’audit peut contenir des informations confidentielles.
           BLACKPROOF le traite localement, mais ne chargez pas de secrets inutiles.
         </p>
         <ul>

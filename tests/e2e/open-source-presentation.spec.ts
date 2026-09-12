@@ -1,5 +1,20 @@
 import { expect, test } from "@playwright/test";
 
+test("internal audits and cyber reviews are explicit, without implying automated audit conclusions", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("revues cyber et audits internes");
+  await expect(page.getByRole("heading", { name: "Questionnaires fournisseurs", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Audits internes", exact: true })).toBeVisible();
+  await page.goto("/use-cases");
+  await expect(page.getByRole("heading", { name: "Préparer un dossier d’audit interne documenté." })).toBeVisible();
+  await expect(page.locator("main")).toContainText("Les conclusions d’audit restent humaines");
+  await expect(page.locator("main")).toContainText("ne remplace ni le jugement d’un auditeur");
+  await page.goto("/app");
+  await expect(page.locator('[data-blackproof-hydrated="true"]')).toBeVisible();
+  await expect(page.getByLabel("Destinataire ou équipe interne", { exact: true })).not.toHaveAttribute("required", "");
+  await expect(page.getByLabel("Nom du dossier", { exact: true })).toHaveValue("Revue cyber");
+});
+
 test("start cards align content rows and leave breathing room after icons", async ({ page }) => {
   for (const width of [1440, 1280, 960, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });

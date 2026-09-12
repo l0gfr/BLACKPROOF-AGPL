@@ -17,7 +17,8 @@ test("FAQ states the free software and strictly local-storage boundary plainly",
   await expect(page.getByRole("link", { name: "Voir mes dossiers locaux" }).first()).toHaveAttribute("href", "/app/cases");
   await expect(page.getByRole("heading", { name: "Un logiciel ouvert, des dossiers locaux." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Sauvegarder et restaurer" })).toBeVisible();
-  await expect(page.locator(".faq-list details")).toHaveCount(25);
+  await expect(page.locator(".faq-list details")).toHaveCount(29);
+  await expect(page.getByRole("heading", { name: "Revues cyber et audits internes" })).toBeVisible();
 });
 
 test("FAQ illustrations are local, descriptive and available", async ({ page, request }) => {

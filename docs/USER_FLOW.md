@@ -7,6 +7,13 @@ implemented or permitted.
 
 ## Choose a starting point
 
+Cyber reviews, internal audits and supplier questionnaires use the same local
+workflow. Import a review checklist or paste its questions in the editor. There
+is no requirement to have an external client or to send an export. The product
+helps prepare documentation; it neither inspects systems nor validates audit
+conclusions. Labels such as "version client" in the export workflow designate
+a selected recipient copy, including for an internal reviewer.
+
 - `/start`: understand the sequence and choose the next action.
 - `/questionnaire-import`: start from a CSV, TSV, text or supported XLSX questionnaire.
 - `/app`: start directly from pasted questionnaire text.

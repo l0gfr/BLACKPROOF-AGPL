@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
   <title id="title">BLACKPROOF</title>
-  <desc id="description">Questionnaires cyber clients, données locales par défaut</desc>
+  <desc id="description">Revues cyber et audits internes, logiciel libre, traitement strictement local</desc>
   <defs>
     <linearGradient id="background" x1="80" y1="40" x2="1110" y2="600" gradientUnits="userSpaceOnUse">
       <stop stop-color="#14221d" />
@@ -30,7 +30,7 @@
   </g>
 
   <g transform="translate(292 96)">
-    <text fill="#8ee5d1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" letter-spacing="4">QUESTIONNAIRES CYBER CLIENTS</text>
+    <text fill="#8ee5d1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" letter-spacing="4">REVUES CYBER · AUDITS INTERNES</text>
     <text y="91" fill="#f3f6f2" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="74" font-weight="650" letter-spacing="2">BLACKPROOF</text>
     <path d="M2 118h676" stroke="#8ee5d1" stroke-opacity=".52" stroke-width="2" />
     <path d="M682 118h62" stroke="#e0b66f" stroke-width="2" />
@@ -38,13 +38,13 @@
 
   <g transform="translate(84 335)">
     <text fill="#f3f6f2" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="38" font-weight="500">Répondre. Justifier. Partager. Vérifier.</text>
-    <text y="61" fill="#a8b2ab" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="26">Préparez un dossier client sans envoyer vos preuves sensibles.</text>
+    <text y="61" fill="#a8b2ab" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="26">Questionnaires, preuves, réserves : tout se prépare sur votre appareil.</text>
   </g>
 
   <g transform="translate(84 518)">
     <rect width="410" height="56" rx="12" fill="#8ee5d1" fill-opacity=".08" stroke="#8ee5d1" stroke-opacity=".34" />
     <circle cx="29" cy="28" r="6" fill="#8ee5d1" />
-    <text x="50" y="36" fill="#8ee5d1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="700" letter-spacing="1.4">DONNÉES LOCALES PAR DÉFAUT</text>
+    <text x="50" y="36" fill="#8ee5d1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="700" letter-spacing="1.4">TRAITEMENT STRICTEMENT LOCAL</text>
   </g>
 
   <text x="1116" y="554" text-anchor="end" fill="#747f78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" letter-spacing="2">BLACKPROOF.FR</text>

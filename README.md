@@ -3,10 +3,15 @@
 BLACKPROOF is a free, open-source, local-first cyber evidence app under AGPL-3.0-only.
 Create, import, encrypt, export and verify dossiers directly in your browser.
 No account, activation key or application server is required.
+Use it to prepare cyber reviews, internal audits and supplier questionnaires.
+Bring your own review checklist, document answers, evidence references and
+reservations, then track the remaining preparation work. Source documents and
+audit conclusions still require human assessment; this is not a system scanner
+or an automated certification service.
 
 Core flow:
 
-questionnaire fournisseur → mapping NIS2/ReCyF → preuves attendues → dette de preuve → Master interne → Delivery externe revu.
+questionnaire ou grille d'audit → réponses et références → preuves attendues → points à corriger → dossier interne → export relu facultatif.
 
 ## Project structure
 

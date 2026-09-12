@@ -4,6 +4,12 @@ The fictional supplier Northstar SaaS prepares a cyber questionnaire for Omega
 Industrial Group. The demonstration uses the same free, account-free, local-only
 application as any other user. No document is uploaded.
 
+This video demonstrates the supplier-questionnaire use case. The same local
+workflow also supports a cyber review or an internal audit: replace the fictional
+questionnaire with your own review checklist. An external client and a transmitted
+export are not prerequisites. The software helps document a review; it does not
+perform an audit or assess the truth of referenced evidence documents.
+
 ## Replay the working flow
 
 1. Open `/demo` and download `/demo/supplier-questionnaire-demo.csv`.

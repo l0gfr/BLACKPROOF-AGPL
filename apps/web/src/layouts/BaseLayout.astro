@@ -7,7 +7,7 @@ import CardIcon from "../components/ui/CardIcon.astro";
 
 const {
   title = "BLACKPROOF",
-  description = "Préparez et partagez vos réponses aux questionnaires cyber clients sans envoyer vos preuves sensibles à BLACKPROOF.",
+  description = "Préparez vos revues cyber, audits internes et questionnaires fournisseurs sans envoyer vos documents à BLACKPROOF.",
   canonicalPath,
   noindex = false,
   ogType = "website",
@@ -16,7 +16,7 @@ const {
   articleTags = [],
   mainSchema = "software",
   ogImage = "/og/blackproof.png",
-  ogImageAlt = "BLACKPROOF — Questionnaires cyber clients, données locales",
+  ogImageAlt = "BLACKPROOF : revues cyber et audits internes, traitement strictement local",
 } = Astro.props;
 
 const defaultSiteUrl = "https:" + "//blackproof.fr";
@@ -88,7 +88,7 @@ const groupIsCurrent = (paths: string[]) => paths.some(isCurrent);
           </span>
           <span class="logo-lockup">
             <span class="logo-word">BLACKPROOF</span>
-            <small>Questionnaires cyber clients</small>
+            <small>Revues cyber · Audits internes</small>
           </span>
         </a>
 
@@ -144,7 +144,7 @@ const groupIsCurrent = (paths: string[]) => paths.some(isCurrent);
       <div class="proof-rail" aria-hidden="true">
         <div class="container proof-rail-inner">
           <span>DONNÉES LOCALES</span>
-          <span>DOSSIER INTERNE / DOSSIER CLIENT</span>
+          <span>DOSSIER DE TRAVAIL / EXPORT RELU</span>
           <span>INTÉGRITÉ VÉRIFIABLE</span>
           <i></i>
           <strong>BLACKPROOF</strong>

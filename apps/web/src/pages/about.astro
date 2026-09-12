@@ -22,7 +22,7 @@ const principles = [
 
 const refuses = [
   "Transformer une déclaration cyber en conformité automatique.",
-  "Collecter des preuves sensibles sans nécessité claire.",
+  "Téléverser les documents ou les preuves des utilisateurs.",
   "Mélanger réponse client, secrets internes et fichiers non maîtrisés.",
   "Masquer les réserves documentaires derrière un score rassurant.",
   "Enfermer les livrables dans un format qui ne peut pas être exporté et vérifié."
@@ -32,7 +32,7 @@ const doctrineFlow = [
   ["Répondre", "Formuler une réponse utile, prudente et exploitable."],
   ["Justifier", "Relier la réponse aux documents attendus ou disponibles."],
   ["Protéger", "Isoler les informations partielles, sensibles ou non partageables."],
-  ["Partager", "Produire une version client lisible sans compte BLACKPROOF."],
+  ["Partager", "Produire, si nécessaire, une version relue pour un destinataire interne ou externe."],
   ["Vérifier", "Contrôler la cohérence, la méthode et l’empreinte de proofpack.json."]
 ];
 
@@ -45,17 +45,18 @@ const credibility = [
 
 <BaseLayout
   title="À propos de BLACKPROOF"
-  description="BLACKPROOF prépare des réponses cyber documentées et exportables sans envoyer les justificatifs sensibles vers un serveur."
+  description="BLACKPROOF prépare vos revues cyber, audits internes et réponses fournisseurs, en local et sans téléversement de documents."
 >
   <section class="hero about-hero">
     <div class="container split">
       <div>
         <p class="eyebrow">À propos</p>
-        <h1>BLACKPROOF transforme un questionnaire cyber en dossier prêt à transmettre.</h1>
+        <h1>Un dossier documenté pour chaque revue cyber ou audit interne.</h1>
         <p class="lead">
-          Les questionnaires cyber ne manquent pas de réponses. Ils manquent de références documentées,
-          de réserves explicites, d’exports propres et de vérification. BLACKPROOF est conçu
-          pour préparer ce dossier sans collecter vos justificatifs sensibles.
+          Une grille d’audit interne, une revue cyber périodique ou un questionnaire fournisseur
+          demande des réponses factuelles, des références documentées et des réserves explicites.
+          BLACKPROOF aide à préparer ce dossier, sans collecter vos documents et sans se substituer
+          à la personne qui évalue les preuves.
         </p>
         <div class="actions">
           <a class="button primary" href="/proofpack-example">Voir un dossier livré</a>
@@ -77,7 +78,7 @@ const credibility = [
   <section class="section">
     <div class="container section-header">
       <p class="eyebrow">Principes</p>
-      <h2>Quatre principes simples pour traiter un questionnaire client.</h2>
+      <h2>Quatre principes pour documenter une revue.</h2>
     </div>
     <div class="container grid two">
       {principles.map((item) => (
@@ -96,7 +97,7 @@ const credibility = [
         <p class="eyebrow">Fonctionnement</p>
         <h2>Répondre. Justifier. Protéger. Partager. Vérifier.</h2>
         <p>
-          BLACKPROOF rend visible le chemin entre une question client et un dossier
+          BLACKPROOF rend visible le chemin entre une question ou un contrôle et un dossier
           que l’on peut relire, transmettre et contrôler.
         </p>
       </div>

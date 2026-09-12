@@ -7,6 +7,7 @@ const root = process.cwd();
 const publicRoots = [
   "apps/web/src/pages",
   "apps/web/src/components",
+  "apps/web/src/layouts",
   "apps/web/src/content",
 ];
 const publicSourceExtensions = new Set([".astro", ".svelte", ".md", ".ts"]);
@@ -70,7 +71,7 @@ test("public surfaces contain no payment or access-licensing flow", () => {
 });
 
 test("documentation and public copy describe an unconditional local-only product", () => {
-  const files = [...publicFiles, ...listFiles("docs").filter((path) => extname(path) === ".md"), ...listFiles("apps/web/public/media").filter((path) => extname(path) === ".vtt"), "README.md"];
+  const files = [...publicFiles, ...listFiles("docs").filter((path) => extname(path) === ".md"), ...listFiles("apps/web/public/media").filter((path) => extname(path) === ".vtt"), "apps/web/public/og/blackproof.svg", "README.md"];
   for (const path of files) {
     const source = readFileSync(join(root, path), "utf8");
     assert.doesNotMatch(source, /FAQ clients?|\babonnements?\b|\bsubscriptions?\b|compte payant|paid account|offre Solo|les offres|ne (?:collecte|reçoit)[^.\n]*par défaut|(?:no|not|never)[^.\n]*upload[^.\n]*by default|locaux par défaut/i, path);
@@ -93,6 +94,21 @@ test("the local-only demonstration replaces retired commercial media", () => {
     assert.ok(home.includes(name), name);
   }
   assert.match(home, /Lire le parcours sans vidéo/);
+});
+
+test("positioning includes cyber reviews and internal audits without inventing an MCP service", () => {
+  for (const path of ["index", "use-cases", "start", "about", "grc", "open-source", "faq", "resources"]) {
+    const source = readFileSync(join(root, `apps/web/src/pages/${path}.astro`), "utf8");
+    assert.match(source, /revues? cyber/i, path);
+    assert.match(source, /audits? internes?/i, path);
+  }
+  const llms = readFileSync(join(root, "apps/web/src/pages/llms.txt.ts"), "utf8");
+  assert.match(llms, /AGPL-3\.0-only/);
+  assert.doesNotMatch(llms, /autonome MIT|paquet npm @blackproof/);
+  assert.match(llms, /Aucun serveur MCP n'est fourni/);
+  const faq = readFileSync(join(root, "apps/web/src/pages/faq.astro"), "utf8");
+  assert.match(faq, /ne sont pas chiffrés/);
+  assert.match(faq, /ne valide pas la véracité/);
 });
 
 test("public wording does not overstate automated judgment", () => {

@@ -26,7 +26,7 @@ const primaryPaths = [
     kpi: "03 / livrer",
     icon: "export",
     tone: "gold",
-    title: "Préparer la version client",
+    title: "Préparer la version à relire",
     text: "Choisissez les réponses prêtes, les réserves à afficher et les justificatifs qui peuvent être partagés.",
     href: "/demo#delivery-demo",
     cta: "Voir"
@@ -83,12 +83,12 @@ const workflow = [
     step: "Export",
     route: "/proofpack",
     input: "revue et confirmation",
-    output: "ZIP destiné au client"
+    output: "ZIP pour le destinataire choisi"
   },
   {
     step: "Vérification",
     route: "/verify",
-    input: "dossier interne ou version client",
+    input: "dossier interne ou export relu",
     output: "vérification locale des fichiers"
   }
 ].filter((item) => knowledgeVaultEnabled || item.route !== "/app/knowledge");
@@ -102,8 +102,8 @@ const recommendedPath = [
 
 const firstRunChoices = [
   {
-    title: "J’ai un questionnaire client",
-    text: "Le parcours normal : import local, création du dossier, corrections, export.",
+    title: "J’ai un questionnaire ou une grille d’audit",
+    text: "Questionnaire fournisseur, revue cyber ou audit interne : le même parcours local.",
     href: "/questionnaire-import",
     cta: "Importer maintenant",
     tone: "primary"
@@ -134,19 +134,19 @@ const proofPackPreview = [
 const operatingChecks = [
   ["Avant import", "Retirez secrets, tokens, logs bruts et données personnelles inutiles."],
   ["Avant export", "Bloquez les réponses non exportables et explicitez les réserves."],
-  ["Avant envoi", "Vérifiez la version destinée au client et gardez une copie exacte des fichiers transmis."]
+  ["Avant envoi", "Vérifiez la version destinée au tiers et gardez une copie exacte des fichiers transmis. L’envoi reste facultatif et extérieur à BLACKPROOF."]
 ];
 
 const decisionBlocks = [
   ["RSSI / DPO", "Répondre vite sans exposer plus que nécessaire.", "/use-cases"],
   ["Fournisseur B2B", "Transformer des questionnaires répétitifs en actifs réutilisables.", "/use-cases"],
-  ["Cabinet cyber", "Livrer une revue structurée, contrôlable et actionnable.", "/use-cases"]
+  ["Audit interne / Cabinet cyber", "Documenter une revue cyber ou un audit interne et ses points à corriger.", "/use-cases"]
 ];
 ---
 
 <BaseLayout
   title="Démarrer - BLACKPROOF"
-  description="Importez un questionnaire cyber client, préparez les réponses et exportez un dossier vérifiable dans BLACKPROOF."
+  description="Démarrez une revue cyber, un audit interne ou un questionnaire fournisseur : import local, réponses, justificatifs et export à relire."
 >
   <section class="hero start-hero">
     <div class="container start-hero-grid">
@@ -154,9 +154,10 @@ const decisionBlocks = [
         <p class="eyebrow">Premier dossier</p>
         <h1>Importez le questionnaire, préparez les réponses, contrôlez les fichiers.</h1>
         <p class="lead">
-          Le point de départ est simple : prenez le questionnaire client,
+          Le point de départ est simple : prenez un questionnaire ou votre grille d’audit interne,
           transformez-le en dossier enregistré dans votre navigateur, complétez les réponses
-          et les justificatifs, puis exportez la version destinée au client.
+          et les références de justificatifs. Conservez-le pour votre revue cyber ou préparez
+          une version destinée à un tiers, selon votre besoin.
         </p>
         <div class="actions">
           <a class="button primary" href="/questionnaire-import">Commencer par l’import</a>
@@ -191,7 +192,7 @@ const decisionBlocks = [
         <h2>Commencez par le questionnaire, la démonstration ou un dossier exemple.</h2>
         <p>
           BLACKPROOF part d’un questionnaire réel. Vous préparez les réponses, associez les
-          justificatifs et décidez des informations qui peuvent être transmises au client.
+          justificatifs et décidez des informations qui peuvent être transmises au destinataire choisi.
         </p>
       </div>
 

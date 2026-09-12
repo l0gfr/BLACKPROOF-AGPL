@@ -13,7 +13,7 @@
 
   export let onCaseCreated: ((caseId: string, passphrase: string) => void) | undefined = undefined;
 
-  let caseTitle = "Questionnaire cyber fournisseur";
+  let caseTitle = "Revue cyber";
   let companyName = "";
   let clientName = "";
   let localLabel = "";
@@ -181,7 +181,7 @@
         <span>2</span>
         <div>
           <h2 id="case-context-title">Nommer le dossier</h2>
-          <p>Le nom sert à le retrouver. L’entreprise et le client restent optionnels.</p>
+          <p>Le nom sert à le retrouver. L’entreprise et le destinataire restent optionnels, y compris pour un audit interne.</p>
         </div>
       </div>
       <div class="form-grid">
@@ -202,7 +202,7 @@
         </label>
 
         <label>
-          <span>Client demandeur</span>
+          <span>Destinataire ou équipe interne</span>
           <input bind:value={clientName} maxlength={SECURITY_LIMITS.MAX_METADATA_FIELD_CHARS} placeholder="Optionnel" disabled={!isHydrated || isCreatingCase} />
         </label>
       </div>

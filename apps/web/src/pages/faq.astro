@@ -34,6 +34,29 @@ const situations = [
 
 const faqGroups = [
   {
+    id: "usages",
+    eyebrow: "Choisir son usage",
+    title: "Revues cyber et audits internes",
+    items: [
+      {
+        question: "Puis-je préparer un audit interne sans questionnaire client ?",
+        answer: "Oui. Importez votre grille de contrôle ou saisissez ses questions dans l’application. Documentez les réponses, les références de justificatifs, les réserves et les actions dans un dossier local. Vous pouvez le conserver pour votre revue interne, sans l’envoyer à un tiers.",
+      },
+      {
+        question: "BLACKPROOF réalise-t-il l’audit ou la revue cyber à ma place ?",
+        answer: "Non. Il structure la préparation documentaire et signale des incohérences à partir des informations saisies. Il n’inspecte pas vos systèmes, ne lit pas les documents de preuve référencés et ne valide pas la véracité des déclarations. L’appréciation des preuves, le périmètre et les conclusions d’audit restent humains.",
+      },
+      {
+        question: "Qui peut accéder à mes dossiers et à mes exports ?",
+        answer: "BLACKPROOF ne reçoit ni ne publie vos fichiers. Les dossiers enregistrés sont chiffrés dans votre profil de navigateur et se déverrouillent avec leur phrase secrète. Un poste compromis ou une session déverrouillée reste un risque. Les exports de transmission et le ZIP maître ne sont pas chiffrés : protégez-les sur votre appareil. Seule la sauvegarde locale complète est chiffrée. Tout partage est une action volontaire de votre part, hors de BLACKPROOF.",
+      },
+      {
+        question: "Puis-je confier mes preuves à un agent IA via BLACKPROOF ?",
+        answer: "Cette version ne fournit pas de serveur MCP et ne transmet aucun document à une IA. Un outil local en lecture seule ne garantit pas qu’un agent gardera ses résultats sur l’appareil : un modèle distant pourrait les recevoir. Ne transmettez pas de dossiers sensibles à un agent sans maîtriser ses accès, ses sorties réseau et le traitement de ses résultats.",
+      },
+    ],
+  },
+  {
     id: "retrouver-dossiers",
     eyebrow: "Revenir travailler",
     title: "Retrouver ses dossiers",
@@ -59,7 +82,7 @@ const faqGroups = [
         answer: "Non. Les navigateurs mobiles ne sont pas pris en charge actuellement et les dossiers ne sont pas synchronisés. Utilisez Chrome ou Edge Desktop et restaurez une sauvegarde locale complète si vous changez d’appareil.",
       },
       {
-        question: "Pourquoi le nom complet du client n’apparaît-il pas avant déverrouillage ?",
+        question: "Pourquoi le titre complet du dossier n’apparaît-il pas avant déverrouillage ?",
         answer: "Le titre métier, les parties, les questions et les réponses restent chiffrés. Seul un repère local facultatif, choisi par vous et explicitement non sensible, peut être visible dans la liste avant saisie de la phrase secrète.",
       },
     ],
@@ -105,7 +128,7 @@ const faqGroups = [
         answer: "Oui. La sauvegarde locale complète est chiffrée et sa restauration exige une phrase secrète. Le fichier ZIP doit tout de même être protégé, sauvegardé et géré comme un actif sensible.",
       },
       {
-        question: "Puis-je utiliser la même phrase secrète pour tous mes clients ?",
+        question: "Puis-je utiliser la même phrase secrète pour tous mes dossiers ?",
         answer: "C’est techniquement possible mais déconseillé. Une phrase distincte par dossier réduit l’impact d’une divulgation. Utilisez un gestionnaire de mots de passe et une procédure interne de transmission ou de continuité adaptée.",
       },
     ],

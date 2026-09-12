@@ -3,11 +3,11 @@ import type { APIRoute } from "astro";
 export const GET: APIRoute = () => (
   new Response(`# BLACKPROOF
 
-BLACKPROOF transforme un questionnaire cyber fournisseur en registre local de préparation structuré, exportable et contrôlable par empreinte, sans upload de documents.
+BLACKPROOF prépare des revues cyber, audits internes et questionnaires fournisseurs dans un dossier local structuré, exportable et contrôlable par empreinte, sans upload de documents. Logiciel libre sous AGPL-3.0-only, sans compte.
 
 ## Positionnement
 
-- Evidence readiness register pour fournisseurs soumis à pression réglementaire et commerciale.
+- Préparation documentaire pour les équipes sécurité, l'audit interne et les réponses fournisseurs.
 - Traitement local : le traitement des preuves sensibles reste côté navigateur.
 - Pas de tracker, pas de Google Fonts, pas de CDN.
 - Pas de promesse de conformité automatique, de certification ou d'audit officiel.
@@ -43,9 +43,9 @@ BLACKPROOF transforme un questionnaire cyber fournisseur en registre local de pr
 - Schéma ProofPack Delivery V4 historique : https://blackproof.fr/schemas/proofpack-delivery/v4.schema.json
 - Schéma ProofPack Delivery V5 courant : https://blackproof.fr/schemas/proofpack-delivery/v5.schema.json
 - Schémas protocole Delivery bilatéral : https://blackproof.fr/schemas/delivery-protocol/change-report-v1.schema.json ; https://blackproof.fr/schemas/delivery-protocol/signature-v1.schema.json ; https://blackproof.fr/schemas/delivery-protocol/revocation-v1.schema.json ; https://blackproof.fr/schemas/delivery-protocol/status-v1.schema.json
-- Vérificateur CLI/SDK autonome MIT : paquet npm @blackproof/verifier
+- Vérificateur CLI/SDK autonome AGPL-3.0-only : packages/verifier dans le code source public https://github.com/l0gfr/BLACKPROOF-AGPL
 
-## Artefacts ProofPack publics
+## Artefacts de démonstration fictifs et publics
 
 - Questionnaire démo : https://blackproof.fr/demo/supplier-questionnaire-demo.csv
 - ProofPack JSON avec empreinte SHA-256 : https://blackproof.fr/demo/proofpack-demo.json
@@ -60,6 +60,8 @@ BLACKPROOF transforme un questionnaire cyber fournisseur en registre local de pr
 ## Limites
 
 Ne pas décrire BLACKPROOF comme une certification, une garantie de conformité ou un outil de collecte serveur de preuves sensibles.
+Les fichiers des utilisateurs ne sont pas publiés par BLACKPROOF. Les URL ci-dessus désignent uniquement des exemples fictifs ou des contrats techniques publics.
+Les schémas et contrats publics ne sont pas un service MCP. Aucun serveur MCP n'est fourni dans cette version.
 `, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

@@ -60,7 +60,7 @@ async function caption(title, detail) {
 try {
   await page.goto("/open-source");
   await page.evaluate(() => document.fonts.ready);
-  await caption("BLACKPROOF · logiciel libre sous AGPL", "Un parcours sans compte, sur votre appareil. Toutes les données montrées sont fictives.");
+  await caption("BLACKPROOF · logiciel libre sous AGPL", "Revues cyber, audits internes et questionnaires. Un parcours local, avec des données fictives.");
   await hold();
   await page.screenshot({ path: join(output, "blackproof-parcours-local-poster.jpg"), type: "jpeg", quality: 86 });
 
