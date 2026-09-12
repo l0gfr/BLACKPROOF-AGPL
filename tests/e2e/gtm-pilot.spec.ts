@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("retired commercial routes lead to free software or the local app", async ({ page }) => {
-  for (const path of ["/pilot", "/pricing", "/legal/pilot-order", "/legal/conditions-solo"]) {
+  for (const path of ["/pilot", "/pricing", "/legal/pilot-order", "/legal/conditions-solo", "/legal/conditions-solo.txt"]) {
     await page.goto(path);
     await expect(page).toHaveURL(/\/open-source\/?$/);
     await expect(page.locator("main")).toContainText("AGPL-3.0-only");

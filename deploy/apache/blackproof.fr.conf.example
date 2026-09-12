@@ -103,7 +103,7 @@
     # Redirect retired access pages before existing files and the SPA fallback.
     RewriteRule ^/(?:pilot|pricing)/?$ /open-source/ [R=308,END,NE]
     RewriteRule ^/legal/(?:pilot-order|conditions-solo)/?$ /open-source/ [R=308,END,NE]
-    RewriteRule ^/legal/conditions-solo\.txt$ /LICENSE.txt [R=308,END,NE]
+    RewriteRule ^/legal/conditions-solo\.txt$ /open-source/ [R=308,END,NE]
     RewriteRule ^/access/?$ /app/ [R=308,END,NE]
     RewriteRule ^/account/?$ /app/cases/ [R=308,END,NE]
 
