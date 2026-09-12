@@ -20,6 +20,7 @@ const routes = [
   ["/demo", "0.84"],
   ["/security", "0.84"],
   ["/api", "0.82"],
+  ["/mcp", "0.82"],
   ["/about", "0.8"],
   ["/open-source", "0.78"],
   ["/method", "0.74"],

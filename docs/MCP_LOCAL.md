@@ -1,4 +1,4 @@
-# MCP local : à quoi sert-il en entreprise ?
+# Serveur MCP local
 
 BLACKPROOF aide un agent local à contrôler une sortie avant transmission et à
 préparer une revue humaine, sans lui livrer les réponses ni les justificatifs.
@@ -29,6 +29,8 @@ pnpm 10.34.5. Windows est refusé tant qu'un contrôle d'accès natif équivalen
 n'a pas été implémenté. Utiliser une révision relue du dépôt et son lockfile.
 
 ```sh
+git clone https://github.com/l0gfr/BLACKPROOF-AGPL.git
+cd BLACKPROOF-AGPL
 pnpm install --frozen-lockfile
 pnpm --filter @blackproof/mcp check
 pnpm --filter @blackproof/mcp test
@@ -137,4 +139,8 @@ comme retirées puis ajoutées ; la comparaison n'est pas une analyse sémantiqu
   effacement sécurisé du swap ou des sauvegardes système.
 
 La revue de code et les tests ne constituent ni une certification de sécurité
-ni une garantie contre un poste compromis. Signaler les failles selon `SECURITY.md`.
+ni une garantie contre un poste compromis. Signaler les failles selon
+[SECURITY.md](https://github.com/l0gfr/BLACKPROOF-AGPL/blob/main/SECURITY.md).
+
+Pour lire les formats publics par HTTP, consulter la
+[documentation API](https://blackproof.fr/api).

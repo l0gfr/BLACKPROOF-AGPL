@@ -1,58 +1,99 @@
-# BLACKPROOF Public API
+# Documentation API
 
-Version: blackproof-public-api-v0.1.0-alpha
+L’API publique donne accès aux formats de dossiers, aux règles de vérification
+et à la méthode de BLACKPROOF. Un script peut ainsi connaître la structure d’un
+export ou les contrôles attendus, sans transmettre de document au site.
 
-BLACKPROOF exposes a public, read-only API for method, schema and evidence contracts.
+Elle est **publique, statique et en lecture seule**, sans compte ni clé API.
+Son adresse de base est `https://blackproof.fr`. La version actuelle est
+`blackproof-public-api-v0.1.0-alpha`.
 
-This static API does not accept any questionnaire, evidence document or working dossier.
+## Faire une première requête
 
-## Public endpoints
+Depuis un terminal, lire le catalogue des ressources disponibles :
 
-- `GET /api`
-- `GET /api/index.json`
-- `GET /api/status.json`
-- `GET /api/methodology.json`
-- `GET /api/evidence-library.json`
-- `GET /api/frameworks.json`
-- `GET /api/proofdebt.json`
-- `GET /api/proofpack/schema.json`
-- `GET /schemas/proofpack/v1.schema.json`
-- `GET /schemas/proofpack/v2.schema.json`
-- `GET /schemas/proofpack/v3.schema.json`
-- `GET /canonicalization-vectors.json`
-- `GET /api/verify.json`
+```sh
+curl --fail --silent --show-error https://blackproof.fr/api/index.json
+```
 
-## Security position
+Puis lire la version publiée et les limites du produit :
 
-- No document upload.
-- Public endpoints are read-only.
-- No server-side dossier processing or document ingestion.
-- ProofPack verification is exposed as a contract and browser/local workflow.
-- All dossier verification runs on the user's device; these endpoints only distribute public contracts.
+```sh
+curl --fail --silent --show-error https://blackproof.fr/api/status.json
+```
 
-## Product value
+Ces requêtes utilisent `GET`, sans corps de requête ni authentification.
+Les réponses sont des fichiers JSON. Le catalogue contient notamment `endpoints`,
+`humanPages` et `publicArtifacts` : les routes, les pages de documentation et les
+exemples fictifs disponibles. Il constitue la liste complète des ressources.
 
-`/api` is the human-readable API page. `/api/index.json` is the machine-readable API manifest. `/api/status.json` exposes the public product status, changelog, contracts and limits.
+Les contrats de l’API indiquent leur `apiVersion` et leur `resource`. Les schémas
+JSON possèdent leur propre format et leur propre version : ne pas leur imposer
+la structure d’une réponse du catalogue.
 
-The API turns BLACKPROOF into a machine-readable evidence format:
+## Choisir la bonne ressource
 
-- agents can read the method without guessing;
-- buyers can inspect the ProofPack schema;
-- suppliers can integrate ProofDebt semantics;
-- reviewers can understand verification checks before receiving a dossier.
+| Besoin | Ressource publique |
+| --- | --- |
+| Découvrir toutes les routes | [Catalogue API](https://blackproof.fr/api/index.json) |
+| Connaître la version publiée et les limites | [Statut public](https://blackproof.fr/api/status.json) |
+| Comprendre la méthode et les contrôles | [Méthodologie](https://blackproof.fr/api/methodology.json) |
+| Connaître les catégories de justificatifs attendus | [Bibliothèque de preuves](https://blackproof.fr/api/evidence-library.json) |
+| Lire les référentiels et leurs exigences | [Référentiels](https://blackproof.fr/api/frameworks.json) |
+| Comprendre l’indicateur de préparation | [ProofDebt](https://blackproof.fr/api/proofdebt.json) |
+| Connaître les formats et limites de l’import local | [Contrat d’import](https://blackproof.fr/api/questionnaire-import.json) |
+| Connaître les contrôles d’un dossier | [Contrat de vérification](https://blackproof.fr/api/verify.json) |
 
-BLACKPROOF remains local-first for secrets and open for method contracts.
+**Le contrat de vérification décrit les contrôles. Il ne vérifie pas un fichier
+sur le serveur.** Pour examiner un export, utiliser le
+[vérificateur dans le navigateur](https://blackproof.fr/verify) ou le
+[serveur MCP local](https://blackproof.fr/mcp).
 
-## Public demo artifacts
+## Choisir le schéma correspondant à son export
 
-The public ProofPack example is exposed as static files:
+Le dossier maître conserve les informations de travail. La version client,
+appelée Delivery, contient les informations sélectionnées pour transmission.
+Leurs schémas ne sont pas interchangeables.
 
-- `/demo/supplier-questionnaire-demo.csv`
-- `/demo/proofpack-demo.json`
-- `/demo/reponse-fournisseur-demo.md`
-- `/demo/registre-preuves-demo.csv`
-- `/demo/plan-remediation-demo.csv`
-- `/demo/note-synthese-demo.md`
-- `/demo/proofpack-bundle-manifest.json`
+- Dossier maître : [point de découverte](https://blackproof.fr/api/proofpack/schema.json),
+  [V1 historique](https://blackproof.fr/schemas/proofpack/v1.schema.json),
+  [V2 historique](https://blackproof.fr/schemas/proofpack/v2.schema.json) et
+  [V3 courante](https://blackproof.fr/schemas/proofpack/v3.schema.json).
+- Version client : [Delivery V4 historique](https://blackproof.fr/schemas/proofpack-delivery/v4.schema.json)
+  et [Delivery V5 courante](https://blackproof.fr/schemas/proofpack-delivery/v5.schema.json).
+- Import XLSX : [schéma de provenance de l’import](https://blackproof.fr/schemas/source-import/v1.schema.json).
+- Suivi d’une version client : [rapport de changements](https://blackproof.fr/schemas/delivery-protocol/change-report-v1.schema.json),
+  [signature](https://blackproof.fr/schemas/delivery-protocol/signature-v1.schema.json)
+  et [déclaration de révocation](https://blackproof.fr/schemas/delivery-protocol/revocation-v1.schema.json).
+- Contrôle des empreintes : [exemples de calcul de référence](https://blackproof.fr/canonicalization-vectors.json).
 
-These files are deliberately fictitious and expurgated. They demonstrate the portable dossier shape: supplier answer, evidence register, ProofDebt remediation plan, human summary, machine-readable ProofPack and manifest.
+Les adresses versionnées des schémas sont immuables. Utiliser celle qui correspond
+au format du fichier reçu et vérifier les erreurs de lecture avant de conclure.
+Le contrat API reste en alpha ; une intégration doit vérifier la version annoncée.
+Le schéma historique de statut reste publié pour compatibilité, mais le registre
+public a été retiré : aucun statut courant de dossier n’est disponible en ligne.
+
+## Essayer avec des données fictives
+
+- [Exemple de dossier expliqué](https://blackproof.fr/proofpack-example)
+- [Export client JSON](https://blackproof.fr/demo/proofpack-delivery-demo.json)
+- [Archive client ZIP](https://blackproof.fr/demo/proofpack-delivery-demo.zip)
+- [Questionnaire CSV](https://blackproof.fr/demo/supplier-questionnaire-demo.csv)
+
+Ces fichiers sont publics et fictifs. Ils permettent d’essayer les formats sans
+utiliser les dossiers de votre organisation.
+
+## Données et limites
+
+L’API ne reçoit ni questionnaire, ni justificatif, ni dossier privé. Elle ne propose
+aucune route d’envoi de documents, de création de dossier ou d’exécution distante
+d’un audit. Les ressources publiques peuvent être mises en cache ; les dossiers
+restent traités sur l’appareil de leur utilisateur.
+
+Une structure valide et une empreinte correcte ne prouvent ni la véracité des
+réponses, ni l’identité de l’émetteur, ni la conformité. Une relecture humaine
+reste nécessaire avant toute transmission.
+
+Le MCP est une intégration distincte, exécutée sur votre poste. Sa
+[documentation dédiée](https://blackproof.fr/mcp) décrit l’installation, les outils
+et les conditions de confidentialité.

@@ -105,7 +105,9 @@ test("positioning includes cyber reviews and internal audits without inventing a
   const llms = readFileSync(join(root, "apps/web/src/pages/llms.txt.ts"), "utf8");
   assert.match(llms, /AGPL-3\.0-only/);
   assert.doesNotMatch(llms, /autonome MIT|paquet npm @blackproof/);
-  assert.match(llms, /Aucun serveur MCP n'est fourni/);
+  assert.match(llms, /Aucun endpoint MCP public n’est exposé/);
+  assert.match(llms, /localement en stdio, en lecture seule/);
+  assert.match(llms, /l’hôte et le modèle doivent rester locaux/);
   const faq = readFileSync(join(root, "apps/web/src/pages/faq.astro"), "utf8");
   assert.match(faq, /ne sont pas chiffrés/);
   assert.match(faq, /ne valide pas la véracité/);
