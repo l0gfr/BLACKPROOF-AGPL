@@ -33,7 +33,7 @@ function readBoundedRegularFile(path, maximumBytes, label) {
     || (listed.mode & 0o022) !== 0) {
     throw new Error(`${label} must be an owner-controlled regular non-symlink file.`);
   }
-  const descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+  const descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
     const before = fstatSync(descriptor, { bigint: true });
     if (!before.isFile() || before.uid !== BigInt(verifierUid) || (before.mode & 0o22n) !== 0n

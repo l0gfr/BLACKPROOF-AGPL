@@ -4,13 +4,25 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import test from "node:test";
 import { sha256Hex, stableStringify } from "../src/index.js";
 
 const testDirectory = dirname(fileURLToPath(import.meta.url));
 const cliPath = join(testDirectory, "..", "bin", "blackproof-verify.mjs");
 const fixturePath = join(testDirectory, "..", "..", "core", "src", "fixtures", "proofpack-delivery-v4-historical.json");
+
+test("selected special files are refused promptly", { skip: process.platform === "win32" }, async (context) => {
+  const directory = await mkdtemp(join(tmpdir(), "blackproof-verifier-file-kind-"));
+  context.after(() => rm(directory, { recursive: true, force: true }));
+  const path = join(directory, "input.json");
+  const created = spawnSync("mkfifo", [path], { encoding: "utf8", timeout: 5_000 });
+  assert.equal(created.status, 0, created.stderr);
+  const result = spawnSync(process.execPath, [cliPath, "verify", path], { encoding: "utf8", timeout: 3_000, killSignal: "SIGKILL" });
+  assert.equal(result.error, undefined, "File type rejection must finish before the deadline");
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /DELIVERY_INPUT_NOT_REGULAR_FILE/);
+});
 
 function runCli(args, environment = {}) {
   return new Promise((resolve, reject) => {

@@ -48,11 +48,7 @@ test("the personal knowledge vault is hidden from the controlled pilot", async (
 test("the decrypted Knowledge Vault locks itself and clears its secret input after inactivity", async ({ page, request }) => {
   const status = await (await request.get("/api/status.json")).json();
   test.skip(status.securityPosture?.knowledgeVault !== "enabled-after-product-convergence", "requires an explicitly enabled Knowledge Vault qualification build");
-  await page.addInitScript(() => {
-    const nativeSetTimeout = window.setTimeout.bind(window);
-    window.setTimeout = ((handler: TimerHandler, timeout?: number, ...args: unknown[]) =>
-      nativeSetTimeout(handler, timeout === 15 * 60_000 ? 3_000 : timeout, ...args)) as typeof window.setTimeout;
-  });
+  await page.clock.install();
 
   await page.goto("/app/knowledge");
   await expect(page.locator('[data-blackproof-knowledge-ready="true"]')).toBeVisible();
@@ -61,7 +57,8 @@ test("the decrypted Knowledge Vault locks itself and clears its secret input aft
   await page.getByRole("button", { name: "Initialiser la base" }).click();
   await expect(page.getByLabel("Synthèse de la base personnelle")).toBeVisible();
 
-  await expect(page.getByRole("status")).toContainText("verrouillé automatiquement", { timeout: 10_000 });
+  await page.clock.fastForward("15:00");
+  await expect(page.getByRole("status")).toContainText("verrouillé automatiquement");
   await expect(page.getByLabel("Phrase secrète de la base personnelle", { exact: true })).toHaveValue("");
   await expect(page.getByLabel("Synthèse de la base personnelle")).toHaveCount(0);
 });

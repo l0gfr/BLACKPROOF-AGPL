@@ -24,6 +24,19 @@ async function fixtureDirectory(context, prefix) {
   return directory;
 }
 
+test("production bundle verifier promptly refuses special files", { skip: process.platform === "win32" }, async (context) => {
+  const directory = await fixtureDirectory(context, "blackproof-bundle-file-kind-");
+  const path = join(directory, "bundle.zip");
+  const created = spawnSync("mkfifo", [path], { encoding: "utf8", timeout: 5_000 });
+  assert.equal(created.status, 0, created.stderr);
+  const result = spawnSync(process.execPath, ["scripts/verify-production-bundle.mjs", path], {
+    cwd: root, encoding: "utf8", timeout: 3_000, killSignal: "SIGKILL",
+  });
+  assert.equal(result.error, undefined, "File type rejection must finish before the deadline");
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /regular.*file/);
+});
+
 async function writeDeliveryDemo(path, readme = "Archive publique fictive BLACKPROOF.") {
   const zip = new JSZip();
   zip.file("delivery.json", "{}");

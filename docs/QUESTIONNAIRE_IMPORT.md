@@ -17,6 +17,7 @@ BLACKPROOF imports supplier questionnaires locally.
 - XLSM, XLSB, XLAM and ODS
 - VBA, OLE objects, ActiveX, embedded packages and custom UI
 - malformed, encrypted, ZIP64, overlapping or resource-exhausting ZIP packages
+- archive-level ZIP comments (re-save as a standard XLSX workbook; worksheet cell comments are unaffected)
 
 ## Pipeline
 

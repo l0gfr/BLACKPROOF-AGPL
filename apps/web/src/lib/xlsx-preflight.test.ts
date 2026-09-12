@@ -6,7 +6,7 @@ import { preflightXlsxFile } from "./xlsx-preflight";
 
 async function xlsxFile(
   overrides: Record<string, string> = {},
-  options: { name?: string; type?: string } = {}
+  options: { name?: string; type?: string; comment?: string } = {}
 ): Promise<File> {
   const zip = new JSZip();
   const files = {
@@ -18,7 +18,7 @@ async function xlsxFile(
     ...overrides,
   };
   for (const [name, content] of Object.entries(files)) zip.file(name, content, { createFolders: false });
-  const bytes = await zip.generateAsync({ type: "uint8array", compression: "DEFLATE" });
+  const bytes = await zip.generateAsync({ type: "uint8array", compression: "DEFLATE", comment: options.comment });
   const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
   return new File([buffer], options.name ?? "questionnaire.xlsx", { type: options.type ?? XLSX_MIME_TYPE });
 }
@@ -39,6 +39,13 @@ async function mutateEntryName(file: File, from: string, to: string): Promise<Fi
 }
 
 describe("XLSX ZIP preflight", () => {
+  it("rejects archive comments while preserving ordinary workbook parts", async () => {
+    await expect(preflightXlsxFile(await xlsxFile({}, { comment: "A harmless archive note" })))
+      .rejects.toThrow("XLSX_ZIP_COMMENT_REFUSED");
+    await expect(preflightXlsxFile(await xlsxFile({ "xl/comments1.xml": "<comments/>" })))
+      .resolves.toMatchObject({ entryCount: 6 });
+  });
+
   it("accepts a bounded OOXML ZIP and inventories worksheets", async () => {
     const result = await preflightXlsxFile(await xlsxFile());
     expect(result.worksheetCount).toBe(1);

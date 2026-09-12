@@ -8,6 +8,98 @@ import {
   type ProofPackDelivery,
 } from "../../packages/core/src/index";
 
+for (const action of ["change-delivery", "latest-signature", "parallel-revocation", "wipe"] as const) {
+  test(`delayed signature results respect ${action}`, async ({ page, request }) => {
+    const current = await (await request.get("/demo/proofpack-delivery-demo.json")).json() as ProofPackDelivery;
+    const keys = await generateDeliverySigningKeyPair();
+    const sign = (issuer: string) => signDeliveryFingerprint({
+      subjectType: "delivery", subjectFingerprint: current.fingerprint, issuer,
+      privateKeyJwk: keys.privateKeyJwk, signedAt: "2026-07-13T10:00:00.000Z",
+    });
+    const earlier = await sign("Earlier synthetic issuer");
+    const latest = await sign("Latest synthetic issuer");
+    await page.addInitScript(() => {
+      const original = crypto.subtle.verify.bind(crypto.subtle);
+      let release = () => {};
+      const pending = new Promise<void>((resolve) => { release = resolve; });
+      const state = { started: false, completed: false, release };
+      (window as typeof window & { __signatureGate?: typeof state }).__signatureGate = state;
+      crypto.subtle.verify = async (...args: Parameters<SubtleCrypto["verify"]>) => {
+        const valid = await original(...args);
+        if (state.started) return valid;
+        state.started = true;
+        await pending;
+        state.completed = true;
+        return valid;
+      };
+    });
+    await page.goto("/verify");
+    await expect(page.locator('[data-blackproof-verify-ready="true"]')).toBeVisible();
+    const primary = page.getByLabel("Choisir un dossier maître ou client, JSON ou ZIP");
+    await primary.setInputFiles({ name: "current.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(current)) });
+    const signatureInput = page.getByLabel("Signature émetteur détachée (JSON, optionnel)");
+    await signatureInput.setInputFiles({ name: "earlier-signature.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(earlier)) });
+    await page.waitForFunction(() => (window as typeof window & { __signatureGate?: { started: boolean } }).__signatureGate?.started);
+
+    if (action === "change-delivery") {
+      const replacement = structuredClone(current);
+      replacement.deliveryId = "delivery_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+      const { fingerprint: _fingerprint, ...base } = replacement;
+      replacement.fingerprint = `bp_sha256_${await sha256Hex(stableStringify(base))}`;
+      await primary.setInputFiles({ name: "replacement.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(replacement)) });
+      await expect(page.getByRole("heading", { name: "Contrôles locaux du dossier client réussis" })).toBeVisible();
+    } else if (action === "latest-signature") {
+      await signatureInput.setInputFiles({ name: "latest-signature.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(latest)) });
+      await expect(page.getByText(/Latest synthetic issuer/)).toBeVisible();
+    } else if (action === "parallel-revocation") {
+      const revocation = await createDeliveryRevocation(current, "Synthetic independent check", "2026-07-13T11:00:00.000Z");
+      await page.getByLabel("Déclaration publique de révocation (JSON)").setInputFiles({
+        name: "revocation.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(revocation)),
+      });
+      await expect(page.getByText("AUTO-COHÉRENTE", { exact: true })).toBeVisible();
+    } else {
+      const cases = await page.context().newPage();
+      await cases.goto("/app/cases");
+      await expect(cases.locator('[data-blackproof-ready="true"]')).toBeVisible();
+      cases.once("dialog", (dialog) => void dialog.accept("EFFACER"));
+      await cases.getByRole("button", { name: "Effacer les données locales", exact: true }).click();
+      await expect(page.getByText("Panic Wipe détecté : les fichiers et résultats de vérification ont été effacés.", { exact: false })).toBeVisible();
+      await cases.close();
+    }
+    await page.evaluate(async () => {
+      const state = (window as typeof window & { __signatureGate?: { release: () => void } }).__signatureGate;
+      if (!state) throw new Error("Missing signature test gate");
+      state.release();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    if (action === "parallel-revocation") {
+      await expect(page.getByText(/Earlier synthetic issuer/)).toBeVisible();
+      await expect(page.getByText("AUTO-COHÉRENTE", { exact: true })).toBeVisible();
+      return;
+    }
+    await expect(page.getByText(/Earlier synthetic issuer/)).toHaveCount(0);
+    if (action === "latest-signature") {
+      await expect(page.getByText(/Latest synthetic issuer/)).toBeVisible();
+    } else {
+      await expect(page.getByText("SIGNATURE COHÉRENTE", { exact: true })).toHaveCount(0);
+    }
+  });
+}
+
+test("editing pasted JSON invalidates the displayed verification and protocol tools", async ({ page, request }) => {
+  const json = await (await request.get("/demo/proofpack-delivery-demo.json")).text();
+  await page.goto("/verify");
+  await expect(page.locator('[data-blackproof-verify-ready="true"]')).toBeVisible();
+  await page.getByLabel("Ou coller le contenu JSON").fill(json);
+  await page.getByRole("button", { name: "Vérifier localement", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Contrôles locaux du dossier client réussis" })).toBeVisible();
+  await page.getByLabel("Ou coller le contenu JSON").fill("{}");
+  await expect(page.getByRole("heading", { name: "Contrôles locaux du dossier client réussis" })).toHaveCount(0);
+  await expect(page.getByLabel("Signature émetteur détachée (JSON, optionnel)")).toHaveCount(0);
+  await page.getByRole("button", { name: "Vérifier localement", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "ProofPack non valide" })).toBeVisible();
+});
+
 test("legacy verification links retain binding locally and reject conflicting fingerprints", async ({ page, request }) => {
   const response = await request.get("/demo/proofpack-delivery-demo.json");
   expect(response.ok()).toBe(true);

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import { subscribeToLocalStorageWipe } from "../../lib/local-db";
   import {
     SECURITY_LIMITS,
     SecurityValidationError,
@@ -64,8 +66,17 @@
 
   let report: QuestionnaireCrusherReport | null = null;
   let errorMessage = "";
+  let storageInvalidated = false;
+
+  onMount(() => subscribeToLocalStorageWipe(() => {
+    rawQuestionnaire = "";
+    report = null;
+    storageInvalidated = true;
+    errorMessage = "Panic Wipe détecté : le questionnaire et ses résultats ont été effacés. Rechargez la page pour recommencer.";
+  }));
 
   function analyze() {
+    if (storageInvalidated) return;
     errorMessage = "";
     report = null;
 
@@ -103,6 +114,7 @@
       <span>Questionnaire brut</span>
       <textarea
         bind:value={rawQuestionnaire}
+        disabled={storageInvalidated}
         rows="12"
         maxlength={SECURITY_LIMITS.MAX_QUESTIONNAIRE_CHARS}
         spellcheck="false"
@@ -118,7 +130,7 @@
     {/if}
 
     <div class="actions">
-      <button class="button primary" type="button" onclick={analyze}>
+      <button class="button primary" type="button" onclick={analyze} disabled={storageInvalidated}>
         Analyser le questionnaire
       </button>
     </div>

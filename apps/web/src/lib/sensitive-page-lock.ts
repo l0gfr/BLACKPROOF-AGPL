@@ -4,48 +4,72 @@ const DEFAULT_IDLE_MS = 15 * 60_000;
 const DEFAULT_HIDDEN_MS = 60_000;
 
 export function subscribeToSensitivePageLock(onLock: (reason: SensitivePageLockReason) => void): () => void {
-  let idleTimer: ReturnType<typeof setTimeout> | undefined;
-  let hiddenTimer: ReturnType<typeof setTimeout> | undefined;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let hidden = document.hidden;
+  let deadline: number | undefined;
+  let disposed = false;
 
-  const clearIdleTimer = () => {
-    if (idleTimer) window.clearTimeout(idleTimer);
-    idleTimer = undefined;
+  const clearTimer = () => {
+    if (timer !== undefined) window.clearTimeout(timer);
+    timer = undefined;
   };
-  const clearHiddenTimer = () => {
-    if (hiddenTimer) window.clearTimeout(hiddenTimer);
-    hiddenTimer = undefined;
+  const checkExpiration = (): boolean => {
+    if (disposed || deadline === undefined || Date.now() < deadline) return false;
+    // Clear the expired interval before invoking application code or handling another event.
+    deadline = undefined;
+    clearTimer();
+    onLock(hidden ? "hidden" : "idle");
+    return true;
   };
-  const armIdleTimer = () => {
-    clearIdleTimer();
-    idleTimer = window.setTimeout(() => onLock("idle"), DEFAULT_IDLE_MS);
+  const scheduleTimer = () => {
+    clearTimer();
+    if (disposed || deadline === undefined) return;
+    timer = window.setTimeout(() => {
+      if (!checkExpiration()) scheduleTimer();
+    }, Math.max(0, deadline - Date.now()));
+  };
+  const renewDeadline = () => {
+    if (disposed) return;
+    // Wall-clock time includes device sleep; timers are only a wakeup mechanism.
+    deadline = Date.now() + (hidden ? DEFAULT_HIDDEN_MS : DEFAULT_IDLE_MS);
+    scheduleTimer();
+  };
+  const synchronizeVisibility = () => {
+    const expired = checkExpiration();
+    if (hidden !== document.hidden) {
+      hidden = document.hidden;
+      renewDeadline();
+    }
+    return expired;
   };
   const handleActivity = () => {
-    if (!document.hidden) armIdleTimer();
+    if (disposed) return;
+    const expired = synchronizeVisibility();
+    if (!expired && !hidden) renewDeadline();
   };
-  const handleVisibility = () => {
-    clearHiddenTimer();
-    if (document.hidden) {
-      clearIdleTimer();
-      hiddenTimer = window.setTimeout(() => {
-        if (document.hidden) onLock("hidden");
-      }, DEFAULT_HIDDEN_MS);
-    } else {
-      armIdleTimer();
-    }
+  const handleResume = () => {
+    if (!disposed) synchronizeVisibility();
   };
 
   for (const eventName of ["keydown", "pointerdown", "touchstart"] as const) {
     window.addEventListener(eventName, handleActivity, { capture: true, passive: true });
   }
-  document.addEventListener("visibilitychange", handleVisibility);
-  armIdleTimer();
+  for (const eventName of ["focus", "pageshow"] as const) {
+    window.addEventListener(eventName, handleResume);
+  }
+  document.addEventListener("visibilitychange", handleResume);
+  renewDeadline();
 
   return () => {
-    clearIdleTimer();
-    clearHiddenTimer();
+    disposed = true;
+    deadline = undefined;
+    clearTimer();
     for (const eventName of ["keydown", "pointerdown", "touchstart"] as const) {
       window.removeEventListener(eventName, handleActivity, { capture: true });
     }
-    document.removeEventListener("visibilitychange", handleVisibility);
+    for (const eventName of ["focus", "pageshow"] as const) {
+      window.removeEventListener(eventName, handleResume);
+    }
+    document.removeEventListener("visibilitychange", handleResume);
   };
 }

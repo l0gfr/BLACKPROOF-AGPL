@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check && svelte-check --tsconfig ./tsconfig.json",
-    "test": "vitest run src/lib/public-artifact-reproducibility.test.ts src/lib/zip-preflight.test.ts src/lib/proofpack-zip-verifier.test.ts src/lib/xlsx-preflight.test.ts src/lib/xlsx-analysis.test.ts src/lib/return-pack.test.ts src/lib/local-encryption.test.ts src/lib/local-db.test.ts src/lib/local-backup.test.ts",
+    "test": "vitest run",
     "preview": "astro preview",
     "astro": "astro"
   },

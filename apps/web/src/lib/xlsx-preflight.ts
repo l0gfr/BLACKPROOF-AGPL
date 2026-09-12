@@ -125,6 +125,10 @@ export async function preflightXlsxFile(file: File): Promise<XlsxPreflightResult
   const tail = new Uint8Array(await file.slice(tailOffset).arrayBuffer());
   const tailView = new DataView(tail.buffer, tail.byteOffset, tail.byteLength);
   const eocdInTail = findEndOfCentralDirectory(tail);
+  // Downstream ZIP parsers must select the same terminal directory as preflight.
+  if (tailView.getUint16(eocdInTail + 20, true) !== 0) {
+    throw new Error("XLSX_ZIP_COMMENT_REFUSED: commentaire d’archive non pris en charge. Réenregistrez le classeur au format XLSX standard.");
+  }
   const eocdOffset = tailOffset + eocdInTail;
   const diskNumber = tailView.getUint16(eocdInTail + 4, true);
   const centralDirectoryDisk = tailView.getUint16(eocdInTail + 6, true);
