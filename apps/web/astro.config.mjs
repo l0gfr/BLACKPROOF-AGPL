@@ -65,7 +65,7 @@ export default defineConfig({
     "/account": "/app/cases",
     "/legal/pilot-order": "/open-source",
     "/legal/conditions-solo": "/open-source",
-    "/legal/conditions-solo.txt": "/LICENSE.txt",
+    "/legal/conditions-solo.txt": "/open-source",
   },
   build: {
     inlineStylesheets: "never",

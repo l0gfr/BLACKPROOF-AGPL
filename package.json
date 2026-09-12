@@ -13,7 +13,7 @@
     "check": "pnpm quality:lint && pnpm schema:check && pnpm vectors:check && pnpm -r --if-present check",
     "test": "pnpm -r --if-present test && node --test scripts/astro-security-regression.test.mjs scripts/secret-scan.test.mjs scripts/public-wording.test.mjs scripts/stats-deployment.test.mjs scripts/check-production-workflow-config.test.mjs scripts/classify-release-scope.test.mjs scripts/check-editorial-content.test.mjs scripts/production-promotion.test.mjs scripts/release-component-snapshot.test.mjs",
     "test:e2e": "pnpm build && playwright test",
-    "verify:all": "pnpm check && pnpm test && pnpm build && pnpm open-source:check && pnpm artifact:security-test && pnpm audit && pnpm security:audit && pnpm exec playwright test --workers=1",
+    "verify:all": "pnpm check && pnpm test && pnpm build && pnpm csp:render-apache-conf && pnpm open-source:check && pnpm artifact:security-test && pnpm audit && pnpm security:audit && pnpm exec playwright test --workers=1",
     "quality:lint": "oxlint --deny-warnings . && oxlint -c .oxlintrc.type-aware.json --tsconfig packages/core/tsconfig.json --deny-warnings packages/core/src",
     "csp:build-header": "node scripts/extract-build-csp.mjs",
     "csp:render-apache-conf": "node scripts/render-apache-conf.mjs",
