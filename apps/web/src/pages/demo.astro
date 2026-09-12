@@ -6,7 +6,7 @@ const demoSteps = [
     id: "01",
     title: "Questionnaire",
     route: "/questionnaire-import",
-    cta: "Importer le CSV",
+    cta: "Importer le questionnaire",
     input: "Questionnaire fournisseur",
     output: "Questions normalisées",
     text: "Le point de départ est un fichier client, souvent urgent, incomplet ou répétitif.",
@@ -62,7 +62,8 @@ const businessSignals = [
 ];
 
 const demoArtifacts = [
-  ["/demo/supplier-questionnaire-demo.csv", "Questionnaire exemple", "Fichier fictif à importer pour rejouer le parcours."],
+  ["/demo/supplier-questionnaire-demo.xlsx", "Questionnaire Excel (.xlsx)", "Dix questions fictives, avec accents et colonnes, à importer dans BLACKPROOF."],
+  ["/demo/supplier-questionnaire-demo.csv", "Questionnaire CSV UTF-8", "Le même questionnaire dans un format texte pour les outils d’import."],
   ["/demo/proofpack-demo.json", "Dossier interne exemple", "Dossier JSON à ouvrir dans la page de vérification."],
   ["/demo/reponse-fournisseur-demo.md", "Réponse fournisseur", "Réponses prêtes à relire, avec réserves explicites."],
   ["/demo/registre-preuves-demo.csv", "Registre des justificatifs", "Documents attendus, statuts et niveaux de sensibilité."],
@@ -85,17 +86,18 @@ const demoArtifacts = [
     <div class="container demo-hero-grid">
       <div>
         <p class="eyebrow">Démo guidée</p>
-        <h1>Voyez BLACKPROOF transformer un questionnaire en dossier prêt à transmettre.</h1>
+        <h1>Préparez une réponse claire à un questionnaire de sécurité.</h1>
         <p class="lead">
-          Suivez les cinq étapes du produit : importer le questionnaire, organiser les questions,
-          corriger les réponses fragiles, préparer la version client et vérifier les fichiers.
-          Toutes les données de cette démonstration sont fictives.
+          Un client vous demande de décrire votre sécurité. BLACKPROOF vous aide à rédiger
+          les réponses, noter les justificatifs disponibles et relire les informations
+          que vous souhaitez lui transmettre. Toutes les données de cette démonstration sont fictives.
         </p>
         <div class="actions">
-          <a class="button primary" href="/demo/supplier-questionnaire-demo.csv" download>Télécharger le questionnaire</a>
+          <a class="button primary" href="/demo/supplier-questionnaire-demo.xlsx" download>Télécharger le questionnaire Excel</a>
           <a class="button" href="/questionnaire-import">Lancer l’import</a>
           <a class="button" href="/app">Créer un dossier local</a>
         </div>
+        <p>Le fichier Excel est le point de départ. Importez-le avec « Lancer l’import » pour essayer l’application.</p>
       </div>
 
       <aside class="demo-case" aria-label="Cas de démonstration BLACKPROOF">
@@ -177,7 +179,7 @@ const demoArtifacts = [
       </div>
       <div class="artifact-grid">
         {demoArtifacts.map(([file, label, text]) => (
-          <a href={file} download={file.includes(".csv") || file.includes(".json") || file.includes(".zip") ? true : undefined}>
+          <a href={file} download={file.includes(".csv") || file.includes(".xlsx") || file.includes(".json") || file.includes(".zip") ? true : undefined}>
             <strong>{label}</strong>
             <span>{text}</span>
           </a>

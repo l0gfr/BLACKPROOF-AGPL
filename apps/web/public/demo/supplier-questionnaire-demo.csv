@@ -1,4 +1,4 @@
-ID;Question;Owner;Comment
+﻿ID;Question;Owner;Comment
 Q1;Avez-vous activé le MFA pour les comptes administrateurs ?;IT;Contrôle critique demandé par le client
 Q2;Disposez-vous d'une procédure de sauvegarde documentée ?;IT;Fournir une synthèse, pas les chemins internes
 Q3;Testez-vous régulièrement la restauration des sauvegardes ?;IT;Preuve datée attendue

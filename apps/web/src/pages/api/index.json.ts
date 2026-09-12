@@ -157,6 +157,7 @@ const endpoints = [
 ] as const;
 
 const publicArtifacts = [
+  { path: "/demo/supplier-questionnaire-demo.xlsx", role: "input-questionnaire-excel", description: "Questionnaire fournisseur fictif au format Excel, identique au CSV UTF-8, à importer localement." },
   {
     path: "/canonicalization-vectors.json",
     role: "canonicalization-test-vectors",
