@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 
 test("demo walkthrough keeps readable columns on desktop and stacks cleanly on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
@@ -44,4 +45,27 @@ test("demo walkthrough keeps readable columns on desktop and stacks cleanly on m
     columns: 1,
     buttonInsideCard: true,
   });
+});
+
+test("demo Excel download preserves French questions through the actual import", async ({ page }) => {
+  await page.goto("/demo");
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Télécharger le questionnaire Excel", exact: true }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe("supplier-questionnaire-demo.xlsx");
+  expect(await download.failure()).toBeNull();
+
+  await page.getByRole("link", { name: "Lancer l’import", exact: true }).click();
+  await expect(page.locator('[data-blackproof-component="questionnaire-import"][data-blackproof-hydrated="true"]')).toBeVisible();
+  await page.getByLabel("Choisir le questionnaire").setInputFiles({
+    name: download.suggestedFilename(),
+    mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    buffer: await readFile((await download.path())!),
+  });
+  await expect(page.getByRole("heading", { name: "Vérifiez la feuille retenue." })).toBeVisible();
+  await expect(page.getByLabel("Feuille à utiliser")).toHaveValue("Questionnaire");
+  await expect(page.getByText("10 questions détectées dans la feuille « Questionnaire »", { exact: false })).toBeVisible();
+  await expect(page.getByRole("listitem").filter({ hasText: "Testez-vous régulièrement la restauration des sauvegardes?" })).toBeVisible();
+  await page.getByRole("button", { name: "Utiliser cette feuille" }).click();
+  await expect(page.getByLabel("Phrase secrète du dossier", { exact: true })).toBeVisible();
 });

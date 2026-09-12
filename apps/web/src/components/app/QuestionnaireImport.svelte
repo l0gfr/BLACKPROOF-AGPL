@@ -462,7 +462,7 @@
 
       <div class="demo-links-row">
         <span>Besoin d’un support de démonstration ?</span>
-        <a href="/demo/supplier-questionnaire-demo.csv" download>Télécharger le fichier exemple</a>
+        <a href="/demo/supplier-questionnaire-demo.xlsx" download>Télécharger l’exemple Excel</a>
         <a href="/demo">Voir le scénario détaillé</a>
       </div>
 

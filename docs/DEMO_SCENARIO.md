@@ -12,9 +12,9 @@ perform an audit or assess the truth of referenced evidence documents.
 
 ## Replay the working flow
 
-1. Open `/demo` and download `/demo/supplier-questionnaire-demo.csv`.
+1. Open `/demo` and download `/demo/supplier-questionnaire-demo.xlsx` (Excel). The equivalent UTF-8 CSV remains available.
 2. Open `/questionnaire-import` and select that local file.
-3. Review the extracted questions, set and confirm a demonstration-only passphrase,
+3. Confirm the worksheet and review the extracted questions, set and confirm a demonstration-only passphrase,
    then select **Protéger et ouvrir le dossier**.
 4. In the editor, complete answers, evidence references and reservations. Save changes.
 5. Prepare and review a client version in the editor before confirming its export.

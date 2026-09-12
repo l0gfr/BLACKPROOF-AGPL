@@ -49,7 +49,8 @@ BLACKPROOF prépare des revues cyber, audits internes et questionnaires fourniss
 
 ## Artefacts de démonstration fictifs et publics
 
-- Questionnaire démo : https://blackproof.fr/demo/supplier-questionnaire-demo.csv
+- Questionnaire démo Excel : https://blackproof.fr/demo/supplier-questionnaire-demo.xlsx
+- Questionnaire démo CSV UTF-8 : https://blackproof.fr/demo/supplier-questionnaire-demo.csv
 - ProofPack JSON avec empreinte SHA-256 : https://blackproof.fr/demo/proofpack-demo.json
 - Réponse fournisseur : https://blackproof.fr/demo/reponse-fournisseur-demo.md
 - Registre de preuves : https://blackproof.fr/demo/registre-preuves-demo.csv

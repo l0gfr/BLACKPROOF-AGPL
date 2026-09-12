@@ -78,7 +78,8 @@ public a été retiré : aucun statut courant de dossier n’est disponible en l
 - [Exemple de dossier expliqué](https://blackproof.fr/proofpack-example)
 - [Export client JSON](https://blackproof.fr/demo/proofpack-delivery-demo.json)
 - [Archive client ZIP](https://blackproof.fr/demo/proofpack-delivery-demo.zip)
-- [Questionnaire CSV](https://blackproof.fr/demo/supplier-questionnaire-demo.csv)
+- [Questionnaire Excel](https://blackproof.fr/demo/supplier-questionnaire-demo.xlsx)
+- [Questionnaire CSV UTF-8](https://blackproof.fr/demo/supplier-questionnaire-demo.csv)
 
 Ces fichiers sont publics et fictifs. Ils permettent d’essayer les formats sans
 utiliser les dossiers de votre organisation.
