@@ -1,0 +1,19 @@
+{
+  "name": "@blackproof/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "engines": { "node": ">=22.23.2 <23" },
+  "bin": { "blackproof-mcp": "./bin/blackproof-mcp.mjs" },
+  "scripts": {
+    "check": "node --check bin/blackproof-mcp.mjs && node --check src/server.mjs && node --check src/inputs.mjs && node --check src/transport.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@blackproof/verifier": "workspace:*",
+    "@modelcontextprotocol/server": "2.0.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": { "@modelcontextprotocol/client": "2.0.0" }
+}
