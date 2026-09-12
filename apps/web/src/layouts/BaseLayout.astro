@@ -32,7 +32,7 @@ const shareUrl = isLocalWorkspace || noindex ? new URL("/", siteUrl).toString() 
 const shareTitle = isLocalWorkspace || noindex ? "BLACKPROOF : logiciel libre, dossiers locaux" : title;
 const understandingPaths = ["/use-cases", "/proofpack-example", "/proofpack", "/proofdebt", "/security"];
 const usingPaths = ["/start", "/app", "/questionnaire-import", "/verify"];
-const resourcePaths = ["/demo", "/analyses", "/faq", "/resources", "/method", "/evidence-library", "/api", "/status"];
+const resourcePaths = ["/demo", "/analyses", "/faq", "/resources", "/method", "/evidence-library", "/api", "/mcp", "/status"];
 const isCurrent = (path: string) => currentPath === path || (path !== "/" && currentPath.startsWith(`${path}/`));
 const groupIsCurrent = (paths: string[]) => paths.some(isCurrent);
 ---
@@ -125,7 +125,8 @@ const groupIsCurrent = (paths: string[]) => paths.some(isCurrent);
               <a href="/resources"><CardIcon name="layers" variant="nav" tone="violet" /><span>Documentation</span><small>produit</small></a>
               <a href="/method"><CardIcon name="route" variant="nav" tone="violet" /><span>Méthode</span><small>contrôles</small></a>
               <a href="/evidence-library"><CardIcon name="verify" variant="nav" tone="violet" /><span>Justificatifs</span><small>attendus</small></a>
-              <a href="/api"><CardIcon name="braces" variant="nav" tone="violet" /><span>Données techniques</span><small>intégration</small></a>
+              <a href="/api"><CardIcon name="braces" variant="nav" tone="violet" /><span>Documentation API</span><small>JSON public</small></a>
+              <a href="/mcp"><CardIcon name="braces" variant="nav" tone="violet" /><span>Serveur MCP</span><small>agent local</small></a>
               <a href="/status"><CardIcon name="toggle" variant="nav" tone="violet" /><span>Disponibilité</span><small>versions</small></a>
             </div>
           </details>
@@ -276,7 +277,8 @@ const groupIsCurrent = (paths: string[]) => paths.some(isCurrent);
               </span>
               Données
             </h2>
-            <a href="/api">Documentation technique</a>
+            <a href="/api">Documentation API</a>
+            <a href="/mcp">Serveur MCP local</a>
             <a href="/api/status.json">Statut JSON</a>
             <a href="/api/index.json">Catalogue JSON</a>
             <a href="/api/proofpack/schema.json">Schéma ProofPack</a>

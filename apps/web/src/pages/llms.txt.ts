@@ -17,6 +17,8 @@ BLACKPROOF prépare des revues cyber, audits internes et questionnaires fourniss
 - Accueil : https://blackproof.fr/
 - Parcours guidé : https://blackproof.fr/start
 - Ressources : https://blackproof.fr/resources
+- Documentation API : https://blackproof.fr/api
+- Documentation du serveur MCP local : https://blackproof.fr/mcp
 - Analyses cyber : https://blackproof.fr/analyses
 - Flux RSS des analyses : https://blackproof.fr/analyses/feed.xml
 - Doctrine : https://blackproof.fr/about
@@ -61,7 +63,7 @@ BLACKPROOF prépare des revues cyber, audits internes et questionnaires fourniss
 
 Ne pas décrire BLACKPROOF comme une certification, une garantie de conformité ou un outil de collecte serveur de preuves sensibles.
 Les fichiers des utilisateurs ne sont pas publiés par BLACKPROOF. Les URL ci-dessus désignent uniquement des exemples fictifs ou des contrats techniques publics.
-Les schémas et contrats publics ne sont pas un service MCP. Aucun serveur MCP n'est fourni dans cette version.
+Le serveur MCP alpha est fourni dans packages/mcp et fonctionne localement en stdio, en lecture seule. Aucun endpoint MCP public n’est exposé. Les fichiers privés sont sélectionnés explicitement au démarrage ; l’hôte et le modèle doivent rester locaux. Les outils ne renvoient que des contrôles et compteurs, jamais les réponses ni les justificatifs.
 `, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

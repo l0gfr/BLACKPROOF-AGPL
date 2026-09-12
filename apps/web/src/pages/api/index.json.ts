@@ -210,6 +210,8 @@ const publicArtifacts = [
 ] as const;
 
 const humanPages = [
+  { path: "/api", role: "api-documentation", description: "Accès à l’API publique, exemples de requêtes et formats JSON." },
+  { path: "/mcp", role: "local-mcp-documentation", description: "Installation et outils du serveur MCP local en lecture seule, sans endpoint distant." },
   {
     path: "/open-source",
     role: "software-license",

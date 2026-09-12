@@ -1,0 +1,38 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+interface Props { title: string; description: string; current: "api" | "mcp"; }
+const { title, description, current } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="section">
+    <div class="container technical-docs">
+      <p class="eyebrow">Documentation technique</p>
+      <nav class="actions" aria-label="Documentation technique">
+        <a class:list={["button", { primary: current === "api" }]} href="/api" aria-current={current === "api" ? "page" : undefined}>Documentation API</a>
+        <a class:list={["button", { primary: current === "mcp" }]} href="/mcp" aria-current={current === "mcp" ? "page" : undefined}>Serveur MCP local</a>
+      </nav>
+      <article class="documentation-body"><slot /></article>
+      <p class="documentation-source">
+        <a href={`https://github.com/l0gfr/BLACKPROOF-AGPL/blob/main/docs/${current === "api" ? "API.md" : "MCP_LOCAL.md"}`}>Consulter cette documentation dans le dépôt</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .technical-docs { max-width: 64rem; min-width: 0; }
+  .documentation-body { margin-top: 2.5rem; min-width: 0; overflow-wrap: anywhere; line-height: 1.75; }
+  .documentation-body :global(h1) { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; }
+  .documentation-body :global(h2) { margin-top: 2.5rem; font-size: clamp(1.4rem, 3vw, 2rem); }
+  .documentation-body :global(h3) { margin-top: 1.8rem; font-size: 1.2rem; }
+  .documentation-body :global(p), .documentation-body :global(ul) { margin-block: 1rem; }
+  .documentation-body :global(a), .documentation-source a { color: var(--accent); text-decoration: underline; text-underline-offset: 0.2em; }
+  .documentation-body :global(li) { margin-block: 0.5rem; }
+  .documentation-body :global(pre) { padding: 1rem; border: 1px solid var(--line); border-radius: 8px; background: var(--field); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .documentation-body :global(code) { font-size: 0.9em; }
+  .documentation-body :global(table) { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin-block: 1.5rem; }
+  .documentation-body :global(th), .documentation-body :global(td) { padding: 0.75rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .documentation-body :global(th) { color: var(--text); background: var(--field); }
+  .documentation-source { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+</style>
