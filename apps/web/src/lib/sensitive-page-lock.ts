@@ -4,7 +4,7 @@ const DEFAULT_IDLE_MS = 15 * 60_000;
 const DEFAULT_HIDDEN_MS = 60_000;
 
 export function subscribeToSensitivePageLock(onLock: (reason: SensitivePageLockReason) => void): () => void {
-  let timer: ReturnType<typeof setTimeout> | undefined;
+  let timer: number | undefined;
   let hidden = document.hidden;
   let deadline: number | undefined;
   let disposed = false;

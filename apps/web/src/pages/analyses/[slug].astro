@@ -1,6 +1,8 @@
 ---
 import { render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ShareLinks from "../../components/ShareLinks.astro";
+import { getAnalysisOgPath } from "../../lib/analysis-og-path";
 import {
   formatAnalysisDate,
   getAnalysisLastModified,
@@ -27,6 +29,7 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content, headings } = await render(entry);
 const articlePath = getAnalysisPath(entry);
+const ogImage = getAnalysisOgPath(entry);
 const lastModified = getAnalysisLastModified(entry);
 const lastVerified = getAnalysisLastVerified(entry);
 const articleHeadings = headings.filter((heading) => heading.depth === 2);
@@ -37,6 +40,9 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
   description={data.description}
   canonicalPath={articlePath}
   ogType="article"
+  ogImage={ogImage}
+  ogImageAlt={`${data.title} | Analyses BLACKPROOF`}
+  sharePlacement="article"
   publishedAt={data.publishedAt.toISOString()}
   modifiedAt={lastModified.toISOString()}
   articleTags={data.tags}
@@ -48,7 +54,7 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
     <meta itemprop="author" content={data.author} />
     <meta itemprop="datePublished" content={data.publishedAt.toISOString()} />
     <meta itemprop="dateModified" content={lastModified.toISOString()} />
-    <meta itemprop="image" content={new URL("/og/blackproof.png", Astro.site ?? "https://blackproof.fr").toString()} />
+    <meta itemprop="image" content={new URL(ogImage, Astro.site ?? "https://blackproof.fr").toString()} />
 
     <header class="analysis-header">
       <div class="container analysis-header-inner">
@@ -80,6 +86,14 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
           )}
           <span>{data.readingMinutes} min de lecture</span>
         </div>
+
+        <ShareLinks
+          id="analysis-share"
+          url={articlePath}
+          title={data.title}
+          heading="Partager cette analyse"
+          variant="article"
+        />
       </div>
     </header>
 
@@ -154,13 +168,23 @@ const articleHeadings = headings.filter((heading) => heading.depth === 2);
           </p>
         </aside>
 
-        <a class="back-link" href="/analyses">← Toutes les analyses</a>
+        <div class="analysis-end-links">
+          <a class="back-link" href="/analyses">← Toutes les analyses</a>
+          <a class="back-link" href="#analysis-share">Partager cette analyse ↑</a>
+        </div>
       </div>
     </div>
   </article>
 </BaseLayout>
 
 <style>
+  .analysis-end-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
   .analysis-header {
     border-bottom: 1px solid var(--line);
     padding: clamp(3.8rem, 8vw, 6.5rem) 0 3.4rem;
