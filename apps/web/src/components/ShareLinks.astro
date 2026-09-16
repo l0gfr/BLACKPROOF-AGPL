@@ -5,6 +5,8 @@ interface Props {
   url: string;
   title: string;
   heading?: string;
+  id?: string;
+  variant?: "default" | "article";
   localWorkspace?: boolean;
 }
 
@@ -12,6 +14,8 @@ const {
   url,
   title,
   heading = "Partager",
+  id = "share",
+  variant = "default",
   localWorkspace = false,
 } = Astro.props;
 
@@ -22,6 +26,7 @@ publicUrl.search = "";
 publicUrl.hash = "";
 const canonicalUrl = publicUrl.toString();
 const shareText = `${title}\n${canonicalUrl}`;
+const headingId = `${id}-heading`;
 
 const socialLinks = [
   {
@@ -29,12 +34,6 @@ const socialLinks = [
     label: "Partager sur X",
     href: `https://x.com/intent/post?text=${encodeURIComponent(shareText)}`,
     icon: "x",
-  },
-  {
-    name: "Bluesky",
-    label: "Partager sur Bluesky",
-    href: `https://bsky.app/intent/compose?text=${encodeURIComponent(shareText)}`,
-    icon: "bluesky",
   },
   {
     name: "LinkedIn",
@@ -48,14 +47,20 @@ const socialLinks = [
     href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`,
     icon: "facebook",
   },
+  {
+    name: "Bluesky",
+    label: "Partager sur Bluesky",
+    href: `https://bsky.app/intent/compose?text=${encodeURIComponent(shareText)}`,
+    icon: "bluesky",
+  },
 ] as const;
 
 const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${title}\n\n${canonicalUrl}`)}`;
 ---
 
-<section class="share-panel" aria-labelledby="share-heading" data-share-panel>
+<section id={id} class:list={["share-panel", { "share-panel--article": variant === "article" }]} aria-labelledby={headingId} data-share-panel>
   <div class="share-intro">
-    <h2 id="share-heading">{heading}</h2>
+    <h2 id={headingId}>{heading}</h2>
     <p>{localWorkspace ? "Le site uniquement, jamais vos dossiers." : "Aucun réseau n’est contacté avant votre clic."}</p>
   </div>
 
@@ -87,6 +92,22 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
       </a>
     ))}
 
+    <a
+      class="share-action"
+      href={emailUrl}
+      rel="nofollow"
+      aria-label="Partager par e-mail"
+      data-share-destination="email"
+    >
+      <span class="share-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+          <path d="m4 7 8 6 8-6"></path>
+        </svg>
+      </span>
+      <span>E-mail</span>
+    </a>
+
     <button
       class="share-action"
       type="button"
@@ -103,22 +124,6 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
       <span data-share-copy-label>Copier le lien</span>
       <span class="sr-only" aria-live="polite" data-share-copy-status></span>
     </button>
-
-    <a
-      class="share-action"
-      href={emailUrl}
-      rel="nofollow"
-      aria-label="Partager par e-mail"
-      data-share-destination="email"
-    >
-      <span class="share-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" focusable="false">
-          <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-          <path d="m4 7 8 6 8-6"></path>
-        </svg>
-      </span>
-      <span>E-mail</span>
-    </a>
   </div>
   <textarea
     class="share-copy-fallback"
@@ -261,19 +266,55 @@ const emailUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIC
       gap: 0.4rem;
     }
 
-    .share-action {
+    .share-panel:not(.share-panel--article) .share-action {
       width: 2.75rem;
       padding: 0.6rem;
       justify-content: center;
     }
 
-    .share-action > span:not(.share-icon) {
+    .share-panel:not(.share-panel--article) .share-action > span:not(.share-icon) {
       position: absolute;
       width: 1px;
       height: 1px;
       overflow: hidden;
       clip-path: inset(50%);
       white-space: nowrap;
+    }
+  }
+
+  .share-panel--article {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 0;
+    padding: 1.2rem 0 0;
+    scroll-margin-top: 7rem;
+  }
+
+  .share-panel--article .share-intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 1rem;
+  }
+
+  .share-panel--article .share-intro h2 { font-size: 0.82rem; }
+  .share-panel--article .share-intro p { margin: 0; }
+  .share-panel--article .share-actions { justify-content: flex-start; }
+  .share-panel--article .share-action { color: var(--text); }
+
+  @media (max-width: 560px) {
+    .share-panel--article .share-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+      gap: 0.5rem;
+    }
+
+    .share-panel--article .share-action {
+      justify-content: center;
+      padding: 0.6rem 0.4rem;
+      font-size: 0.75rem;
     }
   }
 

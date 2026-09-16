@@ -65,3 +65,23 @@ pnpm exec playwright test tests/e2e/editorial.spec.ts tests/e2e/accessibility.sp
 ```
 
 Les assertions éditoriales vérifient qu’un brouillon ne produit ni route, ni entrée RSS, ni entrée dans le sitemap.
+
+## Partage et aperçu des analyses
+
+Le modèle affiche X, LinkedIn, Facebook, Bluesky, l’e-mail et la copie du lien
+sous les métadonnées de l’article. Les icônes sont des SVG locaux. Les liens
+ouvrent les outils de composition des plateformes uniquement au clic, sans SDK,
+compteur, pixel, préconnexion ou paramètre de suivi. La copie reste locale et
+partage l’URL canonique, sans paramètres ni fragment.
+
+Chaque analyse publiée produit automatiquement un PNG de 1200 × 630 pixels dans
+`/og/analyses/` pendant `pnpm build`. La carte reprend le titre, la catégorie et
+la date dans la charte du site. La police IBM Plex Sans et sa licence se trouvent
+dans `apps/web/assets/fonts/` ; aucune requête externe n’est nécessaire pour le
+rendu. Les brouillons ne génèrent pas de carte publique.
+
+Open Graph, Twitter Card et le champ `Article.image` utilisent la même image.
+Son URL comprend une empreinte des métadonnées et de la version du modèle pour
+renouveler l’adresse si le contenu change. Incrémenter `ANALYSIS_OG_VERSION` dans
+`analysis-og-path.ts` lors d’une modification du dessin ou de la police. Le délai
+de rafraîchissement d’un aperçu déjà partagé reste propre à chaque plateforme.

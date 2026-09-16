@@ -232,7 +232,7 @@ Le schéma suivant propose une politique pour notre scénario. Il ne décrit ni 
   <figcaption>Proposition pour le scénario de cet article, inspirée des principes de <a href="https://genai.owasp.org/llmrisk/llm062025-excessive-agency/">restriction des fonctions et permissions de l’OWASP</a>. Ces règles doivent être appliquées par les systèmes ; MCP ne les active pas automatiquement.</figcaption>
 </figure>
 
-Une vérification utile consiste à essayer, dans un environnement de test, de lire un dossier hors périmètre, d’envoyer à un destinataire non approuvé et d’utiliser un accès retiré. Il faut observer où l’opération est bloquée. Un refus formulé dans la conversation renseigne sur le comportement du modèle ; le refus du service destinataire démontre une restriction sur l’action testée. Ces observations restent limitées à la configuration et aux essais réalisés.
+Une vérification utile consiste à essayer, dans un périmètre d’essai isolé, de lire un dossier hors périmètre, d’envoyer à un destinataire non approuvé et d’utiliser un accès retiré. Il faut observer où l’opération est bloquée. Un refus formulé dans la conversation renseigne sur le comportement du modèle ; le refus du service destinataire démontre une restriction sur l’action testée. Ces observations restent limitées à la configuration et aux essais réalisés.
 
 ## La validation humaine doit porter sur une action lisible
 

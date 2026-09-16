@@ -15,6 +15,7 @@ const {
   modifiedAt,
   articleTags = [],
   mainSchema = "software",
+  sharePlacement = "layout",
   ogImage = "/og/blackproof.png",
   ogImageAlt = "BLACKPROOF : revues cyber et audits internes, traitement strictement local",
 } = Astro.props;
@@ -153,14 +154,14 @@ const groupIsCurrent = (paths: string[]) => paths.some(isCurrent);
       </div>
     </header>
 
-    <div class="container site-share">
+    {sharePlacement === "layout" && <div class="container site-share">
       <ShareLinks
         url={shareUrl}
         title={shareTitle}
         heading={isLocalWorkspace || noindex || currentPath === "/" ? "Partager BLACKPROOF" : "Partager cette page"}
         localWorkspace={isLocalWorkspace}
       />
-    </div>
+    </div>}
 
     <main
       id="contenu"

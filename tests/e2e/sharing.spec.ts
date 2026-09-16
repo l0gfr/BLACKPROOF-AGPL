@@ -1,24 +1,18 @@
 import { expect, test } from "@playwright/test";
 
 const analysisPath = "/analyses/fuite-de-donnees-etablir-avant-de-conclure";
-const externalShareHosts = new Set([
-  "x.com",
-  "bsky.app",
-  "www.linkedin.com",
-  "www.facebook.com",
-]);
 
 test("public pages expose passive share links without contacting social networks", async ({ page }) => {
   const contactedExternalHosts = new Set<string>();
 
   page.on("request", (request) => {
     const host = new URL(request.url()).hostname;
-    if (externalShareHosts.has(host)) contactedExternalHosts.add(host);
+    if (!["127.0.0.1", "localhost"].includes(host)) contactedExternalHosts.add(host);
   });
 
   for (const [path, canonicalUrl, heading] of [
     ["/", "https://blackproof.fr/", "Partager BLACKPROOF"],
-    [analysisPath, `https://blackproof.fr${analysisPath}`, "Partager cette page"],
+    [analysisPath, `https://blackproof.fr${analysisPath}`, "Partager cette analyse"],
     ["/faq", "https://blackproof.fr/faq/", "Partager cette page"],
     ["/proofpack-example", "https://blackproof.fr/proofpack-example/", "Partager cette page"],
     ["/start", "https://blackproof.fr/start/", "Partager cette page"],
@@ -147,23 +141,88 @@ test("copy link falls back locally when Clipboard API is denied", async ({ page 
   expect(fallbackCopies).toEqual([`https://blackproof.fr${analysisPath}`]);
 });
 
-test("Open Graph preview is local, large and complete", async ({ page, request }) => {
+test("each published analysis has a local, unique social image and consistent metadata", async ({ page, request }) => {
+  await page.goto("/analyses");
+  const paths = await page.locator(".analysis-card a").evaluateAll((links) => (
+    [...new Set(links.map((link) => new URL((link as HTMLAnchorElement).href).pathname))]
+      .filter((path) => path.startsWith("/analyses/") && !path.endsWith("feed.xml"))
+  ));
+  expect(paths.length).toBeGreaterThan(0);
+  const images = new Set<string>();
+  for (const path of paths) {
+    await page.goto(path);
+    const title = await page.locator("h1").innerText();
+    const image = await page.locator('meta[property="og:image"]').getAttribute("content");
+    expect(image).toMatch(/^https:\/\/blackproof\.fr\/og\/analyses\/[a-z0-9-]+-[a-f0-9]{12}\.png$/);
+    expect(images.has(image!)).toBe(false);
+    images.add(image!);
+    await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute("content", `${title} | Analyses BLACKPROOF`);
+    await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute("content", "1200");
+    await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute("content", "630");
+    await expect(page.locator('meta[property="og:image:type"]')).toHaveAttribute("content", "image/png");
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute("content", image!);
+    await expect(page.locator('meta[itemprop="image"]')).toHaveAttribute("content", image!);
+
+    const imageResponse = await request.get(new URL(image!).pathname);
+    expect(imageResponse.ok()).toBe(true);
+    expect(imageResponse.headers()["content-type"]).toBe("image/png");
+    const png = await imageResponse.body();
+    expect(png.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+    expect(png.readUInt32BE(16)).toBe(1200);
+    expect(png.readUInt32BE(20)).toBe(630);
+    expect(png.length).toBeLessThan(500_000);
+  }
+});
+
+test("article sharing is attached to its heading, labelled on mobile and free of URL state", async ({ page }) => {
+  const path = "/analyses/agents-ia-cles-entreprise-acces-mcp";
+  for (const width of [1280, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto(`${path}?utm_source=discard&customer=PRIVATE#private`);
+    const panel = page.locator(".analysis-header [data-share-panel]");
+    await expect(page.locator("[data-share-panel]")).toHaveCount(1);
+    await expect(panel.getByRole("heading", { name: "Partager cette analyse" })).toBeVisible();
+    await expect(panel.locator(".share-action")).toHaveCount(6);
+    for (const action of await panel.locator(".share-action").all()) {
+      await expect(action).toBeVisible();
+      await expect(action.locator("svg")).toHaveCount(1);
+      const bounds = (await action.boundingBox())!;
+      expect(bounds.width).toBeGreaterThanOrEqual(44);
+      expect(bounds.height).toBeGreaterThanOrEqual(44);
+      expect(await action.locator("span:not(.share-icon):not(.sr-only)").evaluate((label) => (
+        getComputedStyle(label).position !== "absolute"
+      ))).toBe(true);
+    }
+    for (const href of await panel.locator("a").evaluateAll((links) => links.map((link) => decodeURIComponent(link.href)))) {
+      expect(href).toContain(`https://blackproof.fr${path}`);
+      expect(href).not.toMatch(/PRIVATE|utm_source|customer=|#private|localhost|127\.0\.0\.1/);
+    }
+    await expect(panel.locator("[data-share-copy]")).toHaveAttribute("data-share-url", `https://blackproof.fr${path}`);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+});
+
+test("copy reports failure honestly when both local clipboard methods fail", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async () => { throw new Error("denied"); } } });
+    Object.defineProperty(document, "execCommand", { configurable: true, value: () => false });
+  });
   await page.goto(analysisPath);
+  const button = page.getByRole("button", { name: "Copier le lien" });
+  await button.click();
+  await expect(button).toHaveAttribute("data-copy-state", "error");
+  await expect(button.locator("[aria-live='polite']")).toHaveText("Copie impossible");
+});
 
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
-    "content",
-    "https://blackproof.fr/og/blackproof.png",
-  );
-  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute("content", "1200");
-  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute("content", "630");
-  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute("content", /BLACKPROOF/);
-  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
-  await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
-    "content",
-    "https://blackproof.fr/og/blackproof.png",
-  );
-
-  const imageResponse = await request.get("/og/blackproof.png");
-  expect(imageResponse.ok()).toBe(true);
-  expect(imageResponse.headers()["content-type"]).toBe("image/png");
+test("article share links work without JavaScript", async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL, javaScriptEnabled: false, viewport: { width: 320, height: 1000 } });
+  const page = await context.newPage();
+  await page.goto(analysisPath);
+  for (const name of ["X", "LinkedIn", "Facebook", "Bluesky"]) {
+    await expect(page.getByRole("link", { name: `Partager sur ${name}`, exact: true })).toBeVisible();
+  }
+  await expect(page.getByRole("link", { name: "Partager par e-mail" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await context.close();
 });

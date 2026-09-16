@@ -120,7 +120,7 @@
   let editRevision = 0;
   let completedProofpackRevision = 0;
   let rebuildQueue: Promise<void> = Promise.resolve();
-  let rebuildDebounceTimer: ReturnType<typeof setTimeout> | undefined;
+  let rebuildDebounceTimer: number | undefined;
   let deliveryQuestionIds: string[] = [];
   let deliveryEvidenceIds: string[] = [];
   let deliveryConfirmed = false;
