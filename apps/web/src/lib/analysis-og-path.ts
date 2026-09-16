@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import type { AnalysisEntry } from "./analyses";
 
 // Bump when the card design or bundled font changes, to refresh social caches.
-export const ANALYSIS_OG_VERSION = 1;
+export const ANALYSIS_OG_VERSION = 2;
 
 export function getAnalysisOgPath(entry: AnalysisEntry): string {
   const revision = createHash("sha256")

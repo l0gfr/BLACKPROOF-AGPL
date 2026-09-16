@@ -33,14 +33,12 @@ export async function renderAnalysisOgImage(data: {
     throw new Error("Invalid analysis image metadata");
   }
 
-  let title = await textLayer(data.title, 68, "#f3f6f2", 1056);
-  for (const size of [64, 60, 56, 52, 48]) {
-    if (title.info.height <= 270) break;
-    title = await textLayer(data.title, size, "#f3f6f2", 1056);
-  }
-  if (title.info.height > 270 || title.info.width > 1056) {
-    throw new Error("Analysis title does not fit the social image");
-  }
+  const renderedTitle = await textLayer(data.title, 68, "#f3f6f2", 1056);
+  // Ink bounds can exceed Pango's wrap width on some platforms. Fit the entire
+  // raster instead of clipping glyphs or relying on platform-specific metrics.
+  const title = await sharp(renderedTitle.data)
+    .resize({ width: 1056, height: 270, fit: "inside", withoutEnlargement: true })
+    .png().toBuffer({ resolveWithObject: true });
 
   const date = new Intl.DateTimeFormat("fr-FR", {
     day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris",
