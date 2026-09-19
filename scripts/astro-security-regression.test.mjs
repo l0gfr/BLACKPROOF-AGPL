@@ -13,6 +13,37 @@ const astroPackage = JSON.parse(readFileSync(astroPackagePath, "utf8"));
 const transitionModuleUrl = pathToFileURL(join(dirname(astroPackagePath), "dist/runtime/server/transition.js"));
 const { renderTransition } = await import(transitionModuleUrl.href);
 
+// Resolve the actual transitive dependency for each consumer, not a test-only copy.
+for (const consumer of ["astro", "svelte"]) {
+  const consumerRequire = createRequire(webRequire.resolve(`${consumer}/package.json`));
+  const { parse, unflatten, stringify } = await import(pathToFileURL(consumerRequire.resolve("devalue")).href);
+
+  test(`${consumer} devalue rejects out-of-bounds references (GHSA-9rgm-9g3h-6x36)`, () => {
+    // Tiny boundary cases exercise the upstream fix without a resource-exhaustion payload.
+    for (const index of [1, 7]) {
+      for (const flattened of [[["Set", index]], [[index]], [{ value: index }], [[-7, 1, 0, index]]]) {
+        assert.throws(() => parse(JSON.stringify(flattened)), /Invalid input/);
+        assert.throws(() => unflatten(flattened), /Invalid input/);
+      }
+    }
+  });
+
+  test(`${consumer} devalue preserves legitimate typed and circular values`, () => {
+    const value = {
+      date: new Date("2026-01-01T00:00:00.000Z"),
+      map: new Map([["synthetic", new Set([1, 2])]]),
+      sparse: [, "local"],
+      absent: undefined,
+    };
+    value.self = value;
+    const serialized = stringify(value);
+    assert.deepEqual(parse(serialized), value);
+    assert.deepEqual(unflatten(JSON.parse(serialized)), value);
+    const custom = parse('[["URL","https://example.invalid/"]]', { URL: (input) => new URL(input) });
+    assert.equal(custom.href, "https://example.invalid/");
+  });
+}
+
 function compareVersions(left, right) {
   const leftParts = left.split(".").map(Number);
   const rightParts = right.split(".").map(Number);

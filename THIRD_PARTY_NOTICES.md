@@ -2196,7 +2196,7 @@ Apache License
 
 ## Packages
 
-- devalue@5.9.0 — MIT — not declared — not declared
+- devalue@5.9.2 — MIT — not declared — not declared
 
 ```text
 --- LICENSE ---
