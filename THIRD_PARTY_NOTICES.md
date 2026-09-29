@@ -2719,7 +2719,7 @@ DEALINGS IN THE SOFTWARE.
 
 ## Packages
 
-- fast-uri@3.1.6 — BSD-3-Clause — Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth) — https://github.com/fastify/fast-uri
+- fast-uri@3.1.7 — BSD-3-Clause — Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth) — https://github.com/fastify/fast-uri
 
 ```text
 --- LICENSE ---
