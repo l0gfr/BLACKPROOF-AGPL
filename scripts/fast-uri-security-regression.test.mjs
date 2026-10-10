@@ -11,6 +11,16 @@ for (const [consumer, manifest] of [
   const consumerRequire = createRequire(new URL(manifest, import.meta.url));
   const Ajv2020 = consumerRequire("ajv/dist/2020.js").default;
 
+  test(`${consumer} normalizes percent-encoded host case (GHSA-hrr3-gc8f-f4qj)`, () => {
+    const uri = new Ajv2020().opts.uriResolver;
+    for (const value of ["//%41.example.test", "//A.example.test", "//%61.example.test"]) {
+      assert.equal(uri.parse(value).host, "a.example.test");
+      assert.equal(uri.equal(value, "//a.example.test"), true);
+      assert.equal(uri.normalize(value), uri.normalize("//a.example.test"));
+    }
+    assert.equal(uri.equal("//a.example.test", "//b.example.test"), false);
+  });
+
   test(`${consumer} rejects malformed URI host brackets (GHSA-58mr-gqgx-xq4g)`, () => {
     const uri = new Ajv2020().opts.uriResolver;
     for (const value of [

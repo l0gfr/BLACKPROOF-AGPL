@@ -2196,7 +2196,7 @@ Apache License
 
 ## Packages
 
-- devalue@5.9.2 — MIT — not declared — not declared
+- devalue@5.9.3 — MIT — not declared — not declared
 
 ```text
 --- LICENSE ---
@@ -2719,7 +2719,7 @@ DEALINGS IN THE SOFTWARE.
 
 ## Packages
 
-- fast-uri@3.1.7 — BSD-3-Clause — Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth) — https://github.com/fastify/fast-uri
+- fast-uri@3.1.8 — BSD-3-Clause — Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth) — https://github.com/fastify/fast-uri
 
 ```text
 --- LICENSE ---
@@ -3119,7 +3119,7 @@ THE SOFTWARE.
 
 ## Packages
 
-- http-cache-semantics@4.2.0 — BSD-2-Clause — Kornel Lesiński <npms2@geekhood.net> (https://kornel.ski/) — git+https://github.com/kornelski/http-cache-semantics.git
+- http-cache-semantics@4.3.0 — BSD-2-Clause — Kornel Lesiński <kornel@geekhood.net> (https://kornel.ski/) — git+https://github.com/kornelski/http-cache-semantics.git
 
 ```text
 --- LICENSE ---
@@ -5531,7 +5531,7 @@ SOFTWARE.
 
 ## Packages
 
-- smol-toml@1.7.1 — BSD-3-Clause — Cynthia Rey <cynthia@cynthia.dev> — github:squirrelchat/smol-toml
+- smol-toml@1.9.0 — BSD-3-Clause — Cynthia Rey <cynthia@cynthia.dev> — github:squirrelchat/smol-toml
 
 ```text
 --- LICENSE ---
@@ -5563,7 +5563,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## Packages
 
-- source-map-js@1.2.1 — BSD-3-Clause — Valentin 7rulnik Semirulnik <v7rulnik@gmail.com> — https://github.com/7rulnik/source-map-js
+- source-map-js@1.2.2 — BSD-3-Clause — Valentin 7rulnik Semirulnik <v7rulnik@gmail.com> — https://github.com/7rulnik/source-map-js
 
 ```text
 --- LICENSE ---
