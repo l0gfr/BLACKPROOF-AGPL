@@ -81,9 +81,13 @@ test("v11 to v12 removes only access state and preserves encrypted dossier and s
       request.onerror = () => reject(request.error);
     });
     const record = await new Promise<Record<string, unknown>>((resolve, reject) => {
-      const request = database.transaction("cases").objectStore("cases").getAll();
-      request.onsuccess = () => resolve(request.result[0]);
-      request.onerror = () => reject(request.error);
+      const transaction = database.transaction("cases");
+      const request = transaction.objectStore("cases").getAll();
+      // close() remains pending while a transaction is active. Wait for its
+      // completion, not just the getAll result, before replacing this fixture.
+      transaction.oncomplete = () => resolve(request.result[0]);
+      transaction.onabort = () => reject(transaction.error);
+      transaction.onerror = () => reject(transaction.error);
     });
     database.close();
     const snapshot = { caseId: record.id, deliveryId: "delivery_" + "b".repeat(32), createdAt: record.createdAt, encrypted: true, payload };

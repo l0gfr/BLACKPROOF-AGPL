@@ -270,8 +270,8 @@ SOFTWARE.
 
 ## Packages
 
-- @modelcontextprotocol/core@2.0.0 — MIT — Anthropic, PBC (https://anthropic.com) — https://modelcontextprotocol.io
-- @modelcontextprotocol/server@2.0.0 — MIT — Anthropic, PBC (https://anthropic.com) — https://modelcontextprotocol.io
+- @modelcontextprotocol/core@2.3.0 — Apache-2.0 — Anthropic, PBC (https://anthropic.com) — https://modelcontextprotocol.io
+- @modelcontextprotocol/server@2.3.0 — Apache-2.0 — Anthropic, PBC (https://anthropic.com) — https://modelcontextprotocol.io
 
 ```text
 --- LICENSE ---
@@ -524,7 +524,7 @@ SOFTWARE.
 
 ## Packages
 
-- @oxc-project/types@0.142.0 — MIT — Boshen and oxc contributors — https://oxc.rs
+- @oxc-project/types@0.154.0 — MIT — Boshen and oxc contributors — https://oxc.rs
 
 ```text
 --- LICENSE ---
@@ -5360,7 +5360,7 @@ THE SOFTWARE.
 
 ## Packages
 
-- rolldown@1.2.1 — MIT — not declared — https://rolldown.rs/
+- rolldown@1.2.14 — MIT — not declared — https://rolldown.rs/
 
 ```text
 --- LICENSE ---
@@ -6136,7 +6136,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 ## Packages
 
-- vite@8.2.1 — MIT — Evan You — https://vite.dev
+- vite@8.2.4 — MIT — Evan You — https://vite.dev
 
 ```text
 --- LICENSE.md ---

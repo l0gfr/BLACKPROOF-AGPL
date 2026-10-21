@@ -10,6 +10,7 @@ import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { sha256Hex, stableStringify } from "@blackproof/verifier";
 import { prepareSession, readSelectedFile } from "../src/inputs.mjs";
+import { createServer } from "../src/server.mjs";
 
 const executable = fileURLToPath(new URL("../bin/blackproof-mcp.mjs", import.meta.url));
 const fixture = new URL("../../core/src/fixtures/proofpack-delivery-v4-historical.json", import.meta.url);
@@ -80,6 +81,7 @@ test("SDK validation and unknown tool errors do not echo attacker data", async t
   for (const request of [
     { name: "blackproof_methodology", arguments: { [canary]: "file:///etc/passwd" } },
     { name: canary, arguments: {} },
+    ...[null, [], "synthetic", { nested: Array(128).fill(canary) }].map(arguments_ => ({ name: "blackproof_methodology", arguments: arguments_ })),
   ]) {
     try {
       const result = await client.callTool(request);
@@ -89,6 +91,48 @@ test("SDK validation and unknown tool errors do not echo attacker data", async t
     } catch (error) {
       assert.ok(!error.message.includes(canary));
       assert.match(error.message, /Request refused/);
+    }
+  }
+  const control = await client.callTool({ name: "blackproof_methodology", arguments: {} });
+  assert.equal(control.isError, undefined);
+});
+
+test("the actual MCP server refuses a second transport", async t => {
+  const starts = [];
+  const transport = name => ({
+    async start() { starts.push(name); },
+    async send() {},
+    async close() { this.onclose?.(); },
+  });
+  const server = createServer();
+  t.after(() => server.close());
+  await server.connect(transport("first"));
+  await assert.rejects(server.connect(transport("second")), { code: "ALREADY_CONNECTED" });
+  assert.deepEqual(starts, ["first"]);
+});
+
+test("independent stdio sessions retain distinct private V4 and V5 snapshots", async t => {
+  const first = await files(t);
+  const second = await files(t);
+  for (const question of first.data.questions) delete question.reservation;
+  second.data.formatVersion = "blackproof-proofpack-delivery-v5";
+  second.data.schemaVersion = "blackproof-proofpack-delivery-schema-v5";
+  second.data.schemaUrl = "https://blackproof.fr/schemas/proofpack-delivery/v5.schema.json";
+  second.data.questions[0].reservation = canary;
+  for (const selected of [first, second]) {
+    const { fingerprint: _fingerprint, ...base } = selected.data;
+    selected.data.fingerprint = `bp_sha256_${sha256Hex(stableStringify(base))}`;
+    await writeFile(selected.path, JSON.stringify(selected.data));
+  }
+  const [a, b] = await Promise.all([first, second].map(selected => connect(t, ["--local-only", "--current", selected.path])));
+  for (let round = 0; round < 3; round++) {
+    const results = await Promise.all([a, b].map(({ client }) => client.callTool({ name: "blackproof_verify_selected", arguments: {} })));
+    assert.deepEqual(results.map(result => result.structuredContent.valid), [true, true]);
+    assert.deepEqual(results.map(result => result.structuredContent.counts.reservations), [0, 1]);
+    for (const result of results) {
+      for (const value of [canary, first.path, second.path, first.data.deliveryId, first.data.fingerprint, second.data.fingerprint]) {
+        assert.ok(!JSON.stringify(result).includes(value));
+      }
     }
   }
 });
