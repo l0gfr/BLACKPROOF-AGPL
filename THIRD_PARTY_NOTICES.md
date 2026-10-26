@@ -35,12 +35,12 @@ SOFTWARE.
 
 ## Packages
 
-- @astrojs/internal-helpers@0.10.4 — MIT — withastro — git+https://github.com/withastro/astro.git
-- @astrojs/markdown-satteri@0.3.8 — MIT — withastro — https://astro.build
+- @astrojs/internal-helpers@0.11.0 — MIT — withastro — git+https://github.com/withastro/astro.git
+- @astrojs/markdown-satteri@0.4.1 — MIT — withastro — https://astro.build
 - @astrojs/prism@4.0.2 — MIT — withastro — https://docs.astro.build/en/reference/api-reference/#prism-
 - @astrojs/svelte@9.0.1 — MIT — withastro — https://docs.astro.build/en/guides/integrations-guide/svelte/
 - @astrojs/telemetry@3.3.3 — MIT — withastro — https://astro.build
-- astro@7.2.8 — MIT — withastro — https://astro.build
+- astro@7.3.3 — MIT — withastro — https://astro.build
 
 ```text
 --- LICENSE ---
@@ -2719,7 +2719,7 @@ DEALINGS IN THE SOFTWARE.
 
 ## Packages
 
-- fast-uri@3.1.8 — BSD-3-Clause — Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth) — https://github.com/fastify/fast-uri
+- fast-uri@3.1.9 — BSD-3-Clause — Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth) — https://github.com/fastify/fast-uri
 
 ```text
 --- LICENSE ---
@@ -2832,7 +2832,7 @@ SOFTWARE.
 
 ## Packages
 
-- find-proc@0.1.0 — MIT — gameroman — git+https://github.com/gameroman-npm/find-proc.git
+- find-proc@0.2.0 — MIT — gameroman — git+https://github.com/gameroman-npm/find-proc.git
 
 ```text
 --- LICENSE ---
@@ -5451,29 +5451,6 @@ SOFTWARE.
 
 ## Packages
 
-- semver@7.8.5 — ISC — GitHub Inc. — git+https://github.com/npm/node-semver.git
-
-```text
---- LICENSE ---
-The ISC License
-
-Copyright (c) Isaac Z. Schlueter and Contributors
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
-IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-```
-
-## Packages
-
 - setimmediate@1.0.5 — MIT — YuzuJS — not declared
 
 ```text
@@ -5953,7 +5930,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Packages
 
-- undici@8.10.2 — MIT — not declared — https://undici.nodejs.org
+- undici@8.12.2 — MIT — not declared — https://undici.nodejs.org
 
 ```text
 --- LICENSE ---
@@ -6132,6 +6109,35 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
+```
+
+## Packages
+
+- verkit@0.4.1 — MIT — Kevin Deng <sxzz@sxzz.moe> — https://github.com/sxzz/verkit#readme
+
+```text
+--- LICENSE ---
+The MIT License (MIT)
+
+Copyright © 2026-PRESENT Kevin Deng (https://github.com/sxzz)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 ## Packages
@@ -8579,8 +8585,7 @@ SOFTWARE.
 
 ## Packages
 
-- zod@4.3.6 — MIT — Colin McDonnell <zod@colinhacks.com> — https://zod.dev
-- zod@4.5.4 — MIT — Colin McDonnell <zod@colinhacks.com> — https://zod.dev
+- zod@4.6.6 — MIT — Colin McDonnell <zod@colinhacks.com> — https://zod.dev
 
 ```text
 --- LICENSE ---

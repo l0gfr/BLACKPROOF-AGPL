@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const MINIMUM_SAFE_ASTRO_VERSION = [7, 1, 0];
+const MINIMUM_SAFE_ASTRO_VERSION = [7, 3, 3];
 
 function parseStableVersion(version) {
   const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
@@ -315,7 +315,7 @@ if (
   !versionIsAtLeast(declaredAstroFloor, MINIMUM_SAFE_ASTRO_VERSION)
   || !versionIsAtLeast(installedAstroPackageJson.version, MINIMUM_SAFE_ASTRO_VERSION)
 ) {
-  console.error("SECURITY AUDIT FAIL: Astro must remain at 7.1.0 or newer to close GHSA-4g3v-8h47-v7g6.");
+  console.error("SECURITY AUDIT FAIL: Astro must remain at 7.3.3 or newer to close the JSX and View Transition injection advisories.");
   failed = true;
 }
 if (

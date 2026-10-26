@@ -17,7 +17,7 @@
     "@astrojs/svelte": "^9.0.1",
     "@blackproof/core": "workspace:*",
     "@blackproof/verifier": "workspace:*",
-    "astro": "7.2.8",
+    "astro": "7.3.3",
     "dexie": "^4.4.4",
     "fflate": "0.8.3",
     "jszip": "3.10.1",
