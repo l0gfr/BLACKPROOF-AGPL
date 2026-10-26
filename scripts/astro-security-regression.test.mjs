@@ -14,7 +14,10 @@ const astroPackagePath = webRequire.resolve("astro/package.json");
 const astroPackage = JSON.parse(readFileSync(astroPackagePath, "utf8"));
 const astroRequire = createRequire(astroPackagePath);
 const transitionModuleUrl = pathToFileURL(join(dirname(astroPackagePath), "dist/runtime/server/transition.js"));
-const { renderTransition } = await import(transitionModuleUrl.href);
+const { renderTransition, stringifyAnimations } = await import(transitionModuleUrl.href);
+const { jsx } = await import(pathToFileURL(webRequire.resolve("astro/jsx-runtime")).href);
+const { renderJSX } = await import(pathToFileURL(join(dirname(astroPackagePath), "dist/runtime/server/jsx.js")).href);
+const { markHTMLString } = await import(pathToFileURL(join(dirname(astroPackagePath), "dist/runtime/server/escape.js")).href);
 const { loadRemoteImage, revalidateRemoteImage } = await import(pathToFileURL(join(dirname(astroPackagePath), "dist/assets/build/remote.js")).href);
 
 test("Astro cache policy refuses wildcard Vary responses", () => {
@@ -260,7 +263,31 @@ function compareVersions(left, right) {
 }
 
 test("Astro stays on the patched View Transition release line", () => {
-  assert.ok(compareVersions(astroPackage.version, "7.1.0") >= 0);
+  assert.ok(compareVersions(astroPackage.version, "7.3.3") >= 0);
+});
+
+test("Astro JSX escapes dynamic script and style children while preserving explicit trusted literals (GHSA-98hj-9722-w3j8)", async () => {
+  for (const tag of ["script", "style"]) {
+    const marker = `</${tag}><template data-synthetic-boundary></template><${tag}>`;
+    const rendered = String(await renderJSX({}, jsx(tag, { children: marker })));
+    assert.equal((rendered.match(new RegExp(`</${tag}>`, "gi")) ?? []).length, 1);
+    assert.ok(!rendered.includes(marker));
+    const trusted = "synthetic < > &";
+    assert.equal(String(await renderJSX({}, jsx(tag, { children: markHTMLString(trusted) }))), `<${tag}>${trusted}</${tag}>`);
+  }
+});
+
+test("Astro transition values cannot add CSS declarations or rules (GHSA-mpr7-6m5w-76rw)", () => {
+  const marker = "1ms;}#synthetic{color:red}x{animation-duration:1ms";
+  for (const property of ["duration", "delay", "easing", "direction", "fillMode", "name"]) {
+    const output = stringifyAnimations([{ name: "ordinary", [property]: marker }]);
+    assert.ok(!output.includes(marker), property);
+    assert.ok(!/[{}]/.test(output), "animation values must not inject rules");
+    assert.equal((output.match(/;/g) ?? []).length, property === "name" ? 1 : 2);
+  }
+  const ordinary = stringifyAnimations([{ name: "ordinary", duration: "calc(1s + var(--delay))", easing: "cubic-bezier(0, 0, 1, 1)" }]);
+  assert.match(ordinary, /calc\(1s \+ var\(--delay\)\)/);
+  assert.match(ordinary, /cubic-bezier\(0, 0, 1, 1\)/);
 });
 
 test("Astro transition styles keep dynamic values inside the style context", () => {

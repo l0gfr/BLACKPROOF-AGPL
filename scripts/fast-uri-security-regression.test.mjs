@@ -11,6 +11,32 @@ for (const [consumer, manifest] of [
   const consumerRequire = createRequire(new URL(manifest, import.meta.url));
   const Ajv2020 = consumerRequire("ajv/dist/2020.js").default;
 
+  test(`${consumer} keeps encoded schemes and suffix references inert (GHSA-w74x-v6f9-j3xg, GHSA-333x-w4r6-6crp)`, () => {
+    const uri = new Ajv2020().opts.uriResolver;
+    for (const input of ["%6Aavascript:alert(1)", "%u006Aavascript:alert(1)", "%64ata:text/plain,synthetic"]) {
+      assert.ok(uri.parse(input).error);
+      assert.notEqual(uri.parse(input).scheme, "javascript");
+    }
+    for (const input of ["javascript:alert(1)", "data:text/plain,synthetic", "vbscript:synthetic"]) {
+      for (const scheme of [undefined, "custom"]) {
+        const serialized = uri.serialize({ scheme, path: input }, { reference: "suffix" });
+        assert.equal(uri.parse(serialized).scheme, undefined);
+        assert.ok(serialized.includes("%3A"));
+      }
+      assert.ok(uri.parse(input, { reference: "suffix" }).error);
+    }
+  });
+
+  test(`${consumer} preserves relative references and rejects authority parser disagreement (GHSA-xhq7-xmqj-769h, GHSA-wjr9-j795-jxcr)`, () => {
+    const uri = new Ajv2020().opts.uriResolver;
+    for (const reference of ["../outside", "a/../b", "../../same"]) {
+      assert.equal(uri.resolve("https://example.test/folder/base/", uri.normalize(reference)), uri.resolve("https://example.test/folder/base/", reference));
+    }
+    for (const input of ["http://a@b@evil.example/", "https://exam\tple.test/", "https://exam\nple.test/", "https://exam\rple.test/"]) {
+      assert.ok(uri.parse(input).error, input);
+    }
+  });
+
   test(`${consumer} normalizes percent-encoded host case (GHSA-hrr3-gc8f-f4qj)`, () => {
     const uri = new Ajv2020().opts.uriResolver;
     for (const value of ["//%41.example.test", "//A.example.test", "//%61.example.test"]) {
