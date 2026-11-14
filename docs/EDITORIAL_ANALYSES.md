@@ -56,7 +56,7 @@ Pour une actualité, rechercher d’abord la communication de l’organisation c
 
 ## Contrôles locaux
 
-Avec Node 22.23.2 et pnpm 10.34.5 :
+Avec Node 22.23.5 et pnpm 10.34.5 :
 
 ```sh
 pnpm --filter @blackproof/web check

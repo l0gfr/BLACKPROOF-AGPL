@@ -12,7 +12,7 @@ for (const [name, require] of [
 ]) {
   const z = require("zod/v4");
   test(`${name} bounds oversized constrained collections before validating elements (GHSA-mrhx-c7xc-m3w5)`, () => {
-    assert.equal(JSON.parse(readFileSync(require.resolve("zod/package.json"), "utf8")).version, "4.6.6");
+    assert.equal(JSON.parse(readFileSync(require.resolve("zod/package.json"), "utf8")).version, "4.6.7");
     let visited = 0;
     const input = new Proxy(Array(32).fill("invalid"), { get(target, key, receiver) {
       if (/^\d+$/.test(String(key))) visited += 1;

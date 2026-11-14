@@ -49,7 +49,7 @@ test("root, Astro, Svelte integration and Vitest use the patched Vite consumer",
   ]) {
     const resolved = require.resolve("vite/package.json");
     assert.equal(resolved, vitePackage);
-    assert.equal(JSON.parse(readFileSync(resolved, "utf8")).version, "8.2.4");
+    assert.equal(JSON.parse(readFileSync(resolved, "utf8")).version, "8.3.5");
   }
 });
 

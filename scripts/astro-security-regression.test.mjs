@@ -262,8 +262,63 @@ function compareVersions(left, right) {
   return 0;
 }
 
-test("Astro stays on the patched View Transition release line", () => {
-  assert.ok(compareVersions(astroPackage.version, "7.3.3") >= 0);
+test("Astro stays on the patched release line for the image and dynamic-tag advisories", () => {
+  assert.ok(compareVersions(astroPackage.version, "7.4.7") >= 0);
+});
+
+test("Astro rejects case-variant paths outside a case-sensitive image directory (GHSA-r3h5-4585-7x3w)", async () => {
+  const { isParentDirectory } = await import(pathToFileURL(astroRequire.resolve("@astrojs/internal-helpers/path")).href);
+  assert.equal(isParentDirectory("/app/dist/client", "/app/dist/client/photo.png"), true);
+  assert.equal(isParentDirectory("/app/dist/client", "/app/DIST/client/secret.png"), false);
+  assert.equal(isParentDirectory("C:\\app\\dist\\client", "c:\\app\\DIST\\client\\photo.png"), true);
+});
+
+test("Astro JSX renders only the leading valid name of a dynamic element (GHSA-mh32-jxcr-mh9f)", async () => {
+  const result = {
+    pathname: "/test",
+    renderers: [],
+    compressHTML: false,
+    partial: false,
+    cancelled: false,
+    _metadata: {
+      propagators: new Set(),
+      hasHydrationScript: false,
+      hasDirectives: new Set(),
+      hasRenderedHead: false,
+      rendererSpecificHydrationScripts: new Set(),
+    },
+  };
+  const vnode = { type: "span/data-x=1", props: { id: "target", children: "hello" }, "astro:jsx": true };
+  assert.equal(String(await renderJSX(result, vnode)), '<span id="target">hello</span>');
+  await assert.rejects(() => renderJSX(result, { ...vnode, type: "!--" }), /Invalid element name/);
+});
+
+test("Svelte integration escapes hostile slot names in static and hydrated markup (GHSA-f4j9-crrj-867q)", async () => {
+  const { compile } = webRequire("svelte/compiler");
+  const source = '<script>let { active, ...snippets } = $props();</script><div>{@render snippets[active]?.()}</div>';
+  const compiled = compile(source, { generate: "server", filename: "slot-name-security-fixture.svelte" });
+  const runtime = pathToFileURL(webRequire.resolve("svelte/internal/server")).href;
+  const code = compiled.js.code.replace(/from ["']svelte\/internal\/server["']/, `from ${JSON.stringify(runtime)}`);
+  assert.notEqual(code, compiled.js.code);
+  const component = (await import(`data:text/javascript,${encodeURIComponent(code)}`)).default;
+  const renderer = (await import(pathToFileURL(webRequire.resolve("@astrojs/svelte/server.js")).href)).default;
+  const name = 'tab"><b id="injected">x</b><i title="';
+  for (const hydrate of [false, true]) {
+    const { html } = await renderer.renderToStaticMarkup(
+      component,
+      { active: name },
+      { [name]: '<p id="content">content</p>' },
+      { astroStaticSlot: true, hydrate },
+    );
+    assert.match(html, /<astro-(?:static-)?slot name="tab&quot;&gt;&lt;b id=&quot;injected&quot;&gt;x&lt;\/b&gt;&lt;i title=&quot;">/);
+    assert.ok(!html.includes('<b id="injected">'));
+    assert.ok(html.includes('<p id="content">content</p>'));
+  }
+  const clientPath = webRequire.resolve("@astrojs/svelte/client.js");
+  const clientSource = readFileSync(clientPath, "utf8");
+  assert.equal((clientSource.match(/escapeSlotName\(key\)/g) ?? []).length, 2);
+  const { escapeSlotName } = await import(pathToFileURL(join(dirname(clientPath), "escape.js")).href);
+  assert.equal(escapeSlotName(name), "tab&quot;&gt;&lt;b id=&quot;injected&quot;&gt;x&lt;/b&gt;&lt;i title=&quot;");
 });
 
 test("Astro JSX escapes dynamic script and style children while preserving explicit trusted literals (GHSA-98hj-9722-w3j8)", async () => {

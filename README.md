@@ -26,7 +26,7 @@ questionnaire ou grille d'audit → réponses et références → preuves attend
 
 ## Development
 
-Requirements: Node.js 22.23.2 (see `.nvmrc`) and pnpm 10.34.5.
+Requirements: Node.js 22.23.5 (see `.nvmrc`) and pnpm 10.34.5.
 
 ```sh
 pnpm install --frozen-lockfile
