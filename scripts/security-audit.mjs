@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const MINIMUM_SAFE_ASTRO_VERSION = [7, 3, 3];
+const MINIMUM_SAFE_ASTRO_VERSION = [7, 4, 7];
 
 function parseStableVersion(version) {
   const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
@@ -294,6 +294,13 @@ const releaseDirectoryVerifierSource = readFileSync("scripts/verify-release-dire
 const staticPromotionSource = readFileSync("deploy/server/promote-static-release.sh", "utf8");
 const rootPackageJson = readFileSync("package.json", "utf8");
 const pnpmWorkspaceSource = readFileSync("pnpm-workspace.yaml", "utf8");
+const auditConfigBlocks = [...pnpmWorkspaceSource.matchAll(/^auditConfig:\n((?:[ \t]+.*\n|[ \t]*\n)*)/gm)];
+if (auditConfigBlocks.length !== 1
+  || auditConfigBlocks[0][1].trimEnd() !== "  ignoreGhsas:\n    - GHSA-gcqx-w48m-w2h4"
+  || /^[ \t]*(?:['"]?auditLevel['"]?|audit-level)[ \t]*:/m.test(pnpmWorkspaceSource)) {
+  console.error("SECURITY AUDIT FAIL: the reviewed build-only deepmerge advisory must be the sole audit exception.");
+  failed = true;
+}
 const webPackageJson = JSON.parse(readFileSync("apps/web/package.json", "utf8"));
 const installedAstroPackageJson = JSON.parse(readFileSync("apps/web/node_modules/astro/package.json", "utf8"));
 const nodeVersion = readFileSync(".nvmrc", "utf8").trim();
@@ -315,7 +322,7 @@ if (
   !versionIsAtLeast(declaredAstroFloor, MINIMUM_SAFE_ASTRO_VERSION)
   || !versionIsAtLeast(installedAstroPackageJson.version, MINIMUM_SAFE_ASTRO_VERSION)
 ) {
-  console.error("SECURITY AUDIT FAIL: Astro must remain at 7.3.3 or newer to close the JSX and View Transition injection advisories.");
+  console.error("SECURITY AUDIT FAIL: Astro must remain at 7.4.7 or newer to close the known image and dynamic-tag advisories.");
   failed = true;
 }
 if (
@@ -582,7 +589,7 @@ if (!/<LocationMatch "\^\/\(\?:schemas\/proofpack\/[\s\S]*?schemas\/proofpack-de
   failed = true;
 }
 
-if (nodeVersion !== "22.23.2" || !/"node": ">=22\.23\.2 <23"/.test(rootPackageJson)
+if (nodeVersion !== "22.23.5" || !/"node": ">=22\.23\.5 <23"/.test(rootPackageJson)
   || !/"packageManager": "pnpm@10\.34\.5"/.test(rootPackageJson)) {
   console.error("SECURITY AUDIT FAIL: build tooling must retain the reviewed Node and pnpm versions.");
   failed = true;

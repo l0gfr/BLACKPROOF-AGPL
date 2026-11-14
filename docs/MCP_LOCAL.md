@@ -24,7 +24,7 @@ correcte ne prouve ni la véracité, ni la conformité, ni l'identité de l'éme
 
 ## Installation
 
-Prérequis : Linux ou macOS, compte utilisateur non root, Node.js 22.23.2 et
+Prérequis : Linux ou macOS, compte utilisateur non root, Node.js 22.23.5 et
 pnpm 10.34.5. Windows est refusé tant qu'un contrôle d'accès natif équivalent
 n'a pas été implémenté. Utiliser une révision relue du dépôt et son lockfile.
 
